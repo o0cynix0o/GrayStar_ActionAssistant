@@ -7,7 +7,7 @@ The assistant keeps local save files for your character and campaign state.
 By default, local saves live in:
 
 ```text
-C:\Scripts\Gray Star\saves
+./saves
 ```
 
 The `saves` folder is ignored by git so your personal play state does not get pushed to GitHub.
@@ -42,4 +42,3 @@ Recovery options:
 - **Repeat**: try the same section again from its entry state.
 
 Inventory, Endurance, Willpower, and combat changes from the failed attempt are restored according to that snapshot.
-

@@ -9,7 +9,7 @@
 Install Python dependencies from the project folder:
 
 ```powershell
-python -m pip install -r "C:\Scripts\Gray Star\requirements.txt"
+python -m pip install -r .\requirements.txt
 ```
 
 ## Start The App
@@ -17,13 +17,13 @@ python -m pip install -r "C:\Scripts\Gray Star\requirements.txt"
 From PowerShell:
 
 ```powershell
-& "C:\Scripts\Gray Star\Launch-GrayStar.ps1"
+.\Launch-GrayStar.ps1
 ```
 
 Or:
 
 ```powershell
-python "C:\Scripts\Gray Star\launch_graystar.py"
+python .\launch_graystar.py
 ```
 
 Then open:
@@ -55,10 +55,9 @@ http://localhost:8797/assistant.html
 Risky:
 
 ```text
-file:///C:/Scripts/Gray Star/assistant.html
+opening assistant.html directly from the file system
 ```
 
 ## Autosave
 
 The app autosaves state during normal play. This is intentional. It prevents the most frustrating failure mode: reaching a later section and discovering your sheet, inventory, or combat state is old.
-

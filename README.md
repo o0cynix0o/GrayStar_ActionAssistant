@@ -5,13 +5,13 @@ This is a standalone Python web app fork of the local Lone Wolf assistant for th
 ## Run
 
 ```powershell
-python "C:\Scripts\Gray Star\launch_graystar.py"
+python .\launch_graystar.py
 ```
 
 On Windows, this convenience wrapper also works:
 
 ```powershell
-& "C:\Scripts\Gray Star\Launch-GrayStar.ps1"
+.\Launch-GrayStar.ps1
 ```
 
 The main reader opens the book on the left and a web GUI assistant on the right. Clicking book section links updates the assistant state, and using the section controls updates the book frame.
@@ -29,18 +29,18 @@ Default ports:
 - `app_server.py`: Python HTTP server for the web app and JSON API
 - `ws_server.py`: legacy Python WebSocket terminal bridge
 - `launch_graystar.py`: Python launcher for the web app server
-- `books\gs`: copied Gray Star books
+- `books/gs`: copied Gray Star books
 - `saves`: runtime-created character saves; ignored by git so local play state stays private
-- `data\crt.json`: Combat Results Table
+- `data/crt.json`: Combat Results Table
 
 ## Dependencies
 
 ```powershell
-python -m pip install -r "C:\Scripts\Gray Star\requirements.txt"
+python -m pip install -r .\requirements.txt
 ```
 
 `pywinpty` is only needed for the legacy browser terminal bridge. The assistant itself can also be run directly:
 
 ```powershell
-python "C:\Scripts\Gray Star\garystar.py"
+python .\garystar.py
 ```
