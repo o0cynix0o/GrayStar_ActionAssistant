@@ -1,10 +1,10 @@
 # GS Book 1 Route Audit
 
-Generated: 2026-05-20T15:21:42
+Generated: 2026-05-20T15:33:09
 
 Book: Grey Star the Wizard
 
-Status: machine route-graph baseline. Human route-family names and story classifications still need review.
+Status: machine route-graph baseline plus first named route-family pass. Endpoint classifications and full dry-run branch coverage still need review.
 
 ## Summary
 
@@ -48,6 +48,34 @@ These sections dominate the detected success endpoint in the source-link graph. 
 |---:|---|
 | 110 | Hidden correct riddle solution for section 264; the local source has no visible section link into it. |
 | 342 | Footnote says no choice leads here and calls it an oversight. Earlier dry-run smoke used this section manually, so that smoke route needs review. |
+
+## Player-Facing Route Families
+
+These names collapse the success-capable branch points into routes a player or tester can reason about. A family is not always a single exclusive path; many branches merge back into the main graph, so these are route themes with important entry sections, state changes, and test hooks.
+
+| Route Family | Entry / Trigger Sections | What It Represents | Route Stakes / Notes | Achievement / App Hooks |
+|---|---|---|---|---|
+| Opening Elementalism Split | 1 -> 202, 1 -> 168 | The first route split from section 1. | Both opening branches are success-capable and merge into the wider graph early. Keep this as a smoke check that both starts can still reach section 350. | No unique achievement yet; use for route reachability testing. |
+| Early Survival And Travel | 2, 3, 58, 59, 78, 168 | Early mainland movement, food pressure, rest, and resource recovery/loss. | This family catches Meal handling, END/WP adjustments, Fresh Laumspur handling, and the early "did the assistant stay in sync?" checks. | Meal automation, Laumspur use/eat controls, WP/END quick controls. |
+| Kazim Stone Route | 77, 10, 51, 175, 191, 314, 320, 323 | The optional Kazim Stone arc and its consequences. | Section 77 adds the Stone. Section 10 detects possession. Section 51 removes it. Sections 314/320/323 apply heavy WP/END costs and gated choices. | `gs1_kazim_claimed`, `gs1_kazim_stolen`; item add/remove automation for Kazim Stone; WP can go negative when forced by the book. |
+| Shianti / Jnana Blessing Route | 87, 126, 161, 49, 274 | The benevolent-helper route through Jnana and the Silver Charm. | Section 87 can award the Amulet. Section 161 can award Jnana loot. The Silver Charm modifies the section 49 ravine roll and can lead to the section 274 leap result. | `gs1_priests_amulet`, `gs1_jnanas_blessing`, `gs1_leap_of_faith`; loot picker and random-number modifier testing. |
+| Alchemy / Yabari / Ezeran Route | 65, 72, 151, 193, 297 | Alchemy supplies, poison/ointment protection, and Ezeran Acid creation. | Section 193 is the main alchemy cache. Sections 65/72 track Yabari protection. Section 151 checks ingredients; section 297 converts ingredients and an empty vial into Ezeran Acid. | `gs1_yabari_ward`, `gs1_alchemy_cache`, `gs1_ezeran_acid`; recipe conversion and ointment in-use flag. |
+| Redeemer / Rune Riddle Route | 18, 209, 264, hidden 110 | The Redeemer item route and the hidden riddle answer route. | Section 209 supplies the Medallion and Pink Liquid. Section 264 consumes the liquid and can route to hidden answer section 110, which has no visible source link. | `gs1_redeemers_tokens`; loot picker, item gate, hidden-section route note. |
+| Najin Route | 58, 101, 126, 130 | The Najin approach choice and survival fight. | Section 58 presents attack/wait choices. Section 101 is a survival combat that can resolve to 130. Section 126 can lead toward Jnana instead. | `gs1_najin_standoff`; multi-enemy/survival combat testing. |
+| Kleasa / Sorcery Shield Route | 90, 139, 149, 165 | The Sorcery shield setup and the Kleasa limited combat. | Section 139 marks the shield active for section 149. Section 149 drains WP every round and drains less END when the shield is active. Section 165 clears the survival gate. | `gs1_kleasa_survivor`, `gs1_shield_raised`, `gs1_no_shield_no_problem`; combat per-round extras and temporary shield flag. |
+| Correct Key / Door Route | 142, 159, 170, 205, 214, 235, 286 | The key/door section cluster and its random-number fork. | Section 286 checks Psychomancy first; otherwise it uses an even/odd random result: even to 214, odd to 205. Several routes in this cluster depend on items, Sorcery, or Prophecy. | `gs1_correct_key`; random-number outcome testing and item/Magick gates. |
+| Quoku Route | 57, 107, 231, 281, 307, 331, 337 | Quoku encounters, staff attacks, and the large-Quoku threshold fight. | Section 281 is the special one-round fight: after one round, WP >= 10 routes to 331, otherwise 32. Other Quoku sections test combat modifiers and no-evade fights. | `gs1_quoku_breakthrough`; one-round combat, CS modifiers, WP threshold routing. |
+| Gear Loss / Recovery Route | Gear loss: 291, 300, 311; recovery: 221, 245; setup: 349 | Backpack/Staff unavailable state and later recovery. | The app must snapshot carried gear when the book removes equipment, keep the unavailable state active, and restore it when section 221 or 245 is reached. | `gs1_gear_taken`, `gs1_gear_recovered`; full inventory snapshot/restore testing. |
+| Shan / Tanith Companion Route | 276, 294, 335, 349, 245 | Companion separation, sacrifice, and recovery story beats. | Section 276 records Tanith's sacrifice. Sections 294/335 mark the lone-road state. Section 349 can lead into gear recovery through Tanith. | `gs1_tanith_sacrifice`, `gs1_lone_road`; companion-state notes and final-summary coverage. |
+| Final Ascent Route | 340, 298, 350 | The late-game success spine into the Book 1 completion screen. | These sections should remain the canonical completion route family for final save summaries, Book 2 handoff, and repeat-book behavior. | `gs1_final_ascent`, `gs1_complete`; complete-book screen, summary, repeat-book reset. |
+| Failure / Death Endpoint Families | 9, 14, 17, 20, 63, 67, 69, 92, 103, 122, 138, 155, 173, 177, 207, 216, 220, 225, 237, 262, 299, 306, 312, 315, 316, 317, 318, 324 | The terminal failure leaves detected by the route graph. | Most are death/failure endpoints; sections 92, 262, 315, and 318 still need human text classification before the report should call them final. | Death screen, rewind/repeat handling, route-family endpoint classification. |
+| Source Irregularities | 110, 342 | Sections that need special handling outside normal link traversal. | Section 110 is a hidden riddle solution. Section 342 is called out by the source footnote as unreachable by normal choices, so route tests should not treat it as a legal path unless entered manually for oversight handling. | Hidden-route note for 110; unreachable-section marker for 342. |
+
+## Route Testing Notes
+
+- The named families above should drive playtest scripts: each family needs at least one success-capable dry run and, where practical, one failure/alternate run.
+- The old Book 1 success-route smoke is useful for mechanics, but it is not a source-link proof because it used manual jumps through sections such as 342. Rebuild that smoke from this route-family table before using it as route evidence.
+- Branches in this book are merge-heavy. A route family can share most of its later path with another family, so coverage should track sections, state changes, achievements, and endpoint behavior rather than only one complete route string.
 
 ## Endpoint Inventory
 
@@ -260,9 +288,9 @@ These are branch sections reachable from section 1 that can still reach the dete
 
 - None
 
-## Route-Family Starter Notes
+## Route-Family Maintenance Notes
 
-- Treat each section 1 target as an opening route family until human review gives it a story name.
-- Treat success-capable branch points as the first checklist for route-family classification.
-- Treat endpoint rows marked `needs_classification` as mandatory human-review stops.
+- Keep the named route-family table in sync with section audit changes and assistant automation data.
+- Rebuild route-smoke scripts from the named families before treating them as source-link proof.
+- Endpoint rows marked `needs_classification` remain mandatory human-review stops.
 - Route-only choices can stay on the book page; mechanical branches need support data or explicit manual notes.

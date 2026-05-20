@@ -2,9 +2,9 @@
 
 Book: Grey Star the Wizard
 
-Status: superseded by the dedicated route graph report for branch coverage. See `GSBOOK1_ROUTE_AUDIT.md`.
+Status: superseded by the dedicated route graph report for branch coverage and named route families. See `GSBOOK1_ROUTE_AUDIT.md`.
 
-The route families are still not fully human-classified, but the route graph baseline now exists.
+The first player-facing route-family pass now lives in `GSBOOK1_ROUTE_AUDIT.md`. This file remains as the older endpoint summary and compatibility note.
 
 Current route-audit baseline:
 
@@ -64,10 +64,27 @@ Current route-audit baseline:
 |---:|---|---|
 | 1 | 202, 168 | opening branch; no state automation confirmed yet |
 
-## Route Families To Classify
+## Named Route Families
 
-- Opening mainland approach branches from section 1.
-- Lost Tribe / Kundi route appears to culminate at section 350 and transition into Book 2.
-- Death and failure route families need classification from the terminal candidates above.
-- Human review needed for endpoint sections marked `needs_classification` in `GSBOOK1_ROUTE_AUDIT.md`.
-- Human review needed for the source-unreachable sections 110 and 342, especially because section 342 appeared in the earlier dry-run route smoke but is not linked by the local source graph.
+The current Book 1 route families are maintained in `GSBOOK1_ROUTE_AUDIT.md`:
+
+- Opening Elementalism Split
+- Early Survival And Travel
+- Kazim Stone Route
+- Shianti / Jnana Blessing Route
+- Alchemy / Yabari / Ezeran Route
+- Redeemer / Rune Riddle Route
+- Najin Route
+- Kleasa / Sorcery Shield Route
+- Correct Key / Door Route
+- Quoku Route
+- Gear Loss / Recovery Route
+- Shan / Tanith Companion Route
+- Final Ascent Route
+- Failure / Death Endpoint Families
+- Source Irregularities
+
+Remaining review items:
+
+- Endpoint sections marked `needs_classification` in `GSBOOK1_ROUTE_AUDIT.md` still need human text classification.
+- Section 110 is a hidden riddle solution; section 342 is source-unreachable and should not be treated as a normal route unless entered manually for oversight testing.
