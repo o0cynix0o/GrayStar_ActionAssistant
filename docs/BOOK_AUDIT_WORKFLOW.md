@@ -64,6 +64,7 @@ For each book, the audit should usually produce:
 
 - `GSBOOKX_AUTOMATION_LEDGER.md`
 - `GSBOOKX_ENDINGS_AND_ROUTE_FAMILIES.md`
+- `GSBOOKX_ROUTE_AUDIT.md`
 - `GSBOOKX_RULES_AND_ITEMS_AUDIT.md`
 - `GSBOOKX_COMBAT_AND_RANDOM_AUDIT.md`
 - `GSBOOKX_ACHIEVEMENT_CANDIDATES.md`
@@ -108,7 +109,26 @@ Identify:
 
 The goal is to understand the meaningful route families first, then fill in the smaller branches.
 
-### 3. Run A Mechanical Text Sweep
+### 3. Run The Route Audit
+
+Create `GSBOOKX_ROUTE_AUDIT.md` as a required report, separate from the shorter endings summary.
+
+The route audit should record:
+
+- every section file in the expected range
+- every source link and any invalid target
+- every section reachable from section 1
+- sections with no incoming source link
+- terminal/no-out-link endpoints, classified as success, death/failure, or needs human classification
+- every branch point with two or more outgoing section links
+- every branch point that can still reach the success ending
+- shortest known source-link path to the success ending
+- opening route branches and their reachable endpoints
+- route-family starter groups for later human classification
+
+Do not confuse this with testing every possible playthrough. The route audit is graph coverage and route-family classification. The playtest ladder later turns the route audit into dry-run coverage.
+
+### 4. Run A Mechanical Text Sweep
 
 Run a machine-assisted sweep over every `sect*.htm` for automation language.
 
@@ -135,7 +155,7 @@ Useful Gray Star search terms include:
 
 Treat the sweep as a candidate generator, not as truth. The human audit must confirm context, timing, and whether the text describes an actual state change.
 
-### 4. Build The Section Automation Ledger
+### 5. Build The Section Automation Ledger
 
 Create one row per candidate automation section.
 
@@ -164,7 +184,7 @@ Use consistent trigger timing labels:
 - after book transition
 - manual only
 
-### 5. Audit Missing Rules And Items
+### 6. Audit Missing Rules And Items
 
 Scan for high-value automation candidates:
 
@@ -184,7 +204,7 @@ Mark each candidate as:
 - missing
 - better left manual for now
 
-### 6. Audit Combat Exceptions
+### 7. Audit Combat Exceptions
 
 Create a combat exception table for every combat found in the book.
 
@@ -202,7 +222,7 @@ Recommended columns:
 - current app support
 - acceptance test needed
 
-### 7. Audit Random Number And Prompt Flows
+### 8. Audit Random Number And Prompt Flows
 
 Create a table for every roll or structured choice that should be supported by automation or the web UI.
 
@@ -220,7 +240,7 @@ Recommended columns:
 - current app support
 - acceptance test needed
 
-### 8. Compare Against The App
+### 9. Compare Against The App
 
 Check the current script and web UI so the audit distinguishes:
 
@@ -235,7 +255,7 @@ For this project, start with:
 - `assistant.html`
 - `data/crt.json`
 
-### 9. Draft Achievement Candidates
+### 10. Draft Achievement Candidates
 
 Propose a first batch of:
 
@@ -282,11 +302,12 @@ The achievement workflow for each book is:
 
 Do not add a manual "rebuild achievements" button unless the user specifically asks for one. Automatic sync/backfill is the standard.
 
-### 10. Write The Reports
+### 11. Write The Reports
 
 Summarize:
 
 - endings and route families
+- route audit graph coverage and route-family starters
 - the automation ledger
 - missing rules and items
 - combat and random-number exceptions
@@ -295,7 +316,7 @@ Summarize:
 
 The reports should let a later chat continue without rereading the conversation.
 
-### 11. Propose Top Build Candidates
+### 12. Propose Top Build Candidates
 
 Before implementation, summarize:
 
@@ -306,7 +327,7 @@ Before implementation, summarize:
 - assumptions and ambiguities
 - acceptance checks for each proposed automation
 
-### 12. Implement Approved Findings
+### 13. Implement Approved Findings
 
 If the user approves build-out:
 
@@ -332,7 +353,7 @@ The repeat-book option should:
 - reset current combat, death state, section checkpoints, and current-book stats for the new pass
 - preserve the ability to continue to the next book from the completed-book screen before repeating
 
-### 13. Run The Playtesting Ladder
+### 14. Run The Playtesting Ladder
 
 After implementation, run validation in six levels. The goal is complete route, branch, and mechanic coverage, plus a few full-path smoke tests. Do not try to enumerate infinite full playthroughs when loops or repeated state changes make that impractical.
 

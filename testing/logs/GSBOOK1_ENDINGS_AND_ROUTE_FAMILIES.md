@@ -2,7 +2,19 @@
 
 Book: Grey Star the Wizard
 
-Status: starter route inventory from link sweep. Route families are not yet fully classified.
+Status: superseded by the dedicated route graph report for branch coverage. See `GSBOOK1_ROUTE_AUDIT.md`.
+
+The route families are still not fully human-classified, but the route graph baseline now exists.
+
+Current route-audit baseline:
+
+- Expected sections: 350
+- Existing section files: 350
+- Reachable from section 1: 348/350
+- Unreachable/no-incoming sections: 110, 342
+- Detected success section: 350
+- Endpoint sections: 29
+- Branch points: 166
 
 ## Link Integrity Baseline
 
@@ -57,3 +69,5 @@ Status: starter route inventory from link sweep. Route families are not yet full
 - Opening mainland approach branches from section 1.
 - Lost Tribe / Kundi route appears to culminate at section 350 and transition into Book 2.
 - Death and failure route families need classification from the terminal candidates above.
+- Human review needed for endpoint sections marked `needs_classification` in `GSBOOK1_ROUTE_AUDIT.md`.
+- Human review needed for the source-unreachable sections 110 and 342, especially because section 342 appeared in the earlier dry-run route smoke but is not linked by the local source graph.

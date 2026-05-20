@@ -11,6 +11,8 @@ Book: The Forbidden City
 
 - All 310 numbered sections are reachable from section 1 through local source links.
 - Shortest source-link path to success found by crawler: 1 -> 126 -> 257 -> 78 -> 235 -> 105 -> 61 -> 149 -> 200 -> 275 -> 144 -> 266 -> 276 -> 250 -> 53 -> 287 -> 203 -> 159 -> 40 -> 211 -> 50 -> 22 -> 60 -> 214 -> 195 -> 111 -> 295 -> 72 -> 299 -> 66 -> 291 -> 145 -> 120 -> 129 -> 52 -> 186 -> 294 -> 124 -> 254 -> 92 -> 84 -> 166 -> 307 -> 26 -> 284 -> 76 -> 108 -> 38 -> 168 -> 240 -> 54 -> 103 -> 170 -> 148 -> 267 -> 23 -> 273 -> 85 -> 157 -> 272 -> 229 -> 172 -> 310
+- Dedicated route graph report added at `GSBOOK2_ROUTE_AUDIT.md`.
+- Current route-audit baseline: 310/310 reachable, no missing section files, no bad source links, no no-incoming sections, 27 endpoint sections, 145 branch points.
 
 ## Major Route Families
 
