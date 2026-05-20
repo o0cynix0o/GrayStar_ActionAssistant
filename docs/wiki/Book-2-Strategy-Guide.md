@@ -6,7 +6,7 @@ Spoiler warning: this page discusses Book 2 structure, mechanics, items, and ach
 
 The goal of Book 2 is to survive the route to section 310 and complete the transition toward Book 3.
 
-The assistant supports Book 2 with section automation, flow buttons, combat presets, random-number helpers, gear capture and return, Backpack loss, achievements, and repeat-book flow.
+The assistant supports Book 2 with guided section support, flow buttons, combat presets, random-number helpers, gear capture and return, Backpack loss, achievements, and repeat-book flow.
 
 ## Route Families
 
@@ -88,5 +88,4 @@ Some will stay locked unless you replay and take different routes.
 
 Watch your Willpower closely. Book 2 has several moments where Magick, survival, and route choices all compete for the same resource.
 
-Keep important route items visible in the Inventory tab, and let the app handle section effects where automation exists.
-
+Keep important route items visible in the Inventory tab, and use the app's guided controls for section-specific effects where support exists.

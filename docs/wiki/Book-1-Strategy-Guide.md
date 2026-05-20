@@ -60,8 +60,6 @@ That is normal. Repeat Book is there for exactly this kind of cleanup run.
 
 ## Assistant Watch Points
 
-- Use **Apply Effects** only once per section visit unless you intentionally repeated the section.
 - Use the Combat tab for special fights.
 - Use the Inventory tab to confirm whether a potion or herb is in the Herb Pouch or Backpack.
 - When a death happens, choose **Repeat** for another try at the same fight, or **Rewind** to make a different route choice.
-

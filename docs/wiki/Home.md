@@ -16,7 +16,7 @@ It helps with:
 - Magick powers and Willpower costs
 - random number rolls from 0 to 9
 - combat setup and combat round handling
-- section effects and repeatable section automation
+- section effects and guided section support
 - death, rewind, book completion, repeat-book flow, and saves
 - achievements and achievement notifications
 
@@ -41,11 +41,10 @@ Current app support is strongest for:
 - **Book 1: Grey Star the Wizard**
 - **Book 2: The Forbidden City**
 
-Books 3 and 4 are present as local reader assets, but their assistant automation, achievements, and audit work are not at the Book 1 and Book 2 level yet.
+Books 3 and 4 are present as local reader assets, but their assistant support data, achievements, and audit work are not at the Book 1 and Book 2 level yet.
 
 ## Project Rule
 
 Book rules always win.
 
 If the app has a convenience behavior and the book text says something else, follow the book. The assistant is meant to preserve the text's mechanics, not smooth them away into house rules.
-

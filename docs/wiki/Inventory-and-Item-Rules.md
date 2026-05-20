@@ -21,7 +21,7 @@ Use:
 - **Eat Meal** when the book tells you to eat or consume provisions.
 - **Missed Meal** when the book says you lose Endurance for not eating.
 
-When a section gives food, the assistant can add Meal items through loot buttons or section automation.
+When a section gives food, the assistant can add Meal items through loot buttons or guided section support.
 
 ## Potions And Herbs
 
@@ -49,4 +49,3 @@ Book 2 also includes a harsher case where Backpack contents are permanently disc
 Book rules trump convenience rules.
 
 If a section says an item cannot be kept, must be used immediately, must be discarded, or cannot be taken with you, follow the section.
-

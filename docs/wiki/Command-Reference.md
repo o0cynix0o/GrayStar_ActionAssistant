@@ -22,11 +22,10 @@ These cards are informational. Use the Vitals controls to change values.
 
 ## Section Card
 
-- **Apply Effects**: applies recorded automation for the current section.
 - **Roll 0-9**: generates a random number like the book's random number table.
 - Section text below the buttons shows which book and section are active.
 
-If the section has already been applied for this visit, the app warns you so you do not double-charge yourself.
+Use this card for section-level play aids, especially random-number checks and current-section confirmation.
 
 ## Vitals Card
 
@@ -72,4 +71,3 @@ When Gray Star dies or reaches a terminal failure, the app presents recovery opt
 - **Repeat**: try the failed section again from its entry snapshot.
 
 Use Rewind when you want to undo the route choice. Use Repeat when you want to try the fight or roll again.
-

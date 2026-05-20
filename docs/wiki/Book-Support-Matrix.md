@@ -14,7 +14,7 @@ This matrix describes assistant support, not whether the book text exists locall
 Book 1 has full local assistant support from the current audit:
 
 - 350 section files present
-- section automation data
+- recorded section support data
 - flow data for choices, loot, rolls, and combat
 - gear storage and recovery
 - book completion flow
@@ -27,7 +27,7 @@ Book 2 has full local assistant support from the current audit:
 
 - 310 section files present
 - all sections reachable from section 1 by source links
-- 130 simple automation sections
+- 130 supported mechanical-effect sections
 - 42 flow sections
 - 19 combat presets
 - 90 roll outcomes
@@ -43,9 +43,8 @@ Books 3 and 4 are available in the local reader. Their assistant data still need
 1. rules baseline
 2. section audit
 3. endings and route families
-4. automation ledger
+4. section support ledger
 5. combat/random audit
 6. rules and item audit
 7. achievements
 8. playtest ladder
-

@@ -40,7 +40,7 @@ http://localhost:8797/assistant.html
 4. Read the book in the left pane.
 5. Use the assistant on the right for inventory, stats, combat, rolls, notes, saves, and achievements.
 6. Click book section links normally. The assistant follows your current section.
-7. Use **Apply Effects** when a section has an assistant automation that should affect your character.
+7. Use the assistant panels when the book calls for inventory changes, stat changes, rolls, combat, notes, or saves.
 
 ## Important Browser Note
 

@@ -10,7 +10,7 @@ The current mode is:
 
 - local save
 - autosave enabled
-- book-rule-first automation
+- book-rule-first section support
 - death recovery through Rewind or Repeat
 - achievements preserved across repeat-book runs
 
@@ -28,4 +28,3 @@ Examples:
 - picking a route from visible book links
 - deciding timing where the section explicitly lets the player choose
 - applying unusual one-off logic that is clearer to do by hand
-

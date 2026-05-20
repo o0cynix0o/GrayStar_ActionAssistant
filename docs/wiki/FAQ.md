@@ -47,5 +47,4 @@ No. The `saves` folder is ignored by git. Your character state stays local.
 
 ## What Is Done For Book 3 And Book 4?
 
-The local book reader has the book assets. The assistant automation, achievements, and playtest ladder still need to be built through the full book workflow.
-
+The local book reader has the book assets. The assistant support data, achievements, and playtest ladder still need to be built through the full book workflow.
