@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+
+.venv/
+venv/
+
+saves/
+current-position.json
+data/last-save.txt
+
+testing/__pycache__/
+testing/tmp/
+testing/tmp2/
+testing/dry-run-saves/
+testing/use-item/
+

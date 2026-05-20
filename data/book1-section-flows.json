@@ -1,0 +1,322 @@
+{
+  "1": {
+    "12": {"wpCost": {"cost": 3, "label": "Teleport drain"}},
+    "30": {"wpCost": {"cost": 2, "label": "Staff blast drain"}},
+    "37": {
+      "loot": [
+        {"id": "keys-nobles", "label": "Gaoler's Keys and 3 Nobles", "actions": [{"type": "add_item", "container": "special", "name": "Gaoler's Keys"}, {"type": "stat", "stat": "nobles", "delta": 3}]},
+        {"id": "dagger", "label": "Dagger", "actions": [{"type": "add_item", "container": "weapon", "name": "Dagger"}]}
+      ]
+    },
+    "43": {
+      "loot": [
+        {"id": "meals", "label": "Transfer 3 Meals", "actions": [{"type": "add_item", "container": "backpack", "name": "Meal"}, {"type": "add_item", "container": "backpack", "name": "Meal"}, {"type": "add_item", "container": "backpack", "name": "Meal"}]},
+        {"id": "small-laumspur", "label": "Small Vial of Laumspur", "actions": [{"type": "add_item", "container": "herb_or_backpack", "name": "Small Vial of Laumspur"}]},
+        {"id": "torches", "label": "Transfer 2 Torches", "actions": [{"type": "add_item", "container": "backpack", "name": "Torch"}, {"type": "add_item", "container": "backpack", "name": "Torch"}]},
+        {"id": "rope", "label": "Coil of Rope", "actions": [{"type": "add_item", "container": "backpack", "name": "Coil of Rope"}]},
+        {"id": "tinderbox", "label": "Tinderbox", "actions": [{"type": "add_item", "container": "backpack", "name": "Tinderbox"}]}
+      ]
+    },
+    "49": {
+      "roll": {
+        "summary": "Jump the ravine",
+        "modifiers": [
+          {"label": "Silver Charm of Jnana the Wise", "value": 1, "condition": {"type": "item", "name": "Silver Charm of Jnana the Wise", "containers": ["special"]}},
+          {"label": "Willpower greater than 10", "value": 2, "condition": {"type": "wp_gt", "value": 10}}
+        ],
+        "outcomes": [
+          {"test": "range", "min": 0, "max": 6, "route": 274, "label": "Successful jump"},
+          {"test": "range", "min": 7, "max": 12, "route": 210, "label": "Fall and lose END"}
+        ]
+      }
+    },
+    "57": {"wpCost": {"cost": 1, "label": "Forced magical drain"}},
+    "58": {
+      "loot": [
+        {"id": "store-laumspur", "label": "Store fresh Laumspur", "actions": [{"type": "add_item", "container": "herb_or_backpack", "name": "Fresh Laumspur"}]},
+        {"id": "eat-laumspur", "label": "Eat fresh Laumspur (+4 END)", "actions": [{"type": "stat", "stat": "end", "delta": 4}]}
+      ]
+    },
+    "65": {
+      "status": [
+        {"key": "yabariOintmentApplied", "label": "Yabari Ointment Applied"}
+      ]
+    },
+    "71": {
+      "loot": [
+        {"id": "dagger", "label": "Dagger", "actions": [{"type": "add_item", "container": "weapon", "name": "Dagger"}]}
+      ]
+    },
+    "77": {
+      "loot": [
+        {"id": "kazim-stone", "label": "Kazim Stone", "actions": [{"type": "add_item", "container": "backpack", "name": "Kazim Stone"}]}
+      ]
+    },
+    "87": {
+      "loot": [
+        {"id": "amulet", "label": "Amulet of the Shianti priest", "actions": [{"type": "add_item", "container": "special", "name": "Amulet of the Shianti priest"}]},
+        {"id": "dagger", "label": "Dagger", "actions": [{"type": "add_item", "container": "weapon", "name": "Dagger"}]}
+      ]
+    },
+    "88": {"wpCost": {"cost": 3, "label": "Long-range Staff result"}},
+    "91": {
+      "status": [
+        {"key": "litTorch", "label": "Lit Torch"}
+      ]
+    },
+    "94": {"wpCost": {"cost": 1, "label": "Forced Staff attack"}},
+    "99": {
+      "combat": [
+        {"id": "99-crossbowmen", "label": "Shadakine Crossbowmen", "enemy": {"name": "Shadakine Crossbowmen", "cs": 25, "endurance": 32}, "modifier": 4, "victoryChoices": [88, 94]}
+      ]
+    },
+    "101": {
+      "combat": [
+        {
+          "id": "101-najin",
+          "label": "Najin survival fight",
+          "roundLimit": 5,
+          "survivalRoute": 130,
+          "enemies": [
+            {"name": "Najin 1", "cs": 10, "endurance": 10},
+            {"name": "Najin 2", "cs": 9, "endurance": 10},
+            {"name": "Najin 3", "cs": 10, "endurance": 10},
+            {"name": "Najin 4", "cs": 7, "endurance": 9},
+            {"name": "Najin 5", "cs": 8, "endurance": 10},
+            {"name": "Najin 6", "cs": 10, "endurance": 12},
+            {"name": "Najin 7", "cs": 9, "endurance": 9},
+            {"name": "Najin 8", "cs": 11, "endurance": 9},
+            {"name": "Najin 9", "cs": 10, "endurance": 9}
+          ]
+        }
+      ]
+    },
+    "107": {"wpCost": {"cost": 2, "label": "Long-range Staff attack"}},
+    "117": {
+      "combat": [
+        {"id": "117-warriors", "label": "2 Shadakine Warriors", "enemy": {"name": "2 Shadakine Warriors", "cs": 15, "endurance": 25}, "victoryRoute": 164}
+      ]
+    },
+    "120": {
+      "wpCost": {"cost": 1, "label": "Forced drain before combat"},
+      "combat": [
+        {"id": "120-rearguard", "label": "Shadakine Rearguard", "enemy": {"name": "Shadakine Rearguard", "cs": 25, "endurance": 30}, "modifier": 3, "roundLimit": 3, "survivalRoute": 189}
+      ]
+    },
+    "125": {
+      "loot": [
+        {"id": "keys", "label": "Gaoler's Keys", "actions": [{"type": "add_item", "container": "special", "name": "Gaoler's Keys"}]}
+      ]
+    },
+    "133": {
+      "combat": [
+        {"id": "133-cutthroat", "label": "Cut-throat", "enemy": {"name": "Cut-throat", "cs": 10, "endurance": 12}, "canEvade": true, "evadeAfterRounds": 2, "evadeRoute": 27, "victoryRoute": 71}
+      ]
+    },
+    "139": {
+      "status": [
+        {"key": "sorceryShieldActiveFor149", "label": "Sorcery Shield Active"}
+      ]
+    },
+    "149": {
+      "status": [
+        {"key": "sorceryShieldActiveFor149", "label": "Sorcery Shield Active"}
+      ],
+      "combat": [
+        {"id": "149-kleasa", "label": "Kleasa", "enemy": {"name": "Kleasa", "cs": 25, "endurance": 30}, "victoryRoute": 165, "roundLimit": 4, "survivalRoute": 165, "perRoundActions": [{"type": "stat", "stat": "wp", "delta": -1, "allowNegative": true}, {"type": "stat", "stat": "end", "delta": -1, "condition": {"type": "flag", "key": "sorceryShieldActiveFor149", "value": true}}, {"type": "stat", "stat": "end", "delta": -2, "condition": {"type": "flag", "key": "sorceryShieldActiveFor149", "value": false}}]}
+      ]
+    },
+    "154": {
+      "combat": [
+        {"id": "154-cave-mantiz", "label": "Cave Mantiz", "enemy": {"name": "Cave Mantiz", "cs": 15, "endurance": 18}, "canEvade": true, "evadeAfterRounds": 1, "evadeRoute": 4, "victoryRoute": 103}
+      ]
+    },
+    "161": {
+      "loot": [
+        {"id": "silver-charm", "label": "Silver Charm", "actions": [{"type": "add_item", "container": "special", "name": "Silver Charm of Jnana the Wise"}]},
+        {"id": "meal", "label": "Add 1 Meal", "actions": [{"type": "add_item", "container": "backpack", "name": "Meal"}]},
+        {"id": "broadsword", "label": "Broadsword", "actions": [{"type": "add_item", "container": "weapon", "name": "Broadsword"}]},
+        {"id": "laumspur", "label": "Potion of Laumspur", "actions": [{"type": "add_item", "container": "herb_or_backpack", "name": "Potion of Laumspur"}]},
+        {"id": "rope", "label": "Coil of Rope", "actions": [{"type": "add_item", "container": "backpack", "name": "Coil of Rope"}]}
+      ]
+    },
+    "164": {
+      "loot": [
+        {"id": "meal", "label": "Add 1 Meal", "actions": [{"type": "add_item", "container": "backpack", "name": "Meal"}]},
+        {"id": "sword", "label": "Sword", "actions": [{"type": "add_item", "container": "weapon", "name": "Sword"}]}
+      ]
+    },
+    "171": {
+      "loot": [
+        {"id": "sword", "label": "Sword", "actions": [{"type": "add_item", "container": "weapon", "name": "Sword"}]}
+      ]
+    },
+    "183": {
+      "loot": [
+        {"id": "laumspur", "label": "Buy Vial of Laumspur (-2 Nobles)", "actions": [{"type": "stat", "stat": "nobles", "delta": -2}, {"type": "add_item", "container": "herb_or_backpack", "name": "Vial of Laumspur"}]},
+        {"id": "rope", "label": "Buy Coil of Rope (-1 Noble)", "actions": [{"type": "stat", "stat": "nobles", "delta": -1}, {"type": "add_item", "container": "backpack", "name": "Coil of Rope"}]},
+        {"id": "tinderbox", "label": "Buy Tinderbox (-2 Nobles)", "actions": [{"type": "stat", "stat": "nobles", "delta": -2}, {"type": "add_item", "container": "backpack", "name": "Tinderbox"}]}
+      ]
+    },
+    "189": {
+      "combat": [
+        {"id": "189-officer", "label": "Shadakine Officer", "enemy": {"name": "Shadakine Officer", "cs": 25, "endurance": 26}, "modifier": 3, "victoryRoute": 215}
+      ]
+    },
+    "197": {
+      "combat": [
+        {"id": "197-soldier-mantiz", "label": "Soldier Mantiz", "enemy": {"name": "Soldier Mantiz", "cs": 15, "endurance": 10}, "victoryRoute": 213}
+      ]
+    },
+    "203": {
+      "combat": [
+        {"id": "203-crossbowmen", "label": "2 Shadakine Crossbowmen", "enemy": {"name": "2 Shadakine Crossbowmen", "cs": 15, "endurance": 18}, "modifier": 4, "victoryRoute": 156}
+      ]
+    },
+    "204": {"wpCost": {"cost": 2, "label": "Magical Power drain"}},
+    "205": {
+      "combat": [
+        {"id": "205-warrior", "label": "Shadakine Warrior", "enemy": {"name": "Shadakine Warrior", "cs": 11, "endurance": 15}, "modifier": 5, "canEvade": true, "evadeRoute": 163, "victoryRoute": 176}
+      ]
+    },
+    "193": {
+      "status": [
+        {"key": "yabariOintmentApplied", "label": "Yabari Ointment Applied"}
+      ],
+      "loot": [
+        {"id": "pestle-mortar", "label": "Pestle and Mortar", "actions": [{"type": "add_item", "container": "backpack", "name": "Pestle and Mortar"}]},
+        {"id": "ezeran-crystals", "label": "Packet of Ezeran Crystals", "actions": [{"type": "add_item", "container": "herb_or_backpack", "name": "Ezeran Crystals"}]},
+        {"id": "yabari-ointment", "label": "Jar of Yabari Ointment", "actions": [{"type": "add_item", "container": "special", "name": "Yabari Ointment"}]},
+        {"id": "tarama-seed", "label": "Tarama Seed", "actions": [{"type": "add_item", "container": "special", "name": "Tarama Seed"}]}
+      ]
+    },
+    "209": {
+      "loot": [
+        {"id": "pink-liquid", "label": "Vial of Pink Liquid", "actions": [{"type": "add_item", "container": "herb_or_backpack", "name": "Vial of Pink Liquid"}]},
+        {"id": "medallion", "label": "Medallion of the Redeemer", "actions": [{"type": "add_item", "container": "special", "name": "Medallion of the Redeemer"}]}
+      ]
+    },
+    "215": {
+      "wpCost": {"cost": 1, "label": "Willpower drain"},
+      "loot": [
+        {"id": "rendalim-elixir", "label": "Potion of Rendalim's Elixir", "actions": [{"type": "add_item", "container": "herb_or_backpack", "name": "Potion of Rendalim's Elixir"}]},
+        {"id": "meal", "label": "Add 1 Meal", "actions": [{"type": "add_item", "container": "backpack", "name": "Meal"}]},
+        {"id": "pestle-mortar", "label": "Pestle and Mortar", "actions": [{"type": "add_item", "container": "backpack", "name": "Pestle and Mortar"}]},
+        {"id": "tarama-seed", "label": "Tarama Seed", "actions": [{"type": "add_item", "container": "special", "name": "Tarama Seed"}]},
+        {"id": "calacena-mushrooms", "label": "Calacena Mushrooms", "actions": [{"type": "add_item", "container": "herb_or_backpack", "name": "Calacena Mushrooms"}]}
+      ]
+    },
+    "224": {
+      "combat": [
+        {"id": "224-warrior", "label": "Shadakine Warrior", "enemy": {"name": "Shadakine Warrior", "cs": 13, "endurance": 20}, "victoryRoute": 127}
+      ]
+    },
+    "229": {"wpCost": {"cost": 2, "label": "Staff attack drain"}},
+    "231": {
+      "combat": [
+        {"id": "231-quoku", "label": "Quoku", "enemy": {"name": "Quoku", "cs": 12, "endurance": 30}, "modifier": -2, "victoryRoute": 256}
+      ]
+    },
+    "243": {
+      "combat": [
+        {"id": "243-gaoler", "label": "Gaoler", "enemy": {"name": "Gaoler", "cs": 8, "endurance": 14}, "modifier": 4, "victoryChoices": [125, 338, 333]}
+      ],
+      "loot": [
+        {"id": "dagger", "label": "Keep Dagger", "actions": [{"type": "add_item", "container": "weapon", "name": "Dagger"}]}
+      ]
+    },
+    "246": {
+      "combat": [
+        {"id": "246-soldier-mantiz", "label": "Soldier Mantiz", "enemy": {"name": "Soldier Mantiz", "cs": 14, "endurance": 10}, "victoryRoute": 290}
+      ]
+    },
+    "248": {"wpCost": {"cost": 1, "label": "Willpower drain"}},
+    "252": {
+      "loot": [
+        {"id": "meal", "label": "Add 1 Meal", "actions": [{"type": "add_item", "container": "backpack", "name": "Meal"}]}
+      ]
+    },
+    "255": {
+      "combat": [
+        {"id": "255-warriors", "label": "2 Shadakine Warriors", "enemy": {"name": "2 Shadakine Warriors", "cs": 15, "endurance": 25}, "victoryRoute": 75}
+      ]
+    },
+    "257": {"wpCost": {"cost": 1, "label": "Willpower drain"}},
+    "259": {
+      "combat": [
+        {"id": "259-darkling-room", "label": "Darkling Room mental combat", "enemy": {"name": "Darkling Room", "cs": 28, "endurance": 30}, "fixedPlayerCombatSkill": "wp_plus_end", "useStaff": false, "victoryRoute": 296}
+      ]
+    },
+    "260": {
+      "combat": [
+        {"id": "260-soldier-mantiz", "label": "2 Soldier Mantiz", "enemy": {"name": "2 Soldier Mantiz", "cs": 18, "endurance": 20}, "victoryRoute": 213}
+      ]
+    },
+    "265": {
+      "combat": [
+        {"id": "265-warrior", "label": "Shadakine Warrior", "enemy": {"name": "Shadakine Warrior", "cs": 14, "endurance": 18}, "victoryRoute": 40}
+      ]
+    },
+    "272": {
+      "combat": [
+        {"id": "272-soldier-mantiz", "label": "2 Soldier Mantiz", "enemy": {"name": "2 Soldier Mantiz", "cs": 20, "endurance": 15}, "roundLimit": 3, "roundExceededRoute": 315, "victoryRoute": 322}
+      ]
+    },
+    "273": {"wpCost": {"cost": 1, "label": "Forced magical drain"}},
+    "279": {"wpCost": {"cost": 1, "label": "Willpower drain"}},
+    "281": {
+      "combat": [
+        {"id": "281-large-quoku", "label": "Large Quoku one-round fight", "enemy": {"name": "Large Quoku", "cs": 15, "endurance": 30}, "modifier": -1, "postRoundWpThreshold": {"round": 1, "gte": 10, "gteRoute": 331, "ltRoute": 32}}
+      ]
+    },
+    "284": {
+      "status": [
+        {"key": "litTorch", "label": "Lit Torch"}
+      ],
+      "combat": [
+        {"id": "284-soldier-mantiz", "label": "4 Soldier Mantiz", "enemy": {"name": "4 Soldier Mantiz", "cs": 20, "endurance": 25}, "victoryRoute": 310}
+      ]
+    },
+    "286": {
+      "roll": {
+        "summary": "Find the correct key",
+        "outcomes": [
+          {"test": "even", "route": 214, "label": "Even number"},
+          {"test": "odd", "route": 205, "label": "Odd number"}
+        ]
+      }
+    },
+    "297": {
+      "loot": [
+        {"id": "ezeran-acid", "label": "Mix Ezeran Acid", "actions": [{"type": "remove_item", "name": "Sulphur", "match": "contains"}, {"type": "remove_item", "name": "Saltpetre", "match": "contains"}, {"type": "remove_item", "name": "Ezeran Crystals"}, {"type": "remove_item", "name": "Empty Vial"}, {"type": "add_item", "container": "herb_or_backpack", "name": "Ezeran Acid"}, {"type": "add_item", "container": "herb_or_backpack", "name": "Empty Vial"}, {"type": "add_item", "container": "herb_or_backpack", "name": "Empty Vial"}]}
+      ]
+    },
+    "304": {"wpCost": {"cost": 1, "label": "Willpower drain"}},
+    "305": {
+      "wpCost": {"cost": 2, "label": "Evocation drain"},
+      "status": [
+        {"key": "evocationAttempted", "label": "Evocation Attempted"}
+      ]
+    },
+    "308": {
+      "combat": [
+        {"id": "308-warriors", "label": "Shadakine Warriors", "enemy": {"name": "Shadakine Warriors", "cs": 20, "endurance": 19}, "modifier": 4, "victoryRoute": 127}
+      ]
+    },
+    "309": {
+      "combat": [
+        {"id": "309-guard", "label": "Shadakine Guard", "enemy": {"name": "Shadakine Guard", "cs": 12, "endurance": 16}, "timedModifiers": [{"startRound": 1, "endRound": 2, "modifier": 4}], "canEvade": true, "evadeRoute": 137, "victoryRoute": 171}
+      ]
+    },
+    "321": {
+      "combat": [
+        {"id": "321-gaoler", "label": "Gaoler", "enemy": {"name": "Gaoler", "cs": 8, "endurance": 10}, "canEvade": true, "evadeRoute": 137, "victoryRoute": 37}
+      ]
+    },
+    "337": {
+      "combat": [
+        {"id": "337-wounded-quoku", "label": "Wounded Quoku", "enemy": {"name": "Wounded Quoku", "cs": 14, "endurance": 18}, "victoryRoute": 44}
+      ]
+    }
+  }
+}

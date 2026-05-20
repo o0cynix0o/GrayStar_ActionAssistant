@@ -1,0 +1,1413 @@
+{
+  "2": {
+    "2": {
+      "summary": "add 3 Meals from Urik's Lianor",
+      "actions": [
+        {
+          "type": "add_item",
+          "container": "backpack",
+          "name": "Meal"
+        },
+        {
+          "type": "add_item",
+          "container": "backpack",
+          "name": "Meal"
+        },
+        {
+          "type": "add_item",
+          "container": "backpack",
+          "name": "Meal"
+        }
+      ]
+    },
+    "3": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "33": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "56": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "70": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "90": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "98": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "102": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "110": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "127": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "128": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "152": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "167": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "179": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "193": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "202": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "213": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "220": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "236": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "239": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "242": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "244": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "260": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "261": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "263": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "277": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "280": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "4": {
+      "summary": "lose 2 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "7": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "12": {
+      "summary": "add 3 Meals from Urik's Lianor",
+      "actions": [
+        {
+          "type": "add_item",
+          "container": "backpack",
+          "name": "Meal"
+        },
+        {
+          "type": "add_item",
+          "container": "backpack",
+          "name": "Meal"
+        },
+        {
+          "type": "add_item",
+          "container": "backpack",
+          "name": "Meal"
+        }
+      ]
+    },
+    "28": {
+      "summary": "lose 2 END to Blood Nymph bites",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "34": {
+      "summary": "lose 3 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -3,
+          "allowNegative": true
+        }
+      ]
+    },
+    "35": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "36": {
+      "summary": "lose 3 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -3,
+          "allowNegative": true
+        }
+      ]
+    },
+    "42": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "43": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "47": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "51": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "55": {
+      "summary": "lose 1 WP and 8 END in the Kazim challenge",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        },
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -8
+        }
+      ]
+    },
+    "58": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "62": {
+      "summary": "lose 2 END from poisonous water",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "63": {
+      "summary": "lose 2 WP into the Mind Gem",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "64": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "66": {
+      "summary": "lose 1 WP to Shasarak's dream attack",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "68": {
+      "summary": "lose 1 WP to strengthen the Shield of Sorcery",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "69": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "71": {
+      "summary": "lose 1 END to swamp exhaustion",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "78": {
+      "summary": "lose 2 END from the fall",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "80": {
+      "summary": "lose 4 END from the Deathgaunt's touch",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -4
+        }
+      ]
+    },
+    "86": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "96": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "105": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "114": {
+      "summary": "lose 8 END from exhaustion",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -8
+        }
+      ]
+    },
+    "117": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "119": {
+      "summary": "lose 1 WP for Prophecy",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "120": {
+      "summary": "lose 3 WP and use one Azawood Leaf",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -3,
+          "allowNegative": true
+        },
+        {
+          "type": "remove_item",
+          "name": "Azawood Leaf",
+          "match": "contains"
+        }
+      ]
+    },
+    "121": {
+      "summary": "mark Yabari Ointment protection",
+      "actions": [
+        {
+          "type": "flag",
+          "key": "yabariOintmentApplied",
+          "value": true
+        }
+      ]
+    },
+    "122": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "129": {
+      "summary": "lose 2 END through lack of sleep",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "132": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "133": {
+      "summary": "restore 1 END and 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": 1
+        },
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": 1
+        }
+      ]
+    },
+    "137": {
+      "summary": "lose 3 WP for the protective pentacle",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -3,
+          "allowNegative": true
+        }
+      ]
+    },
+    "138": {
+      "summary": "use one Azawood Leaf",
+      "actions": [
+        {
+          "type": "remove_item",
+          "name": "Azawood Leaf",
+          "match": "contains"
+        }
+      ]
+    },
+    "139": {
+      "summary": "lose 4 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -4,
+          "allowNegative": true
+        }
+      ]
+    },
+    "140": {
+      "summary": "lose 3 END from the crossbow wound",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -3
+        }
+      ]
+    },
+    "143": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "147": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "148": {
+      "summary": "add Black Rod if not already recorded",
+      "actions": [
+        {
+          "type": "add_item",
+          "container": "special",
+          "name": "Black Rod"
+        }
+      ]
+    },
+    "149": {
+      "summary": "Staff and Backpack taken; lose 3 END during captivity",
+      "actions": [
+        {
+          "type": "gear",
+          "available": false
+        },
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -3
+        }
+      ]
+    },
+    "150": {
+      "summary": "consume 1 Meal or lose 3 END",
+      "actions": [
+        {
+          "type": "meal",
+          "count": 1,
+          "mode": "per_missing",
+          "enduranceLossPerMissing": 3
+        }
+      ]
+    },
+    "155": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "159": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "160": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "162": {
+      "summary": "lose 3 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -3,
+          "allowNegative": true
+        }
+      ]
+    },
+    "163": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "165": {
+      "summary": "lose 4 WP and 1 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -4,
+          "allowNegative": true
+        },
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "166": {
+      "summary": "lose 1 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "169": {
+      "summary": "lose 8 END from the Deathgaunt's touch",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -8
+        }
+      ]
+    },
+    "170": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "171": {
+      "summary": "lose 4 END from the Deathgaunt",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -4
+        }
+      ]
+    },
+    "172": {
+      "summary": "Black Rod thrown to the Kleasa",
+      "actions": [
+        {
+          "type": "remove_item",
+          "name": "Black Rod"
+        }
+      ]
+    },
+    "174": {
+      "summary": "lose 1 WP to activate the Mind Gem",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "178": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "181": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "187": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "188": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "189": {
+      "summary": "lose 4 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -4
+        }
+      ]
+    },
+    "192": {
+      "summary": "lose 4 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -4,
+          "allowNegative": true
+        }
+      ]
+    },
+    "196": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "198": {
+      "summary": "lose 3 WP for Psychomancy and the Mind Gem effort",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -3,
+          "allowNegative": true
+        }
+      ]
+    },
+    "200": {
+      "summary": "Staff and Backpack returned; restore 2 END and 1 WP",
+      "actions": [
+        {
+          "type": "gear",
+          "available": true
+        },
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": 2
+        },
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": 1
+        }
+      ]
+    },
+    "201": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "203": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "205": {
+      "summary": "lose 4 WP and 5 END from the Kazim duel",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -4,
+          "allowNegative": true
+        },
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -5
+        }
+      ]
+    },
+    "206": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "210": {
+      "summary": "lose 3 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -3,
+          "allowNegative": true
+        }
+      ]
+    },
+    "214": {
+      "summary": "consume 1 Meal or lose 3 END",
+      "actions": [
+        {
+          "type": "meal",
+          "count": 1,
+          "mode": "per_missing",
+          "enduranceLossPerMissing": 3
+        }
+      ]
+    },
+    "218": {
+      "summary": "Black Rod given to the Kleasa",
+      "actions": [
+        {
+          "type": "remove_item",
+          "name": "Black Rod"
+        }
+      ]
+    },
+    "221": {
+      "summary": "lose 1 END from the fall",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "223": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "226": {
+      "summary": "lose 4 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -4,
+          "allowNegative": true
+        }
+      ]
+    },
+    "228": {
+      "summary": "lose 2 END from burns",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "230": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "231": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "234": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "241": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "247": {
+      "summary": "add Chaksu Pipes",
+      "actions": [
+        {
+          "type": "add_item",
+          "container": "special",
+          "name": "Chaksu Pipes"
+        }
+      ]
+    },
+    "249": {
+      "summary": "restore 1 END from Lianor",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": 1
+        }
+      ]
+    },
+    "256": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "258": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "262": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "266": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "269": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "274": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "278": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "281": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "282": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "283": {
+      "summary": "lose 3 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -3
+        }
+      ]
+    },
+    "285": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "289": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "291": {
+      "summary": "lose 2 END to fever",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "292": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "295": {
+      "summary": "lose 3 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -3,
+          "allowNegative": true
+        }
+      ]
+    },
+    "297": {
+      "summary": "discard Backpack and contents; lose 1 END",
+      "actions": [
+        {
+          "type": "backpack",
+          "available": false
+        },
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "298": {
+      "summary": "lose 1 END and 1 WP during the night",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        },
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "299": {
+      "summary": "use one Azawood Leaf",
+      "actions": [
+        {
+          "type": "remove_item",
+          "name": "Azawood Leaf",
+          "match": "contains"
+        }
+      ]
+    },
+    "304": {
+      "summary": "lose 1 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "307": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "309": {
+      "summary": "lose 2 END from burns",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "310": {
+      "summary": "successful Book 2 ending",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "success",
+          "completeBook": 2
+        }
+      ]
+    }
+  }
+}

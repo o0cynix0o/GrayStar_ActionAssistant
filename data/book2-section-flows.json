@@ -1,0 +1,861 @@
+{
+  "2": {
+    "4": {
+      "combat": [
+        {
+          "id": "4-swamp-giant",
+          "label": "Swamp Giant",
+          "enemy": {
+            "name": "Swamp Giant",
+            "cs": 16,
+            "endurance": 30
+          },
+          "victoryRoute": 65
+        }
+      ]
+    },
+    "10": {
+      "combat": [
+        {
+          "id": "10-swamp-giant",
+          "label": "Swamp Giant",
+          "enemy": {
+            "name": "Swamp Giant",
+            "cs": 16,
+            "endurance": 30
+          },
+          "victoryRoute": 65
+        }
+      ]
+    },
+    "11": {
+      "combat": [
+        {
+          "id": "11-shadakine-warriors",
+          "label": "Shadakine Warriors",
+          "enemy": {
+            "name": "Shadakine Warriors",
+            "cs": 18,
+            "endurance": 24
+          },
+          "victoryRoute": 82
+        }
+      ]
+    },
+    "20": {
+      "combat": [
+        {
+          "id": "20-magdi-hound",
+          "label": "Magdi Hound: win within 4 rounds",
+          "enemy": {
+            "name": "Magdi Hound",
+            "cs": 20,
+            "endurance": 30
+          },
+          "modifier": -2,
+          "roundLimit": 4,
+          "roundExceededRoute": 149,
+          "winWithinRounds": 4,
+          "winWithinRoute": 97,
+          "tooLateRoute": 149
+        }
+      ]
+    },
+    "39": {
+      "combat": [
+        {
+          "id": "39-wildman",
+          "label": "Wildman",
+          "enemy": {
+            "name": "Wildman",
+            "cs": 14,
+            "endurance": 20
+          },
+          "victoryRoute": 259
+        },
+        {
+          "id": "39-wildman-prophecy",
+          "label": "Wildman with Prophecy warning (+2 CS)",
+          "enemy": {
+            "name": "Wildman",
+            "cs": 14,
+            "endurance": 20
+          },
+          "modifier": 2,
+          "victoryRoute": 259
+        }
+      ]
+    },
+    "61": {
+      "combat": [
+        {
+          "id": "61-magdi",
+          "label": "Magdi: win within 5 rounds",
+          "enemy": {
+            "name": "Magdi",
+            "cs": 20,
+            "endurance": 30
+          },
+          "modifier": -2,
+          "roundLimit": 5,
+          "roundExceededRoute": 149,
+          "winWithinRounds": 5,
+          "winWithinRoute": 271,
+          "tooLateRoute": 149
+        }
+      ]
+    },
+    "82": {
+      "combat": [
+        {
+          "id": "82-magdi-hound",
+          "label": "Magdi Hound",
+          "enemy": {
+            "name": "Magdi Hound",
+            "cs": 20,
+            "endurance": 30
+          },
+          "modifier": -2,
+          "victoryRoute": 247
+        }
+      ]
+    },
+    "83": {
+      "combat": [
+        {
+          "id": "83-dead-city-wretch",
+          "label": "Dead City Wretch (+2 CS)",
+          "enemy": {
+            "name": "Dead City Wretch",
+            "cs": 15,
+            "endurance": 25
+          },
+          "modifier": 2,
+          "victoryRoute": 197
+        }
+      ]
+    },
+    "99": {
+      "combat": [
+        {
+          "id": "99-shadakine-warrior",
+          "label": "Shadakine Warrior: ignore round 1 END loss",
+          "enemy": {
+            "name": "Shadakine Warrior",
+            "cs": 17,
+            "endurance": 20
+          },
+          "ignorePlayerLossRounds": 1,
+          "victoryRoute": 40
+        }
+      ]
+    },
+    "116": {
+      "combat": [
+        {
+          "id": "116-dead-city-wretch",
+          "label": "Dead City Wretch (-2 CS)",
+          "enemy": {
+            "name": "Dead City Wretch",
+            "cs": 15,
+            "endurance": 25
+          },
+          "modifier": -2,
+          "victoryRoute": 197
+        }
+      ]
+    },
+    "123": {
+      "combat": [
+        {
+          "id": "123-magdi-hounds",
+          "label": "Magdi Hounds",
+          "enemy": {
+            "name": "Magdi Hounds",
+            "cs": 25,
+            "endurance": 35
+          },
+          "modifier": -2,
+          "victoryRoute": 177
+        }
+      ]
+    },
+    "134": {
+      "combat": [
+        {
+          "id": "134-mad-courtiers",
+          "label": "Mad Courtiers: survive 3 rounds",
+          "enemy": {
+            "name": "Mad Courtiers",
+            "cs": 18,
+            "endurance": 23
+          },
+          "roundLimit": 3,
+          "survivalRoute": 153
+        }
+      ]
+    },
+    "163": {
+      "combat": [
+        {
+          "id": "163-shadakine-warrior",
+          "label": "Shadakine Warrior",
+          "enemy": {
+            "name": "Shadakine Warrior",
+            "cs": 18,
+            "endurance": 25
+          },
+          "victoryRoute": 88
+        }
+      ]
+    },
+    "176": {
+      "combat": [
+        {
+          "id": "176-dead-city-wretches",
+          "label": "3 Dead City Wretches",
+          "enemy": {
+            "name": "3 Dead City Wretches",
+            "cs": 18,
+            "endurance": 25
+          },
+          "victoryRoute": 308
+        }
+      ]
+    },
+    "251": {
+      "combat": [
+        {
+          "id": "251-mad-guard",
+          "label": "Mad Guard",
+          "enemy": {
+            "name": "Mad Guard",
+            "cs": 20,
+            "endurance": 25
+          },
+          "victoryRoute": 134
+        }
+      ]
+    },
+    "254": {
+      "combat": [
+        {
+          "id": "254-gatekeeper",
+          "label": "Gatekeeper",
+          "enemy": {
+            "name": "Gatekeeper",
+            "cs": 10,
+            "endurance": 28
+          },
+          "victoryRoute": 158
+        }
+      ]
+    },
+    "273": {
+      "combat": [
+        {
+          "id": "273-scree-wyrm",
+          "label": "Scree Wyrm: win within 3 rounds",
+          "enemy": {
+            "name": "Scree Wyrm",
+            "cs": 18,
+            "endurance": 22
+          },
+          "roundLimit": 3,
+          "roundExceededRoute": 182,
+          "winWithinRounds": 3,
+          "winWithinRoute": 85,
+          "tooLateRoute": 182
+        }
+      ]
+    },
+    "301": {
+      "combat": [
+        {
+          "id": "301-wildman",
+          "label": "Wildman",
+          "enemy": {
+            "name": "Wildman",
+            "cs": 14,
+            "endurance": 20
+          },
+          "victoryRoute": 259
+        }
+      ]
+    },
+    "5": {
+      "roll": {
+        "summary": "Swim the lake under fire",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 7,
+            "route": 236,
+            "label": "Hit by arrows"
+          },
+          {
+            "test": "range",
+            "min": 8,
+            "max": 12,
+            "route": 74,
+            "label": "Reach the far shore"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Magic Talisman of the Shianti",
+            "value": 2,
+            "condition": {
+              "type": "item",
+              "name": "Magic Talisman",
+              "match": "contains",
+              "containers": [
+                "special"
+              ]
+            }
+          },
+          {
+            "label": "Silver Charm of Jnana the Wise",
+            "value": 1,
+            "condition": {
+              "type": "item",
+              "name": "Silver Charm of Jnana the Wise",
+              "match": "exact",
+              "containers": [
+                "special"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "32": {
+      "roll": {
+        "summary": "Foraging result",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 3,
+            "route": 106,
+            "label": "4 Meals found"
+          },
+          {
+            "test": "range",
+            "min": 4,
+            "max": 6,
+            "route": 217,
+            "label": "6 Meals found"
+          },
+          {
+            "test": "range",
+            "min": 7,
+            "max": 9,
+            "route": 173,
+            "label": "Carry as much food as desired"
+          }
+        ]
+      }
+    },
+    "45": {
+      "roll": {
+        "summary": "Karmo potion side-effect roll; manually lose END equal to the raw roll after using it",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 9,
+            "route": 71,
+            "label": "Apply Karmo side effect, then continue"
+          }
+        ]
+      },
+      "loot": [
+        {
+          "id": "karmo-potion",
+          "label": "Fill Empty Vial with Karmo Potion",
+          "actions": [
+            {
+              "type": "remove_item",
+              "name": "Empty Vial",
+              "containers": [
+                "herb",
+                "backpack"
+              ]
+            },
+            {
+              "type": "add_item",
+              "container": "herb_or_backpack",
+              "name": "Karmo Potion"
+            }
+          ]
+        }
+      ]
+    },
+    "89": {
+      "roll": {
+        "summary": "Crossing the mud flats",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 4,
+            "route": 110,
+            "label": "Quicksand death"
+          },
+          {
+            "test": "range",
+            "min": 5,
+            "max": 11,
+            "route": 100,
+            "label": "Disturb a Swamp Giant"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Magic Talisman of the Shianti",
+            "value": 2,
+            "condition": {
+              "type": "item",
+              "name": "Magic Talisman",
+              "match": "contains",
+              "containers": [
+                "special"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "146": {
+      "roll": {
+        "summary": "Enchantment against the Shadakine line",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 5,
+            "route": 42,
+            "label": "Almost succeeds"
+          },
+          {
+            "test": "range",
+            "min": 6,
+            "max": 12,
+            "route": 289,
+            "label": "Shadakine line breaks"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Chaksu Pipes",
+            "value": 3,
+            "condition": {
+              "type": "item",
+              "name": "Chaksu Pipes",
+              "match": "exact",
+              "containers": [
+                "special"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "153": {
+      "roll": {
+        "summary": "Only roll here if current END is 9 or lower",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 5,
+            "route": 27,
+            "label": "Escape with the group"
+          },
+          {
+            "test": "range",
+            "min": 6,
+            "max": 9,
+            "route": 33,
+            "label": "Too weak to escape"
+          }
+        ]
+      }
+    },
+    "160": {
+      "roll": {
+        "summary": "Extend the Shield of Sorcery to Urik",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 6,
+            "route": 118,
+            "label": "Ooslo is hit"
+          },
+          {
+            "test": "range",
+            "min": 7,
+            "max": 9,
+            "route": 44,
+            "label": "Shield holds"
+          }
+        ]
+      }
+    },
+    "188": {
+      "roll": {
+        "summary": "Control the Ooslo after Staff attack",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 5,
+            "route": 15,
+            "label": "Fall toward the lake"
+          },
+          {
+            "test": "range",
+            "min": 6,
+            "max": 9,
+            "route": 140,
+            "label": "Crossbow wound"
+          }
+        ]
+      }
+    },
+    "268": {
+      "roll": {
+        "summary": "Conserve Willpower behind the Shield",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 6,
+            "route": 44,
+            "label": "Shield holds"
+          },
+          {
+            "test": "range",
+            "min": 7,
+            "max": 9,
+            "route": 118,
+            "label": "Ooslo is hit"
+          }
+        ]
+      }
+    },
+    "29": {
+      "wpCosts": [
+        {
+          "cost": 3,
+          "label": "Kazim challenge total: 2 WP added"
+        },
+        {
+          "cost": 4,
+          "label": "Kazim challenge total: 3 WP added"
+        },
+        {
+          "cost": 5,
+          "label": "Kazim challenge total: 4 WP added"
+        }
+      ]
+    },
+    "37": {
+      "loot": [
+        {
+          "id": "silver-knife",
+          "label": "Silver Knife",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Silver Knife"
+            }
+          ]
+        }
+      ]
+    },
+    "67": {
+      "wpCost": {
+        "cost": 4,
+        "label": "Begin Prophecy trance through the swamp"
+      }
+    },
+    "103": {
+      "loot": [
+        {
+          "id": "tome-of-shasarak",
+          "label": "Tome of Shasarak",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Tome of Shasarak"
+            }
+          ]
+        },
+        {
+          "id": "black-rod",
+          "label": "Black Rod",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Black Rod"
+            }
+          ]
+        }
+      ]
+    },
+    "112": {
+      "wpCosts": [
+        {
+          "cost": 1,
+          "label": "Maintain Kazim attack"
+        },
+        {
+          "cost": 2,
+          "label": "Increase Kazim attack by 1"
+        },
+        {
+          "cost": 3,
+          "label": "Increase Kazim attack by 2"
+        }
+      ]
+    },
+    "133": {
+      "loot": [
+        {
+          "id": "five-meals",
+          "label": "Enough food for 5 Meals",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Meal"
+            },
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Meal"
+            },
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Meal"
+            },
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Meal"
+            },
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Meal"
+            }
+          ]
+        },
+        {
+          "id": "short-sword",
+          "label": "Short Sword",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "weapon",
+              "name": "Short Sword"
+            }
+          ]
+        },
+        {
+          "id": "sheath",
+          "label": "Sheath",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Sheath"
+            }
+          ]
+        },
+        {
+          "id": "backpack",
+          "label": "Backpack",
+          "actions": [
+            {
+              "type": "backpack",
+              "available": true
+            }
+          ]
+        },
+        {
+          "id": "laumspur-potions",
+          "label": "2 Potions of Laumspur (+4 END each)",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "herb_or_backpack",
+              "name": "Potion of Laumspur (+4 END)"
+            },
+            {
+              "type": "add_item",
+              "container": "herb_or_backpack",
+              "name": "Potion of Laumspur (+4 END)"
+            }
+          ]
+        },
+        {
+          "id": "coil-of-rope",
+          "label": "Coil of Rope",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Coil of Rope"
+            }
+          ]
+        }
+      ]
+    },
+    "136": {
+      "wpCosts": [
+        {
+          "cost": 1,
+          "label": "Sustain Kazim attack"
+        },
+        {
+          "cost": 2,
+          "label": "Increase Kazim attack by 1"
+        }
+      ]
+    },
+    "174": {
+      "wpCosts": [
+        {
+          "cost": 2,
+          "label": "Mind Gem: control the Wytch with 2 WP"
+        },
+        {
+          "cost": 3,
+          "label": "Mind Gem: control the Wytch with 3 WP"
+        }
+      ]
+    },
+    "216": {
+      "loot": [
+        {
+          "id": "azawood-leaves",
+          "label": "3 Azawood Leaves",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "herb_or_backpack",
+              "name": "Azawood Leaf"
+            },
+            {
+              "type": "add_item",
+              "container": "herb_or_backpack",
+              "name": "Azawood Leaf"
+            },
+            {
+              "type": "add_item",
+              "container": "herb_or_backpack",
+              "name": "Azawood Leaf"
+            }
+          ]
+        }
+      ]
+    },
+    "227": {
+      "wpCosts": [
+        {
+          "cost": 2,
+          "label": "Shield of Sorcery against Deathgaunt"
+        },
+        {
+          "cost": 3,
+          "label": "Astral attack against Deathgaunt"
+        }
+      ]
+    },
+    "233": {
+      "loot": [
+        {
+          "id": "gold-tooth",
+          "label": "Gold Tooth",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Gold Tooth"
+            }
+          ]
+        }
+      ]
+    },
+    "266": {
+      "loot": [
+        {
+          "id": "mind-gem",
+          "label": "Mind Gem",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Mind Gem"
+            }
+          ]
+        }
+      ]
+    },
+    "279": {
+      "wpCosts": [
+        {
+          "cost": 2,
+          "label": "Sorcery against magic-locked door"
+        },
+        {
+          "cost": 3,
+          "label": "Stronger Sorcery against magic-locked door"
+        },
+        {
+          "cost": 4,
+          "label": "Maximum Sorcery against magic-locked door"
+        }
+      ]
+    },
+    "282": {
+      "loot": [
+        {
+          "id": "mind-gem",
+          "label": "Mind Gem",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Mind Gem"
+            }
+          ]
+        }
+      ]
+    },
+    "305": {
+      "loot": [
+        {
+          "id": "mind-gem",
+          "label": "Mind Gem",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Mind Gem"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
