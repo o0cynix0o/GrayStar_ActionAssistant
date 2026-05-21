@@ -25,6 +25,41 @@ Project Aon links:
 - Beyond the Nightmare Gate: https://www.projectaon.org/en/Main/BeyondTheNightmareGate
 - War of the Wizards: https://www.projectaon.org/en/Main/WarOfTheWizards
 
+Use the **standard** multi-page HTML ZIPs:
+
+| Book | Standard ZIP |
+| --- | --- |
+| 1. Grey Star the Wizard | https://www.projectaon.org/en/xhtml/gs/01gstw/01gstw.zip |
+| 2. The Forbidden City | https://www.projectaon.org/en/xhtml/gs/02tfc/02tfc.zip |
+| 3. Beyond the Nightmare Gate | https://www.projectaon.org/en/xhtml/gs/03btng/03btng.zip |
+| 4. War of the Wizards | https://www.projectaon.org/en/xhtml/gs/04wotw/04wotw.zip |
+
+Extract those ZIPs into:
+
+```text
+books\gs
+```
+
+After extraction, these files should exist:
+
+```text
+books\gs\01gstw\title.htm
+books\gs\02tfc\title.htm
+books\gs\03btng\title.htm
+books\gs\04wotw\title.htm
+```
+
+PowerShell example from the project folder:
+
+```powershell
+New-Item -ItemType Directory -Force .\books\gs
+
+Expand-Archive "$env:USERPROFILE\Downloads\01gstw.zip" -DestinationPath .\books\gs -Force
+Expand-Archive "$env:USERPROFILE\Downloads\02tfc.zip"  -DestinationPath .\books\gs -Force
+Expand-Archive "$env:USERPROFILE\Downloads\03btng.zip" -DestinationPath .\books\gs -Force
+Expand-Archive "$env:USERPROFILE\Downloads\04wotw.zip" -DestinationPath .\books\gs -Force
+```
+
 ## What It Includes
 
 - Complete support for Books 1-4.

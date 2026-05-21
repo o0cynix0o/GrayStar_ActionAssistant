@@ -4,6 +4,53 @@
 
 No. The assistant is a play aid. You still read and play from the book text.
 
+## Where Do I Get The Book Files?
+
+Download the Grey Star books directly from Project Aon for your own personal use. The assistant does not include or redistribute the book HTML files.
+
+Project Aon license:
+
+- https://www.projectaon.org/en/Main/License
+
+Use the **standard** multi-page HTML ZIPs:
+
+| Book | Standard ZIP |
+| --- | --- |
+| 1. Grey Star the Wizard | https://www.projectaon.org/en/xhtml/gs/01gstw/01gstw.zip |
+| 2. The Forbidden City | https://www.projectaon.org/en/xhtml/gs/02tfc/02tfc.zip |
+| 3. Beyond the Nightmare Gate | https://www.projectaon.org/en/xhtml/gs/03btng/03btng.zip |
+| 4. War of the Wizards | https://www.projectaon.org/en/xhtml/gs/04wotw/04wotw.zip |
+
+Extract them into:
+
+```text
+books\gs
+```
+
+You should end up with:
+
+```text
+books\gs\01gstw\title.htm
+books\gs\02tfc\title.htm
+books\gs\03btng\title.htm
+books\gs\04wotw\title.htm
+```
+
+PowerShell example from the project folder:
+
+```powershell
+New-Item -ItemType Directory -Force .\books\gs
+
+Expand-Archive "$env:USERPROFILE\Downloads\01gstw.zip" -DestinationPath .\books\gs -Force
+Expand-Archive "$env:USERPROFILE\Downloads\02tfc.zip"  -DestinationPath .\books\gs -Force
+Expand-Archive "$env:USERPROFILE\Downloads\03btng.zip" -DestinationPath .\books\gs -Force
+Expand-Archive "$env:USERPROFILE\Downloads\04wotw.zip" -DestinationPath .\books\gs -Force
+```
+
+The longer walkthrough is here:
+
+- [Installing Project Aon Books](Installing-Project-Aon-Books)
+
 ## Why Do I Need `localhost`?
 
 The assistant talks to a local Python server. If you open `assistant.html` directly as a file, the book pane may open but the assistant can be disconnected.

@@ -8,7 +8,7 @@ Project Aon license:
 
 ## Download These Four ZIPs
 
-Use the **standard** edition for each book.
+Use the **standard** edition for each book. On the Project Aon book page, choose the first **Download ZIP** link in the `standard` row. Do not use the `simple`, `simpler`, EPUB, MOBI, or other eBook downloads for the assistant.
 
 | Book | Project Aon page | Standard ZIP |
 | --- | --- | --- |
@@ -42,3 +42,14 @@ Expand-Archive "$env:USERPROFILE\Downloads\04wotw.zip" -DestinationPath .\books\
 ```
 
 Each ZIP should create its own book folder: `01gstw`, `02tfc`, `03btng`, or `04wotw`.
+
+Check the result:
+
+```powershell
+Test-Path .\books\gs\01gstw\title.htm
+Test-Path .\books\gs\02tfc\title.htm
+Test-Path .\books\gs\03btng\title.htm
+Test-Path .\books\gs\04wotw\title.htm
+```
+
+Each command should return `True`.
