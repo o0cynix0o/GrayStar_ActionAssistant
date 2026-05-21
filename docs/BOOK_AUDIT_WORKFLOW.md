@@ -1,10 +1,10 @@
-# Gray Star Full Book Audit Workflow
+# Grey Star Full Book Audit Workflow
 
-This is the Gray Star version of the Lone Wolf full book audit standard.
+This is the Grey Star version of the Lone Wolf full book audit standard.
 
 Use this when the task is to:
 
-- read a Gray Star book from the local corpus
+- read a Grey Star book from the local corpus
 - map routes and endings
 - find missing item, Magick, combat, and random-number rules
 - create structured automation ledgers
@@ -13,8 +13,8 @@ Use this when the task is to:
 
 ## Standard Request Phrases
 
-- `Run the Full Book Audit for Gray Star Book X`
-- `Run the Full Book Audit + Build for Gray Star Book X`
+- `Run the Full Book Audit for Grey Star Book X`
+- `Run the Full Book Audit + Build for Grey Star Book X`
 
 The first means analysis and reports only.
 
@@ -34,7 +34,7 @@ Use the local book corpus first:
 
 - `books/gs/`
 
-For Gray Star book audits, the preferred source order is:
+For Grey Star book audits, the preferred source order is:
 
 1. local corpus under `books/gs/<book-code>/`
 2. local supporting pages in the same folder:
@@ -83,7 +83,7 @@ Player-facing wiki pages live under `docs/wiki/` and are a separate output from 
 
 After changing files in `docs/wiki/`, publish those same changed pages to the separate GitHub Wiki repository:
 
-- `https://github.com/o0cynix0o/GrayStar_ActionAssistant.wiki.git`
+- `https://github.com/o0cynix0o/GreyStar_ActionAssistant.wiki.git`
 
 Pushing the main repository alone does not update the live GitHub Wiki.
 
@@ -146,7 +146,7 @@ The route audit is allowed to sound technical. It is a working report. Do not co
 
 Run a machine-assisted sweep over every `sect*.htm` for automation language.
 
-Useful Gray Star search terms include:
+Useful Grey Star search terms include:
 
 - `lose`
 - `gain`
@@ -264,7 +264,7 @@ Check the current script and web UI so the audit distinguishes:
 
 For this project, start with:
 
-- `garystar.py`
+- `greystar.py`
 - `app_server.py`
 - `assistant.html`
 - `data/crt.json`
@@ -508,7 +508,7 @@ It is fine for the app to be mentioned when the advice is practical, for example
 When the guide is ready:
 
 1. Commit and push the `docs/wiki/` changes to the main repository.
-2. Clone or update `https://github.com/o0cynix0o/GrayStar_ActionAssistant.wiki.git`.
+2. Clone or update `https://github.com/o0cynix0o/GreyStar_ActionAssistant.wiki.git`.
 3. Copy only the changed public wiki pages into the wiki repo.
 4. Run `git diff --check` in the wiki repo.
 5. Commit and push the wiki repo.

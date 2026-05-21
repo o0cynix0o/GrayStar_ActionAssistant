@@ -2,7 +2,7 @@
 
 Book: Beyond the Nightmare Gate
 
-Status: implemented in `garystar.py` with automatic sync/backfill.
+Status: implemented in `greystar.py` with automatic sync/backfill.
 
 | Id | Name | Category | Trigger Basis |
 |---|---|---|---|

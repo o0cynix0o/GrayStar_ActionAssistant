@@ -7,7 +7,7 @@ Status: Step 1 starter audit. Machine sweep is complete; human confirmation begi
 Pass 1 baseline:
 
 - `GSBOOK1_PASS1_RULES_BASELINE.md` now records the confirmed setup, inventory, Willpower, Staff, combat, errata, and section 1 findings.
-- `powers.htm`, `sage.htm`, and `crsumary.htm` were added to the support-page pass after the starter sweep because they are material to Gray Star rules.
+- `powers.htm`, `sage.htm`, and `crsumary.htm` were added to the support-page pass after the starter sweep because they are material to Grey Star rules.
 
 ## Source And Support Pages
 

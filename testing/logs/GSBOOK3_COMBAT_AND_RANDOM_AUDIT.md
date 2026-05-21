@@ -11,7 +11,7 @@ Book: Beyond the Nightmare Gate
 | 57 | Elessi Leader: Jewelled Dagger reduces penalty | Elessi Leader | 12 | 25 | modifier=2; forceUnarmed=True; victoryRoute=107; evadeRoute=99 |
 | 64 | Chaos-bird | Chaos-bird | 20 | 24 | victoryRoute=133 |
 | 87 | Giant Eagle: survive 3 rounds | Giant Eagle | 30 | 30 | roundLimit=3; survivalRoute=150; victoryRoute=150 |
-| 97 | Tower Door: ignore Gray Star END loss | Tower Door | 30 | 45 | victoryRoute=124; evadeRoute=61; ignorePlayerLossRounds=999 |
+| 97 | Tower Door: ignore Grey Star END loss | Tower Door | 30 | 45 | victoryRoute=124; evadeRoute=61; ignorePlayerLossRounds=999 |
 | 108 | Chaos-bird | Chaos-bird | 20 | 25 | victoryRoute=133 |
 | 123 | Jahksa: survive 3 rounds | Jahksa | 30 | 30 | roundLimit=3; survivalRoute=117; victoryRoute=117 |
 | 137 | Wounded Eagle | Wounded Eagle | 30 | 25 | victoryRoute=186 |

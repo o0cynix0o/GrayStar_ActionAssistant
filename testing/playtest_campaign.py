@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Final campaign-level dry runs for the Gray Star assistant.
+"""Final campaign-level dry runs for the Grey Star assistant.
 
 This script covers the two final checks that sit above the per-book playtests:
 
@@ -25,7 +25,7 @@ from typing import Any, Callable, Iterable
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-import garystar  # noqa: E402
+import greystar  # noqa: E402
 from testing import playtest_book1, playtest_book2, playtest_book3, playtest_book4  # noqa: E402
 
 
@@ -124,7 +124,7 @@ ACHIEVEMENT_RUN_PLAN: list[dict[str, Any]] = [
 ]
 
 
-class DryRunAssistant(garystar.GrayStarAssistant):
+class DryRunAssistant(greystar.GreyStarAssistant):
     """Assistant variant that never writes the shared save pointer."""
 
     def __init__(self) -> None:
@@ -138,7 +138,7 @@ class DryRunAssistant(garystar.GrayStarAssistant):
         path = self.resolve_save_path(path_text) if path_text.strip() else self.save_dir / "_dryrun-campaign.json"
         self.settings["SavePath"] = str(path)
         self.sync_achievements(save=False)
-        self.saved_state = garystar.json_clone(self.state)
+        self.saved_state = greystar.json_clone(self.state)
         if not quiet:
             print(f"Dry-run save captured: {path}")
         return True
@@ -178,7 +178,7 @@ def patched_inputs(answers: Iterable[str], random_digits: Iterable[int]):
     answer_iter = iter(answers)
     digit_iter = iter(random_digits)
     original_input = builtins.input
-    original_random_digit = garystar.random_digit
+    original_random_digit = greystar.random_digit
 
     def fake_input(prompt: str = "") -> str:
         try:
@@ -193,12 +193,12 @@ def patched_inputs(answers: Iterable[str], random_digits: Iterable[int]):
             return 9
 
     builtins.input = fake_input
-    garystar.random_digit = fake_random_digit
+    greystar.random_digit = fake_random_digit
     try:
         yield
     finally:
         builtins.input = original_input
-        garystar.random_digit = original_random_digit
+        greystar.random_digit = original_random_digit
 
 
 def create_new_character(name: str) -> tuple[DryRunAssistant, str]:
@@ -252,7 +252,7 @@ def apply_qa_buffer(assistant: DryRunAssistant, *, cs: int = 60, end: int = 240,
 
 def add_item_marker(assistant: DryRunAssistant, container: str, item: str) -> None:
     key = assistant.container_key(container) or container
-    items = garystar.as_list(assistant.inventory.get(key))
+    items = greystar.as_list(assistant.inventory.get(key))
     if item not in items:
         assistant.inventory[key] = items + [item]
 
@@ -267,7 +267,7 @@ def add_combat_milestones(assistant: DryRunAssistant, book: int) -> None:
     else:
         count, rounds, enemy_name, enemy_cs, enemy_end = 3, 20, "Ipage Guardian", 28, 35
 
-    history = garystar.as_list(assistant.state.get("CombatHistory"))
+    history = greystar.as_list(assistant.state.get("CombatHistory"))
     for index in range(count):
         round_count = rounds if index == 0 else 1
         history.append(
@@ -292,7 +292,7 @@ def add_combat_milestones(assistant: DryRunAssistant, book: int) -> None:
                         "Roll": 9,
                         "Ratio": -1 if index == 0 else 18,
                         "EnemyLoss": 1,
-                        "GrayStarLoss": 0,
+                        "GreyStarLoss": 0,
                     }
                     for number in range(round_count)
                 ],
@@ -302,14 +302,14 @@ def add_combat_milestones(assistant: DryRunAssistant, book: int) -> None:
 
 
 def add_death_milestones(assistant: DryRunAssistant, book: int, count: int = 3) -> None:
-    history = garystar.as_list(assistant.automation.get("DeathHistory"))
+    history = greystar.as_list(assistant.automation.get("DeathHistory"))
     for index in range(count):
         history.append(
             {
                 "Type": "Death",
                 "Cause": f"Completionist recovery check {index + 1}",
                 "BookNumber": book,
-                "BookTitle": garystar.BOOKS[book]["Title"],
+                "BookTitle": greystar.BOOKS[book]["Title"],
                 "Section": 90 + index,
                 "RecordedAt": datetime.now().isoformat(timespec="seconds"),
             }
@@ -320,7 +320,7 @@ def add_death_milestones(assistant: DryRunAssistant, book: int, count: int = 3) 
 def achievement_ids_for_book(book: int) -> set[str]:
     return {
         str(item.get("Id"))
-        for item in garystar.ACHIEVEMENT_DEFINITIONS
+        for item in greystar.ACHIEVEMENT_DEFINITIONS
         if int(item.get("BookNumber") or 0) == book
     }
 
@@ -328,18 +328,18 @@ def achievement_ids_for_book(book: int) -> set[str]:
 def unlocked_ids_for_book(assistant: DryRunAssistant, book: int) -> set[str]:
     return {
         str(entry.get("Id"))
-        for entry in garystar.as_list(assistant.achievement_state().get("Unlocked"))
+        for entry in greystar.as_list(assistant.achievement_state().get("Unlocked"))
         if isinstance(entry, dict) and str(entry.get("Id") or "").startswith(f"gs{book}_")
     }
 
 
 def run_story_campaign() -> tuple[Result, dict[str, Any]]:
     result = Result()
-    assistant, creation_output = create_new_character("QA Story Gray Star")
+    assistant, creation_output = create_new_character("QA Story Grey Star")
     story_steps: list[dict[str, Any]] = []
 
     result.check(
-        assistant.character["Name"] == "QA Story Gray Star"
+        assistant.character["Name"] == "QA Story Grey Star"
         and int(assistant.character["BookNumber"]) == 1
         and int(assistant.character["CombatSkillCurrent"]) == 19
         and int(assistant.character["EnduranceCurrent"]) == 29
@@ -358,7 +358,7 @@ def run_story_campaign() -> tuple[Result, dict[str, Any]]:
         story_steps.append(
             {
                 "Book": book,
-                "Title": garystar.BOOKS[book]["Title"],
+                "Title": greystar.BOOKS[book]["Title"],
                 "RouteStops": visited + 1,
                 "EndSection": int(assistant.state["CurrentSection"]),
                 "Completed": assistant.book_completed(book),
@@ -368,7 +368,7 @@ def run_story_campaign() -> tuple[Result, dict[str, Any]]:
         )
         result.check(
             assistant.book_completed(book),
-            f"Story run completed Book {book}: {garystar.BOOKS[book]['Title']}.",
+            f"Story run completed Book {book}: {greystar.BOOKS[book]['Title']}.",
             f"Story run did not mark Book {book} complete.",
         )
         if book < 4:
@@ -377,7 +377,7 @@ def run_story_campaign() -> tuple[Result, dict[str, Any]]:
             elif book == 2:
                 capture(lambda: assistant.continue_completed_book(willpower_roll=9))
             else:
-                capture(lambda: assistant.continue_completed_book(higher_magicks=garystar.HIGHER_MAGICKS))
+                capture(lambda: assistant.continue_completed_book(higher_magicks=greystar.HIGHER_MAGICKS))
             result.check(
                 int(assistant.character["BookNumber"]) == book + 1
                 and int(assistant.state["CurrentSection"]) == 1,
@@ -386,12 +386,12 @@ def run_story_campaign() -> tuple[Result, dict[str, Any]]:
             )
 
     result.check(
-        assistant.character["Name"] == "QA Story Gray Star",
+        assistant.character["Name"] == "QA Story Grey Star",
         "The same character name was preserved through the whole campaign.",
         "The character identity changed during the campaign story run.",
     )
     result.check(
-        set(int(item) for item in garystar.as_list(assistant.character["CompletedBooks"])) == {1, 2, 3, 4},
+        set(int(item) for item in greystar.as_list(assistant.character["CompletedBooks"])) == {1, 2, 3, 4},
         "CompletedBooks contains all four books at the end of the story run.",
         f"CompletedBooks did not contain all four books: {assistant.character['CompletedBooks']}",
     )
@@ -419,7 +419,7 @@ def prepare_book_for_completionist(assistant: DryRunAssistant, run: dict[str, An
             elif current_book == 2:
                 capture(lambda: assistant.continue_completed_book(willpower_roll=9))
             elif current_book == 3:
-                capture(lambda: assistant.continue_completed_book(higher_magicks=garystar.HIGHER_MAGICKS))
+                capture(lambda: assistant.continue_completed_book(higher_magicks=greystar.HIGHER_MAGICKS))
     if int(assistant.character["BookNumber"]) != int(run["book"]):
         capture(lambda: assistant.set_book(int(run["book"]), 1))
     apply_qa_buffer(assistant)
@@ -451,7 +451,7 @@ def add_book_specific_markers(assistant: DryRunAssistant, book: int) -> None:
 
 def run_completionist_campaign() -> tuple[Result, dict[str, Any]]:
     result = Result()
-    assistant, _ = create_new_character("QA Completionist Gray Star")
+    assistant, _ = create_new_character("QA Completionist Grey Star")
     apply_qa_buffer(assistant)
     run_summaries: list[dict[str, Any]] = []
     last_run_for_book: dict[int, int] = {}
@@ -472,7 +472,7 @@ def run_completionist_campaign() -> tuple[Result, dict[str, Any]]:
         add_combat_milestones(assistant, book)
         add_book_specific_markers(assistant, book)
         if run.get("complete") and not assistant.book_completed(book):
-            final_section = garystar.BOOKS[book]["MaxSection"]
+            final_section = greystar.BOOKS[book]["MaxSection"]
             capture(lambda final_section=final_section: assistant.set_section(final_section))
         new_unlocks = assistant.sync_achievements(save=False)
         after = set(assistant.achievement_unlocked_ids())
@@ -506,12 +506,12 @@ def run_completionist_campaign() -> tuple[Result, dict[str, Any]]:
 
     payload = assistant.achievement_payload()
     result.check(
-        int(payload["UnlockedCount"]) == int(payload["TotalCount"]) == len(garystar.ACHIEVEMENT_DEFINITIONS),
+        int(payload["UnlockedCount"]) == int(payload["TotalCount"]) == len(greystar.ACHIEVEMENT_DEFINITIONS),
         f"Completionist run unlocked {payload['UnlockedCount']}/{payload['TotalCount']} achievements.",
         f"Completionist run unlocked {payload['UnlockedCount']}/{payload['TotalCount']} achievements.",
     )
     result.check(
-        set(int(item) for item in garystar.as_list(assistant.character["CompletedBooks"])) == {1, 2, 3, 4},
+        set(int(item) for item in greystar.as_list(assistant.character["CompletedBooks"])) == {1, 2, 3, 4},
         "Completionist profile ended with all four books completed.",
         f"Completionist profile completed books mismatch: {assistant.character['CompletedBooks']}",
     )
@@ -536,7 +536,7 @@ def write_story_report(result: Result, context: dict[str, Any]) -> None:
         "",
         "## Character Creation",
         "",
-        "- Name: QA Story Gray Star",
+        "- Name: QA Story Grey Star",
         "- Starting book: 1",
         "- Deterministic rolls: CS +9, WP +9, END +9",
         "- Starting sheet: CS 19, END 29/29, WP 29",
@@ -623,7 +623,7 @@ def write_achievement_report(result: Result, context: dict[str, Any]) -> None:
         ids = achievement_ids_for_book(book)
         unlocked = {
             str(entry.get("Id"))
-            for entry in garystar.as_list(context["assistant"].achievement_state().get("Unlocked"))
+            for entry in greystar.as_list(context["assistant"].achievement_state().get("Unlocked"))
             if isinstance(entry, dict) and str(entry.get("Id") or "") in ids
         }
         lines.append(f"- Book {book}: {len(unlocked)}/{len(ids)}")

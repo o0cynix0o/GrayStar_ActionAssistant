@@ -1,7 +1,7 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Windows convenience wrapper for the Python Gray Star launcher.
+    Windows convenience wrapper for the Python Grey Star launcher.
 #>
 
 param(
@@ -11,7 +11,7 @@ param(
 )
 
 $Root = $PSScriptRoot
-$Launcher = Join-Path $Root "launch_graystar.py"
+$Launcher = Join-Path $Root "launch_greystar.py"
 
 if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
     Write-Host "Python not found. Install Python 3 and try again." -ForegroundColor Red

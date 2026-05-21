@@ -1,8 +1,8 @@
 # Game Modes
 
-Gray Star currently uses one standard rules mode.
+Grey Star currently uses one standard rules mode.
 
-The app does not yet have the Lone Wolf-style difficulty modes, challenge pools, or permadeath modes. That is intentional for now. The first goal is faithful book support for the Gray Star rules and section mechanics.
+The app does not yet have the Lone Wolf-style difficulty modes, challenge pools, or permadeath modes. That is intentional for now. The first goal is faithful book support for the Grey Star rules and section mechanics.
 
 ## Current Mode
 

@@ -1,6 +1,6 @@
-# Gray Star Book Source Map
+# Grey Star Book Source Map
 
-This doc is the quick map for the local Gray Star book corpus used by audits and route work.
+This doc is the quick map for the local Grey Star book corpus used by audits and route work.
 
 ## Source Priority
 
@@ -50,7 +50,7 @@ Most useful files during audits:
 - `equipmnt.htm`
   starting equipment and inventory context
 - `cmbtrulz.htm`
-  Gray Star combat and Willpower rules
+  Grey Star combat and Willpower rules
 - `crsumary.htm`
   short combat sequence checklist
 - `crtable.htm`
@@ -62,7 +62,7 @@ Most useful files during audits:
 - `sage.htm`
   player-facing resource guidance and high-level caution notes
 
-## Gray Star Book Folder Map
+## Grey Star Book Folder Map
 
 - `01gstw`
   `Grey Star the Wizard`
@@ -75,7 +75,7 @@ Most useful files during audits:
 
 ## Recommended Audit Start Pattern
 
-For a new Gray Star book audit:
+For a new Grey Star book audit:
 
 1. open `books/gs/<code>/title.htm` and confirm the title
 2. inspect supporting pages: `gamerulz.htm`, `powers.htm`, `equipmnt.htm`, `action.htm`, `cmbtrulz.htm`, `crsumary.htm`, `crtable.htm`, `random.htm`, `footnotz.htm`, `errata.htm`, `sage.htm`

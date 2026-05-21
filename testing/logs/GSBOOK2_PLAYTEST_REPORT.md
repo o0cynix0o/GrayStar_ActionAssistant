@@ -1,6 +1,6 @@
 # GS Book 2 Playtest Report
 
-Generated: 2026-05-21T09:06:13
+Generated: 2026-05-21T11:24:56
 
 Passed: 19
 Warnings: 0
@@ -21,7 +21,7 @@ Failures: 0
 - Loot sweep covered 15 buttons.
 - Willpower-cost sweep covered 16 buttons.
 - Combat sweep started 19 presets.
-- Section 99 ignores Gray Star END loss in round 1.
+- Section 99 ignores Grey Star END loss in round 1.
 - Section 297 discards Backpack contents and marks Backpack unavailable.
 - Capture and release store and restore Staff/Backpack gear.
 - Success-route smoke completes Book 2.

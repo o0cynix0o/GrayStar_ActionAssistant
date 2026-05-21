@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cross-platform launcher for the Gray Star web assistant."""
+"""Cross-platform launcher for the Grey Star web assistant."""
 
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ def start_process(args: list[str], env: dict[str, str] | None = None) -> subproc
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Launch the Gray Star web assistant.")
+    parser = argparse.ArgumentParser(description="Launch the Grey Star web assistant.")
     parser.add_argument("--http-port", type=int, default=8797)
     parser.add_argument("--ws-port", type=int, default=8798, help="Reserved for the legacy terminal bridge.")
     parser.add_argument("--no-browser", action="store_true")
@@ -43,6 +43,7 @@ def main() -> int:
 
     url = f"http://localhost:{args.http_port}"
     env = os.environ.copy()
+    env["GREYSTAR_HTTP_PORT"] = str(args.http_port)
     env["GRAYSTAR_HTTP_PORT"] = str(args.http_port)
 
     print("")

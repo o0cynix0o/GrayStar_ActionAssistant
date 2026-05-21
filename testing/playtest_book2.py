@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Dry-run Book 2 validation for the Gray Star assistant.
+"""Dry-run Book 2 validation for the Grey Star assistant.
 
 These checks avoid the shared save pointer and current-position file. They cover
 Book 2 source structure, automation data, flow buttons, combat presets,
@@ -23,7 +23,7 @@ from typing import Any, Callable
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-import garystar  # noqa: E402
+import greystar  # noqa: E402
 
 
 REPORT_PATH = ROOT / "testing" / "logs" / "GSBOOK2_PLAYTEST_REPORT.md"
@@ -48,7 +48,7 @@ class TextParser(HTMLParser):
             self.parts.append(data.strip())
 
 
-class DryRunAssistant(garystar.GrayStarAssistant):
+class DryRunAssistant(greystar.GreyStarAssistant):
     def __init__(self) -> None:
         super().__init__(save_dir=ROOT / "testing" / "dry-run-saves", data_dir=ROOT / "data")
         self.saved_state: dict[str, Any] | None = None
@@ -59,7 +59,7 @@ class DryRunAssistant(garystar.GrayStarAssistant):
     def save_game(self, path_text: str = "", quiet: bool = False) -> bool:
         path = self.resolve_save_path(path_text) if path_text.strip() else self.save_dir / "_dryrun-book2.json"
         self.settings["SavePath"] = str(path)
-        self.saved_state = garystar.json_clone(self.state)
+        self.saved_state = greystar.json_clone(self.state)
         if not quiet:
             print(f"Dry-run save captured: {path}")
         return True
@@ -109,8 +109,8 @@ def section_text_and_links(section: int) -> tuple[str, list[int]]:
 
 def prime(section: int = 1, *, cs: int = 40, end: int = 120, wp: int = 140) -> DryRunAssistant:
     assistant = DryRunAssistant()
-    assistant.state = garystar.normalize_state(garystar.default_state())
-    assistant.character["Name"] = "QA Gray Star"
+    assistant.state = greystar.normalize_state(greystar.default_state())
+    assistant.character["Name"] = "QA Grey Star"
     assistant.character["BookNumber"] = 2
     assistant.character["CombatSkillBase"] = cs
     assistant.character["CombatSkillCurrent"] = cs
@@ -118,7 +118,7 @@ def prime(section: int = 1, *, cs: int = 40, end: int = 120, wp: int = 140) -> D
     assistant.character["EnduranceCurrent"] = end
     assistant.character["WillpowerCurrent"] = wp
     assistant.character["WillpowerBase"] = wp
-    assistant.character["LesserMagicks"] = list(garystar.LESSER_MAGICKS)
+    assistant.character["LesserMagicks"] = list(greystar.LESSER_MAGICKS)
     assistant.inventory["Weapons"] = ["Wizard's Staff", "Broadsword"]
     assistant.inventory["BackpackItems"] = ["Meal", "Meal", "Meal", "Coil of Rope", "Empty Vial"]
     assistant.inventory["SpecialItems"] = [
@@ -134,7 +134,7 @@ def prime(section: int = 1, *, cs: int = 40, end: int = 120, wp: int = 140) -> D
     assistant.state["SectionHistory"] = []
     assistant.state["CurrentBookStats"] = {
         "BookNumber": 2,
-        "BookTitle": garystar.BOOKS[2]["Title"],
+        "BookTitle": greystar.BOOKS[2]["Title"],
         "StartSection": section,
         "LastSection": section,
         "SectionsVisited": 0,
@@ -222,14 +222,14 @@ def run_flow_sweep(result: Result) -> None:
                     roll_tests += 1
                 except Exception as exc:
                     result.fail(f"Section {section} roll {raw} raised {type(exc).__name__}: {exc}")
-        for option in garystar.as_list(flow.get("loot")):
+        for option in greystar.as_list(flow.get("loot")):
             local = prime(section)
             try:
                 capture(lambda local=local, option=option: local.apply_flow_loot(str(option.get("id") or "")))
                 loot_tests += 1
             except Exception as exc:
                 result.fail(f"Section {section} loot {option.get('id')} raised {type(exc).__name__}: {exc}")
-        costs = garystar.as_list(flow.get("wpCosts"))
+        costs = greystar.as_list(flow.get("wpCosts"))
         if isinstance(flow.get("wpCost"), dict):
             costs.append(flow["wpCost"])
         for cost in costs:
@@ -239,7 +239,7 @@ def run_flow_sweep(result: Result) -> None:
                 wp_tests += 1
             except Exception as exc:
                 result.fail(f"Section {section} WP cost {cost.get('cost')} raised {type(exc).__name__}: {exc}")
-        for preset in garystar.as_list(flow.get("combat")):
+        for preset in greystar.as_list(flow.get("combat")):
             local = prime(section)
             try:
                 capture(lambda local=local, preset=preset: local.start_section_combat(str(preset.get("id") or "")))
@@ -260,8 +260,8 @@ def run_mechanic_edge_checks(result: Result) -> None:
     local = prime(99, cs=10, end=40, wp=40)
     capture(lambda: local.start_section_combat("99-shadakine-warrior"))
     capture(lambda: local.combat_round(["combat", "round", "1", "0"]))
-    log = garystar.as_list(local.combat.get("Log"))
-    result.check(bool(log) and int(log[-1].get("GrayStarLoss") or 0) == 0, "Section 99 ignores Gray Star END loss in round 1.", "Section 99 did not ignore round 1 END loss.")
+    log = greystar.as_list(local.combat.get("Log"))
+    result.check(bool(log) and int(log[-1].get("GreyStarLoss") or 0) == 0, "Section 99 ignores Grey Star END loss in round 1.", "Section 99 did not ignore round 1 END loss.")
 
     local = prime()
     local.inventory["BackpackItems"] = ["Meal", "Coil of Rope"]
@@ -280,7 +280,7 @@ def run_completion_and_achievements(result: Result) -> None:
     local = prime()
     for section in SUCCESS_ROUTE:
         capture(lambda section=section: local.set_section(section))
-    result.check(2 in garystar.as_list(local.character["CompletedBooks"]), "Success-route smoke completes Book 2.", "Book 2 did not complete on success-route smoke.")
+    result.check(2 in greystar.as_list(local.character["CompletedBooks"]), "Success-route smoke completes Book 2.", "Book 2 did not complete on success-route smoke.")
     unlocks = local.sync_achievements(save=False)
     unlocked = local.achievement_unlocked_ids()
     expected = {"gs2_complete", "gs2_shadow_gate", "gs2_gear_taken", "gs2_gear_returned", "gs2_slave_breaker", "gs2_samu_oath"}

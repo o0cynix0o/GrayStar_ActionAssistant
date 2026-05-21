@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Gray Star Action Assistant.
+Grey Star Action Assistant.
 
-This is the Python version of the Gray Star rules assistant. It tracks the
-World of Lone Wolf / Gray Star character sheet, Willpower, Magicks, inventory,
-book progress, saves, and the Gray Star combat rules.
+This is the Python version of the Grey Star rules assistant. It tracks the
+World of Lone Wolf / Grey Star character sheet, Willpower, Magicks, inventory,
+book progress, saves, and the Grey Star combat rules.
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parent
 DEFAULT_SAVE_DIR = ROOT / "saves"
 DEFAULT_DATA_DIR = ROOT / "data"
 CURRENT_POSITION_FILE = ROOT / "current-position.json"
-ERROR_LOG_FILE = ROOT / "garystar-error.log"
+ERROR_LOG_FILE = ROOT / "greystar-error.log"
 SCREEN_WIDTH = 74
 SECTION_AUTOMATION_GLOB = "book*-simple-automations.json"
 SECTION_FLOW_GLOB = "book*-section-flows.json"
@@ -821,7 +821,7 @@ def default_automation() -> dict[str, Any]:
 def default_state() -> dict[str, Any]:
     return {
         "Version": "0.2.0",
-        "RuleSet": "Gray Star",
+        "RuleSet": "Grey Star",
         "CurrentSection": 1,
         "SectionHistory": [
             {"BookNumber": 1, "BookTitle": "Grey Star the Wizard", "Section": 1}
@@ -836,7 +836,7 @@ def default_state() -> dict[str, Any]:
         },
         "BookHistory": [],
         "Character": {
-            "Name": "Gray Star",
+            "Name": "Grey Star",
             "BookNumber": 1,
             "CombatSkillBase": 10,
             "CombatSkillCurrent": 10,
@@ -910,6 +910,17 @@ def json_clone(value: Any) -> Any:
     return json.loads(json.dumps(value))
 
 
+def migrate_grey_star_branding(value: Any) -> Any:
+    if not isinstance(value, str):
+        return value
+    return (
+        value.replace("GaryStar", "GreyStar")
+        .replace("GrayStar", "GreyStar")
+        .replace("Gary Star", "Grey Star")
+        .replace("Gray Star", "Grey Star")
+    )
+
+
 def normalize_state(state: dict[str, Any]) -> dict[str, Any]:
     base = default_state()
 
@@ -928,6 +939,8 @@ def normalize_state(state: dict[str, Any]) -> dict[str, Any]:
         state["Character"].setdefault(key, value)
     if not character_had_willpower_base:
         state["Character"]["WillpowerBase"] = int(state["Character"].get("WillpowerCurrent") or 0)
+    state["RuleSet"] = migrate_grey_star_branding(state.get("RuleSet")) or base["RuleSet"]
+    state["Character"]["Name"] = migrate_grey_star_branding(state["Character"].get("Name")) or base["Character"]["Name"]
     for key, value in base["Inventory"].items():
         state["Inventory"].setdefault(key, value)
     for key, value in base["Combat"].items():
@@ -978,6 +991,15 @@ def normalize_state(state: dict[str, Any]) -> dict[str, Any]:
         state[path[0]][path[1]] = as_list(state[path[0]].get(path[1]))
 
     state["CombatHistory"] = as_list(state.get("CombatHistory"))
+    for round_entry in as_list(state["Combat"].get("Log")):
+        if isinstance(round_entry, dict) and "GreyStarLoss" not in round_entry and "GrayStarLoss" in round_entry:
+            round_entry["GreyStarLoss"] = round_entry["GrayStarLoss"]
+    for combat_entry in state["CombatHistory"]:
+        if not isinstance(combat_entry, dict):
+            continue
+        for round_entry in as_list(combat_entry.get("Log")):
+            if isinstance(round_entry, dict) and "GreyStarLoss" not in round_entry and "GrayStarLoss" in round_entry:
+                round_entry["GreyStarLoss"] = round_entry["GrayStarLoss"]
 
     flags = state["Automation"]["Flags"]
     stored = state["Automation"]["Stored"]
@@ -1016,6 +1038,9 @@ def normalize_state(state: dict[str, Any]) -> dict[str, Any]:
             stored["confiscatedBackpackItems"] = stored_backpack
 
     state["SectionHistory"] = as_list(state.get("SectionHistory"))
+    for entry in state["SectionHistory"]:
+        if isinstance(entry, dict):
+            entry["BookTitle"] = migrate_grey_star_branding(entry.get("BookTitle"))
     if not state["SectionHistory"]:
         book_number = int(state["Character"].get("BookNumber", 1))
         book = BOOKS.get(book_number, BOOKS[1])
@@ -1032,6 +1057,13 @@ def normalize_state(state: dict[str, Any]) -> dict[str, Any]:
     book = BOOKS.get(book_number, BOOKS[1])
     stats.setdefault("BookNumber", book_number)
     stats.setdefault("BookTitle", book["Title"])
+    stats["BookTitle"] = migrate_grey_star_branding(stats.get("BookTitle")) or book["Title"]
+    if "CharacterName" in stats:
+        stats["CharacterName"] = migrate_grey_star_branding(stats.get("CharacterName"))
+    for summary in state["BookHistory"]:
+        if isinstance(summary, dict):
+            summary["BookTitle"] = migrate_grey_star_branding(summary.get("BookTitle"))
+            summary["CharacterName"] = migrate_grey_star_branding(summary.get("CharacterName"))
     stats.setdefault("StartSection", int(state.get("CurrentSection", 1)))
     stats.setdefault("LastSection", int(state.get("CurrentSection", 1)))
     stats.setdefault("SectionsVisited", len(as_list(stats.get("VisitedSections"))))
@@ -1177,7 +1209,7 @@ def remove_first_matching(items: Any, name: str) -> tuple[bool, list[Any]]:
     return removed, result
 
 
-class GrayStarAssistant:
+class GreyStarAssistant:
     def __init__(self, save_dir: Path = DEFAULT_SAVE_DIR, data_dir: Path = DEFAULT_DATA_DIR) -> None:
         self.save_dir = save_dir
         self.data_dir = data_dir
@@ -1370,7 +1402,7 @@ class GrayStarAssistant:
         summary = {
             "BookNumber": book_number,
             "BookTitle": book["Title"],
-            "CharacterName": str(self.character.get("Name") or "Gray Star"),
+            "CharacterName": str(self.character.get("Name") or "Grey Star"),
             "CompletedAt": datetime.now().isoformat(timespec="seconds"),
             "StartSection": int(stats.get("StartSection") or (visited[0] if visited else 1)),
             "LastSection": int(stats.get("LastSection") or self.state.get("CurrentSection") or 1),
@@ -1942,7 +1974,7 @@ class GrayStarAssistant:
             "BookTitle": book["Title"],
             "Section": section,
             "RecordedAt": datetime.now().isoformat(timespec="seconds"),
-            "CharacterName": str(self.character.get("Name") or "Gray Star"),
+            "CharacterName": str(self.character.get("Name") or "Grey Star"),
             "EnduranceCurrent": int(self.character["EnduranceCurrent"]),
             "EnduranceMax": int(self.character["EnduranceMax"]),
             "WillpowerCurrent": int(self.character["WillpowerCurrent"]),
@@ -2964,7 +2996,7 @@ class GrayStarAssistant:
         return entries
 
     def show_banner(self) -> None:
-        panel_header("Gray Star Action Assistant")
+        panel_header("Grey Star Action Assistant")
         panel_pair_row("Rules", "World of Lone Wolf", "Engine", "Python")
         panel_pair_row("Books", "1-4", "Saves", str(self.save_dir))
         panel_footer()
@@ -2973,7 +3005,7 @@ class GrayStarAssistant:
         rows_by_screen = {
             "welcome": [
                 ("load", "open save catalog"),
-                ("new", "create Gray Star"),
+                ("new", "create Grey Star"),
                 ("sheet", "show action chart"),
                 ("help", "show commands"),
             ],
@@ -3028,7 +3060,7 @@ class GrayStarAssistant:
         panel_footer()
 
         panel_header("Quick Start")
-        panel_text("1. Load a save or create a new Gray Star character.")
+        panel_text("1. Load a save or create a new Grey Star character.")
         panel_text("2. Use sheet, inv, magicks, sections, notes, stats, and campaign to review state.")
         panel_text("3. Use section <n> as you read. Web book links also update this state.")
         panel_footer()
@@ -3186,9 +3218,9 @@ class GrayStarAssistant:
     def start_new_game(self) -> None:
         self.state = normalize_state(default_state())
         print("")
-        print("New Gray Star character")
+        print("New Grey Star character")
 
-        name = input("Name [Gray Star]: ").strip()
+        name = input("Name [Grey Star]: ").strip()
         if name:
             self.character["Name"] = name
 
@@ -3217,7 +3249,7 @@ class GrayStarAssistant:
                 target_lesser = 6
                 wp_base = 25
         elif book_number == 4:
-            if read_yes_no("Completed an earlier Gray Star adventure with this character?", True):
+            if read_yes_no("Completed an earlier Grey Star adventure with this character?", True):
                 target_lesser = 6
                 target_higher = 5
                 completed = read_int("Highest completed book before Book 4", 3, 1, 3)
@@ -3329,7 +3361,7 @@ class GrayStarAssistant:
             (
                 "Run",
                 [
-                    ("new", "create a new Gray Star character"),
+                    ("new", "create a new Grey Star character"),
                     ("load [number|path]", "open save catalog or load directly"),
                     ("save [path]", "write current save"),
                     ("complete", "finish current book and transition"),
@@ -3512,9 +3544,10 @@ class GrayStarAssistant:
             panel_text("No combat rounds recorded in the active fight.")
         else:
             for entry in log:
+                player_loss = entry.get("PlayerLoss", entry.get("GreyStarLoss", entry.get("GrayStarLoss", "?")))
                 panel_row(
                     f"Roll {entry.get('Roll', '?')}",
-                    f"Ratio {entry.get('Ratio', '?')} | enemy -{entry.get('EnemyLoss', '?')} | Gray Star -{entry.get('GrayStarLoss', '?')}",
+                    f"Ratio {entry.get('Ratio', '?')} | enemy -{entry.get('EnemyLoss', '?')} | Grey Star -{player_loss}",
                     label_width=10,
                 )
         panel_footer()
@@ -3784,7 +3817,7 @@ class GrayStarAssistant:
             if int(self.combat.get("RoundLimit") or 0):
                 notes.append(f"Round limit {int(self.combat['RoundLimit'])}")
             if bool(self.combat.get("IgnorePlayerLossIfEnemyLossGreater")):
-                notes.append("Ignore Gray Star END loss when enemy loss is higher.")
+                notes.append("Ignore Grey Star END loss when enemy loss is higher.")
             _, weapon_notes = self.combat_weapon_modifier_and_notes()
             notes.extend(weapon_notes)
             if self.combat_uses_magical_staff():
@@ -4000,7 +4033,7 @@ class GrayStarAssistant:
             return True
 
         if int(self.character["EnduranceCurrent"]) <= 0:
-            print("Gray Star has fallen.")
+            print("Grey Star has fallen.")
             enemy_name = str(self.combat.get("EnemyName") or "the enemy")
             self.archive_current_combat("Defeat")
             self.combat["Active"] = False
@@ -4142,7 +4175,7 @@ class GrayStarAssistant:
         panel_header("Combat")
         panel_row("Enemy", self.combat["EnemyName"])
         panel_pair_row("Enemy CS", self.combat["EnemyCombatSkill"], "Enemy END", f"{self.combat['EnemyEnduranceCurrent']}/{self.combat['EnemyEnduranceMax']}")
-        panel_pair_row("Gray Star CS", player_cs, "END / WP", f"{self.character['EnduranceCurrent']}/{self.character['EnduranceMax']} / {self.character['WillpowerCurrent']}")
+        panel_pair_row("Grey Star CS", player_cs, "END / WP", f"{self.character['EnduranceCurrent']}/{self.character['EnduranceMax']} / {self.character['WillpowerCurrent']}")
         panel_pair_row("Ratio", ratio, "Weapon", self.combat_active_weapon() or "Unarmed")
         panel_row("Staff Magic", self.combat_uses_magical_staff())
         panel_row("Modifier", self.combat["Modifier"])
@@ -4222,7 +4255,7 @@ class GrayStarAssistant:
                 "StaffWillpower": wp_spend,
                 "EnemyLoss": enemy_loss,
                 "IgnoredPlayerLoss": ignored_player_loss,
-                "GrayStarLoss": player_loss,
+                "GreyStarLoss": player_loss,
                 "PlayerLoss": player_loss,
                 "PlayerEnd": int(self.character["EnduranceCurrent"]),
                 "EnemyEnd": int(self.combat["EnemyEnduranceCurrent"]),
@@ -4239,11 +4272,11 @@ class GrayStarAssistant:
         else:
             print("Evading: enemy loss ignored.")
         if ignored_player_loss:
-            print(f"Gray Star loss ignored by section rule: {ignored_player_loss}")
-        print(f"Gray Star loss: {player_loss}")
+            print(f"Grey Star loss ignored by section rule: {ignored_player_loss}")
+        print(f"Grey Star loss: {player_loss}")
         print(f"Enemy END: {self.combat['EnemyEnduranceCurrent']}/{self.combat['EnemyEnduranceMax']}")
         print(
-            f"Gray Star END/WP: {self.character['EnduranceCurrent']}/"
+            f"Grey Star END/WP: {self.character['EnduranceCurrent']}/"
             f"{self.character['EnduranceMax']} / {self.character['WillpowerCurrent']}"
         )
 
@@ -4367,7 +4400,7 @@ class GrayStarAssistant:
     def complete_book(self) -> None:
         current = int(self.character["BookNumber"])
         if current >= 4:
-            print("Book 4 is the final Gray Star book in this set.")
+            print("Book 4 is the final Grey Star book in this set.")
             return
 
         completed = sorted({int(item) for item in as_list(self.character["CompletedBooks"])} | {current})
@@ -4438,7 +4471,7 @@ class GrayStarAssistant:
         summary = completion.get("Summary") if isinstance(completion.get("Summary"), dict) else {}
         current = int(summary.get("BookNumber") or self.character["BookNumber"])
         if current >= 4:
-            print("Book 4 is the final Gray Star book in this set.")
+            print("Book 4 is the final Grey Star book in this set.")
             return
 
         self.ensure_book_completed(current)
@@ -4692,17 +4725,17 @@ class GrayStarAssistant:
             if not self.invoke(line):
                 break
 
-        print("Good luck, Gray Star.")
+        print("Good luck, Grey Star.")
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Gray Star Action Assistant")
+    parser = argparse.ArgumentParser(description="Grey Star Action Assistant")
     parser.add_argument("--load", default="", help="Save file to load")
     parser.add_argument("--save-dir", default=str(DEFAULT_SAVE_DIR), help="Directory for save files")
     parser.add_argument("--data-dir", default=str(DEFAULT_DATA_DIR), help="Directory for data files")
     args = parser.parse_args()
 
-    assistant = GrayStarAssistant(save_dir=Path(args.save_dir), data_dir=Path(args.data_dir))
+    assistant = GreyStarAssistant(save_dir=Path(args.save_dir), data_dir=Path(args.data_dir))
     assistant.run(load_path=args.load)
 
 

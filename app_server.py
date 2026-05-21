@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""HTTP app server for the Gray Star web assistant."""
+"""HTTP app server for the Grey Star web assistant."""
 
 from __future__ import annotations
 
@@ -16,12 +16,12 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlparse
 
-import garystar
+import greystar
 
 
 ROOT = Path(__file__).resolve().parent
 STATE_LOCK = threading.RLock()
-ASSISTANT = garystar.GrayStarAssistant(save_dir=ROOT / "saves", data_dir=ROOT / "data")
+ASSISTANT = greystar.GreyStarAssistant(save_dir=ROOT / "saves", data_dir=ROOT / "data")
 LAST_OUTPUT = ""
 
 
@@ -46,12 +46,12 @@ def load_last_save() -> None:
         return
 
     try:
-        if garystar.CURRENT_POSITION_FILE.exists():
-            position = json.loads(garystar.CURRENT_POSITION_FILE.read_text(encoding="utf-8"))
+        if greystar.CURRENT_POSITION_FILE.exists():
+            position = json.loads(greystar.CURRENT_POSITION_FILE.read_text(encoding="utf-8"))
             book_number = int(position.get("book") or 1)
             section = int(position.get("section") or 1)
-            if book_number in garystar.BOOKS:
-                max_section = garystar.BOOKS[book_number]["MaxSection"]
+            if book_number in greystar.BOOKS:
+                max_section = greystar.BOOKS[book_number]["MaxSection"]
                 section = section if 1 <= section <= max_section else 1
                 ASSISTANT.character["BookNumber"] = book_number
                 ASSISTANT.state["CurrentSection"] = section
@@ -81,11 +81,11 @@ def state_payload(message: str = "", achievement_unlocks: list[dict] | None = No
         ASSISTANT.save_game(quiet=True)
     state = json.loads(json.dumps(ASSISTANT.state))
     state["Combat"] = ASSISTANT.combat_status_payload()
-    for checkpoint in garystar.as_list(state.get("Automation", {}).get("SectionCheckpoints")):
+    for checkpoint in greystar.as_list(state.get("Automation", {}).get("SectionCheckpoints")):
         if isinstance(checkpoint, dict):
             checkpoint.pop("Snapshot", None)
     return {
-        "books": garystar.BOOKS,
+        "books": greystar.BOOKS,
         "state": state,
         "sectionFlow": ASSISTANT.current_section_flow_payload(),
         "death": ASSISTANT.death_recovery_payload(),
@@ -99,7 +99,7 @@ def state_payload(message: str = "", achievement_unlocks: list[dict] | None = No
 
 
 def apply_new_game(payload: dict) -> str:
-    name = str(payload.get("name") or "Gray Star").strip() or "Gray Star"
+    name = str(payload.get("name") or "Grey Star").strip() or "Grey Star"
     book_number = int(payload.get("bookNumber") or 1)
     book_number = max(1, min(4, book_number))
 
@@ -110,24 +110,24 @@ def apply_new_game(payload: dict) -> str:
     if lesser_was_supplied:
         cleaned_lesser = []
         for item in lesser:
-            if item in garystar.LESSER_MAGICKS and item not in cleaned_lesser:
+            if item in greystar.LESSER_MAGICKS and item not in cleaned_lesser:
                 cleaned_lesser.append(item)
         if len(cleaned_lesser) != lesser_count:
             raise ValueError(f"Book {book_number} requires exactly {lesser_count} Lesser Magicks.")
         lesser = cleaned_lesser
     else:
-        lesser = garystar.LESSER_MAGICKS[:lesser_count]
+        lesser = greystar.LESSER_MAGICKS[:lesser_count]
     if not isinstance(higher, list):
-        higher = garystar.HIGHER_MAGICKS[: (5 if book_number == 4 else 0)]
+        higher = greystar.HIGHER_MAGICKS[: (5 if book_number == 4 else 0)]
 
-    state = garystar.normalize_state(garystar.default_state())
+    state = greystar.normalize_state(greystar.default_state())
     ASSISTANT.state = state
 
     ASSISTANT.character["Name"] = name
     ASSISTANT.character["BookNumber"] = book_number
     ASSISTANT.state["CurrentSection"] = int(payload.get("section") or 1)
 
-    cs_roll = garystar.random_digit()
+    cs_roll = greystar.random_digit()
     ASSISTANT.character["CombatSkillBase"] = 10 + cs_roll
     ASSISTANT.character["CombatSkillCurrent"] = 10 + cs_roll
 
@@ -136,19 +136,19 @@ def apply_new_game(payload: dict) -> str:
         ASSISTANT.character["EnduranceCurrent"] = ASSISTANT.character["EnduranceMax"]
         ASSISTANT.character["WillpowerCurrent"] = int(payload.get("willpower") or 50)
     else:
-        end_value = int(payload.get("endurance") or (20 + garystar.random_digit()))
+        end_value = int(payload.get("endurance") or (20 + greystar.random_digit()))
         wp_base = 20
         if book_number == 3:
             wp_base = 30
         ASSISTANT.character["EnduranceMax"] = end_value
         ASSISTANT.character["EnduranceCurrent"] = end_value
-        ASSISTANT.character["WillpowerCurrent"] = int(payload.get("willpower") or (wp_base + garystar.random_digit()))
+        ASSISTANT.character["WillpowerCurrent"] = int(payload.get("willpower") or (wp_base + greystar.random_digit()))
 
     ASSISTANT.character["LesserMagicks"] = [
-        item for item in lesser if item in garystar.LESSER_MAGICKS
+        item for item in lesser if item in greystar.LESSER_MAGICKS
     ]
     ASSISTANT.character["HigherMagicks"] = [
-        item for item in higher if item in garystar.HIGHER_MAGICKS
+        item for item in higher if item in greystar.HIGHER_MAGICKS
     ]
 
     if book_number == 4:
@@ -161,12 +161,12 @@ def apply_new_game(payload: dict) -> str:
         ASSISTANT.add_special_item("Magic Talisman")
         ASSISTANT.character["WillpowerCurrent"] += 2
     elif gift == "laumspur":
-        ASSISTANT.inventory["BackpackItems"] = garystar.as_list(ASSISTANT.inventory["BackpackItems"]) + [
+        ASSISTANT.inventory["BackpackItems"] = greystar.as_list(ASSISTANT.inventory["BackpackItems"]) + [
             "Vial of Laumspur"
         ]
 
     ASSISTANT.character["WillpowerBase"] = int(ASSISTANT.character["WillpowerCurrent"])
-    book = garystar.BOOKS[book_number]
+    book = greystar.BOOKS[book_number]
     ASSISTANT.state["CurrentBookStats"] = {
         "BookNumber": book_number,
         "BookTitle": book["Title"],
@@ -325,8 +325,8 @@ def handle_action(payload: dict) -> str:
     return f"Unknown action: {action}"
 
 
-class GrayStarHandler(BaseHTTPRequestHandler):
-    server_version = "GrayStarHTTP/0.1"
+class GreyStarHandler(BaseHTTPRequestHandler):
+    server_version = "GreyStarHTTP/0.1"
 
     def log_message(self, format: str, *args) -> None:  # noqa: A003
         return
@@ -368,11 +368,18 @@ class GrayStarHandler(BaseHTTPRequestHandler):
             try:
                 action_name = str(payload.get("action") or "").strip()
                 before_unlocks = ASSISTANT.achievement_unlocked_ids()
+                if action_name == "shutdown":
+                    ASSISTANT.save_game(quiet=True)
+                    message = "Grey Star assistant server is shutting down."
+                    LAST_OUTPUT = message
+                    self.send_json(state_payload(message=message))
+                    threading.Thread(target=self.server.shutdown, daemon=True).start()
+                    return
                 message = handle_action(payload)
                 ASSISTANT.sync_achievements(save=False)
                 after_unlocks = [
                     entry
-                    for entry in garystar.as_list(ASSISTANT.achievement_state().get("Unlocked"))
+                    for entry in greystar.as_list(ASSISTANT.achievement_state().get("Unlocked"))
                     if isinstance(entry, dict) and str(entry.get("Id") or "") not in before_unlocks
                 ]
                 if after_unlocks:
@@ -409,14 +416,18 @@ class GrayStarHandler(BaseHTTPRequestHandler):
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Gray Star web app server")
+    parser = argparse.ArgumentParser(description="Grey Star web app server")
     parser.add_argument("--host", default="localhost")
-    parser.add_argument("--port", type=int, default=int(os.environ.get("GRAYSTAR_HTTP_PORT", "8797")))
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=int(os.environ.get("GREYSTAR_HTTP_PORT", os.environ.get("GRAYSTAR_HTTP_PORT", "8797"))),
+    )
     args = parser.parse_args()
 
     load_last_save()
-    server = ThreadingHTTPServer((args.host, args.port), GrayStarHandler)
-    print(f"Gray Star web app: http://{args.host}:{args.port}", flush=True)
+    server = ThreadingHTTPServer((args.host, args.port), GreyStarHandler)
+    print(f"Grey Star web app: http://{args.host}:{args.port}", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

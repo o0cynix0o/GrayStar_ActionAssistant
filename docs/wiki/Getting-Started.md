@@ -17,13 +17,13 @@ python -m pip install -r .\requirements.txt
 From PowerShell:
 
 ```powershell
-.\Launch-GrayStar.ps1
+.\Launch-GreyStar.ps1
 ```
 
 Or:
 
 ```powershell
-python .\launch_graystar.py
+python .\launch_greystar.py
 ```
 
 Then open:
@@ -36,7 +36,7 @@ http://localhost:8797/assistant.html
 
 1. Start the local server.
 2. Open the assistant page from `localhost`.
-3. Create or load your Gray Star character.
+3. Create or load your Grey Star character.
 4. Read the book in the left pane.
 5. Use the assistant on the right for inventory, stats, combat, rolls, notes, saves, and achievements.
 6. Click book section links normally. The assistant follows your current section.

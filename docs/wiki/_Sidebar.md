@@ -1,4 +1,4 @@
-## Gray Star Action Assistant
+## Grey Star Action Assistant
 
 - [Home](Home)
 - [Getting Started](Getting-Started)

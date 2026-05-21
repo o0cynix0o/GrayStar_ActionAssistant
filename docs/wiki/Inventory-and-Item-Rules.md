@@ -1,6 +1,6 @@
 # Inventory and Item Rules
 
-Gray Star inventory is tracked by category.
+Grey Star inventory is tracked by category.
 
 ## Item Categories
 
@@ -38,7 +38,7 @@ If the timing of a potion is a player choice, the app leaves that timing manual.
 
 ## Lost, Stored, And Returned Gear
 
-Some sections make Gray Star lose access to equipment and later recover it.
+Some sections make Grey Star lose access to equipment and later recover it.
 
 The app can store unavailable gear separately so it can be returned later. This covers cases where the book says to remember what was in the Backpack because it may be found again.
 

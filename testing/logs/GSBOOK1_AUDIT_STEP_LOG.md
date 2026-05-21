@@ -8,7 +8,7 @@ Current step: Pass 1 complete. Next step is Pass 2 route branch audit from secti
 
 Update: section-by-section audit mode approved. The numerical section audit now lives in `GSBOOK1_SECTION_AUDIT.md`.
 
-The Gray Star audit standard has been added under `docs/`, and the first mechanical source sweep has generated the starter report set under `testing/logs/`.
+The Grey Star audit standard has been added under `docs/`, and the first mechanical source sweep has generated the starter report set under `testing/logs/`.
 
 ## Completed Setup
 

@@ -525,7 +525,7 @@
       "combat": [
         {
           "id": "97-tower-door",
-          "label": "Tower Door: ignore Gray Star END loss",
+          "label": "Tower Door: ignore Grey Star END loss",
           "enemy": {
             "name": "Tower Door",
             "cs": 30,

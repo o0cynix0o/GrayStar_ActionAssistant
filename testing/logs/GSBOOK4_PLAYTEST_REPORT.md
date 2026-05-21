@@ -1,6 +1,6 @@
 # GS Book 4 Playtest Report
 
-Generated: 2026-05-21T09:06:12
+Generated: 2026-05-21T11:24:55
 
 ## Summary
 
@@ -27,7 +27,7 @@ Generated: 2026-05-21T09:06:12
 - Leafwater button removes Phinomel Pods and raises Combat Skill.
 - Book 4 herb-cache buttons add Laumspur potions.
 - Potion of Laumspur (+6 END) restores 6 END when used.
-- Fly-by combat can ignore Gray Star END loss when enemy loss is higher.
+- Fly-by combat can ignore Grey Star END loss when enemy loss is higher.
 - Demon Master combat routes to section 276 when it lasts four rounds.
 - Final Shasarak route removes the shattered Wizard's Staff.
 - Book 4 success route completes Book 4.

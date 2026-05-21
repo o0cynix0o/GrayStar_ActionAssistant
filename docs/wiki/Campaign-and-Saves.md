@@ -36,7 +36,7 @@ It resets current Endurance and Willpower back to the character's base values fo
 
 ## Death Recovery
 
-When Gray Star dies or reaches a terminal failure, the app stores a section-entry snapshot.
+When Grey Star dies or reaches a terminal failure, the app stores a section-entry snapshot.
 
 Recovery options:
 

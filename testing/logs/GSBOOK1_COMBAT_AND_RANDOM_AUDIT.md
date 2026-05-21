@@ -15,7 +15,7 @@ Current QA result:
 
 Pass 1 combat baseline:
 
-- Combat ratio is Gray Star Combat Skill minus enemy Combat Skill.
+- Combat ratio is Grey Star Combat Skill minus enemy Combat Skill.
 - Magical Staff use requires at least 1 Willpower and multiplies enemy Endurance loss by Willpower spent.
 - Staff-unavailable combat applies -6 Combat Skill.
 - No-weapon combat applies -8 Combat Skill.

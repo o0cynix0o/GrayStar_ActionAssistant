@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Dry-run Book 1 playtests for the Gray Star assistant.
+"""Dry-run Book 1 playtests for the Grey Star assistant.
 
 These checks deliberately avoid the live save pointer and current-position file.
 They exercise Book 1 section automation, flow buttons, combat presets, and the
@@ -20,7 +20,7 @@ from typing import Any, Callable
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-import garystar  # noqa: E402
+import greystar  # noqa: E402
 
 
 REPORT_PATH = ROOT / "testing" / "logs" / "GSBOOK1_PLAYTEST_REPORT.md"
@@ -39,7 +39,7 @@ SUCCESS_ROUTE = [
 ]
 
 
-class DryRunAssistant(garystar.GrayStarAssistant):
+class DryRunAssistant(greystar.GreyStarAssistant):
     """Assistant variant that never writes the shared save pointer."""
 
     def __init__(self) -> None:
@@ -52,7 +52,7 @@ class DryRunAssistant(garystar.GrayStarAssistant):
     def save_game(self, path_text: str = "", quiet: bool = False) -> bool:
         path = self.resolve_save_path(path_text) if path_text.strip() else self.save_dir / "_dryrun.json"
         self.settings["SavePath"] = str(path)
-        self.saved_state = garystar.json_clone(self.state)
+        self.saved_state = greystar.json_clone(self.state)
         if not quiet:
             print(f"Dry-run save captured: {path}")
         return True
@@ -89,8 +89,8 @@ def capture(func: Callable[[], Any]) -> tuple[Any, str]:
 
 def prime(section: int = 1, *, cs: int = 40, end: int = 120, wp: int = 120) -> DryRunAssistant:
     assistant = DryRunAssistant()
-    assistant.state = garystar.normalize_state(garystar.default_state())
-    assistant.character["Name"] = "QA Gray Star"
+    assistant.state = greystar.normalize_state(greystar.default_state())
+    assistant.character["Name"] = "QA Grey Star"
     assistant.character["BookNumber"] = 1
     assistant.character["CombatSkillBase"] = cs
     assistant.character["CombatSkillCurrent"] = cs
@@ -98,7 +98,7 @@ def prime(section: int = 1, *, cs: int = 40, end: int = 120, wp: int = 120) -> D
     assistant.character["EnduranceCurrent"] = end
     assistant.character["WillpowerCurrent"] = wp
     assistant.character["WillpowerBase"] = wp
-    assistant.character["LesserMagicks"] = list(garystar.LESSER_MAGICKS)
+    assistant.character["LesserMagicks"] = list(greystar.LESSER_MAGICKS)
     assistant.inventory["Weapons"] = ["Wizard's Staff", "Broadsword"]
     assistant.inventory["BackpackItems"] = [
         "Meal", "Meal", "Meal", "Meal", "Meal", "Meal", "Meal", "Meal",
@@ -128,7 +128,7 @@ def prime(section: int = 1, *, cs: int = 40, end: int = 120, wp: int = 120) -> D
     assistant.state["SectionHistory"] = []
     assistant.state["CurrentBookStats"] = {
         "BookNumber": 1,
-        "BookTitle": garystar.BOOKS[1]["Title"],
+        "BookTitle": greystar.BOOKS[1]["Title"],
         "StartSection": section,
         "LastSection": section,
         "SectionsVisited": 0,
@@ -178,7 +178,7 @@ def run_flow_surface_sweep(result: Result) -> None:
                     roll_tests += 1
                 except Exception as exc:
                     result.fail(f"Section {section} roll {raw} raised {type(exc).__name__}: {exc}")
-        for option in garystar.as_list(flow.get("loot")):
+        for option in greystar.as_list(flow.get("loot")):
             if not isinstance(option, dict):
                 continue
             local = prime(section)
@@ -187,7 +187,7 @@ def run_flow_surface_sweep(result: Result) -> None:
                 loot_tests += 1
             except Exception as exc:
                 result.fail(f"Section {section} loot {option.get('id')} raised {type(exc).__name__}: {exc}")
-        for status in garystar.as_list(flow.get("status")):
+        for status in greystar.as_list(flow.get("status")):
             if not isinstance(status, dict):
                 continue
             local = prime(section)
@@ -203,7 +203,7 @@ def run_flow_surface_sweep(result: Result) -> None:
                 wp_tests += 1
             except Exception as exc:
                 result.fail(f"Section {section} WP cost raised {type(exc).__name__}: {exc}")
-        for combat in garystar.as_list(flow.get("combat")):
+        for combat in greystar.as_list(flow.get("combat")):
             if not isinstance(combat, dict):
                 continue
             local = prime(section)
@@ -225,7 +225,7 @@ def run_focused_combat_checks(result: Result) -> None:
         local.automation_flags["sorceryShieldActiveFor149"] = shield
         capture(lambda: local.start_section_combat("149-kleasa"))
         capture(lambda: local.combat_round(combat_round_tokens(local, roll=5, wp=1)))
-        log = garystar.as_list(local.combat.get("Log"))
+        log = greystar.as_list(local.combat.get("Log"))
         last = log[-1] if log else {}
         result.check(
             bool(last.get("SpecialEffects")),
@@ -331,8 +331,8 @@ def run_completion_check(result: Result) -> None:
     result.check(
         int(local.character["BookNumber"]) == 2
         and int(local.state["CurrentSection"]) == 1
-        and 1 in [int(item) for item in garystar.as_list(local.character["CompletedBooks"])]
-        and "Psychomancy" in garystar.as_list(local.character["LesserMagicks"]),
+        and 1 in [int(item) for item in greystar.as_list(local.character["CompletedBooks"])]
+        and "Psychomancy" in greystar.as_list(local.character["LesserMagicks"]),
         "Book 1 continue flow advances to Book 2 and carries completion state.",
         "Book 1 continue flow did not advance cleanly to Book 2.",
     )
@@ -360,7 +360,7 @@ def run_achievement_checks(result: Result) -> None:
     local.sync_achievements(save=False)
     unlocked = {
         str(entry.get("Id"))
-        for entry in garystar.as_list(local.achievement_state().get("Unlocked"))
+        for entry in greystar.as_list(local.achievement_state().get("Unlocked"))
         if isinstance(entry, dict)
     }
     expected = {
@@ -399,7 +399,7 @@ def run_route_smoke_playthrough(result: Result) -> None:
         try:
             capture(lambda section=section: local.set_section(section))
             flow = local.current_section_flow_entry() or {}
-            for combat in garystar.as_list(flow.get("combat")):
+            for combat in greystar.as_list(flow.get("combat")):
                 if not isinstance(combat, dict):
                     continue
                 combat_id = str(combat.get("id") or "")
@@ -413,7 +413,7 @@ def run_route_smoke_playthrough(result: Result) -> None:
             result.fail(f"Successful-route smoke failed at section {section}: {type(exc).__name__}: {exc}")
             break
     result.check(
-        visited == len(SUCCESS_ROUTE) and 350 in garystar.as_list(local.state["CurrentBookStats"].get("VisitedSections")),
+        visited == len(SUCCESS_ROUTE) and 350 in greystar.as_list(local.state["CurrentBookStats"].get("VisitedSections")),
         f"Successful-route smoke reached section 350 across {visited} route stops.",
         f"Successful-route smoke stopped after {visited} route stops.",
     )
@@ -422,15 +422,15 @@ def run_route_smoke_playthrough(result: Result) -> None:
 def run_route_link_check(result: Result) -> None:
     missing: list[str] = []
     bad_ranges: list[str] = []
-    for section in range(1, garystar.BOOKS[1]["MaxSection"] + 1):
-        source = ROOT / "books" / "gs" / garystar.BOOKS[1]["Folder"] / f"sect{section}.htm"
+    for section in range(1, greystar.BOOKS[1]["MaxSection"] + 1):
+        source = ROOT / "books" / "gs" / greystar.BOOKS[1]["Folder"] / f"sect{section}.htm"
         if not source.exists():
             missing.append(str(section))
             continue
         local = prime(section)
         for route in local.section_source_routes(1, section):
-            target = ROOT / "books" / "gs" / garystar.BOOKS[1]["Folder"] / f"sect{route}.htm"
-            if route < 1 or route > garystar.BOOKS[1]["MaxSection"] or not target.exists():
+            target = ROOT / "books" / "gs" / greystar.BOOKS[1]["Folder"] / f"sect{route}.htm"
+            if route < 1 or route > greystar.BOOKS[1]["MaxSection"] or not target.exists():
                 bad_ranges.append(f"{section}->{route}")
     result.check(not missing, "All 350 Book 1 section HTML files exist.", f"Missing section files: {', '.join(missing[:12])}")
     result.check(not bad_ranges, "All Book 1 source links point to existing sections.", f"Bad section links: {', '.join(bad_ranges[:12])}")

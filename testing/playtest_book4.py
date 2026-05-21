@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Dry-run Book 4 validation for the Gray Star assistant."""
+"""Dry-run Book 4 validation for the Grey Star assistant."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ from typing import Any, Callable
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-import garystar  # noqa: E402
+import greystar  # noqa: E402
 
 
 REPORT_PATH = ROOT / "testing" / "logs" / "GSBOOK4_PLAYTEST_REPORT.md"
@@ -39,7 +39,7 @@ class TextParser(HTMLParser):
             self.parts.append(data.strip())
 
 
-class DryRunAssistant(garystar.GrayStarAssistant):
+class DryRunAssistant(greystar.GreyStarAssistant):
     def __init__(self) -> None:
         super().__init__(save_dir=ROOT / "testing" / "dry-run-saves", data_dir=ROOT / "data")
         self.saved_state: dict[str, Any] | None = None
@@ -50,7 +50,7 @@ class DryRunAssistant(garystar.GrayStarAssistant):
     def save_game(self, path_text: str = "", quiet: bool = False) -> bool:
         path = self.resolve_save_path(path_text) if path_text.strip() else self.save_dir / "_dryrun-book4.json"
         self.settings["SavePath"] = str(path)
-        self.saved_state = garystar.json_clone(self.state)
+        self.saved_state = greystar.json_clone(self.state)
         if not quiet:
             print(f"Dry-run save captured: {path}")
         return True
@@ -100,8 +100,8 @@ def section_text_and_links(section: int) -> tuple[str, list[int]]:
 
 def prime(section: int = 1, *, cs: int = 42, end: int = 150, wp: int = 180) -> DryRunAssistant:
     assistant = DryRunAssistant()
-    assistant.state = garystar.normalize_state(garystar.default_state())
-    assistant.character["Name"] = "QA Gray Star"
+    assistant.state = greystar.normalize_state(greystar.default_state())
+    assistant.character["Name"] = "QA Grey Star"
     assistant.character["BookNumber"] = 4
     assistant.character["CombatSkillBase"] = cs
     assistant.character["CombatSkillCurrent"] = cs
@@ -109,8 +109,8 @@ def prime(section: int = 1, *, cs: int = 42, end: int = 150, wp: int = 180) -> D
     assistant.character["EnduranceCurrent"] = end
     assistant.character["WillpowerCurrent"] = wp
     assistant.character["WillpowerBase"] = wp
-    assistant.character["LesserMagicks"] = list(garystar.LESSER_MAGICKS)
-    assistant.character["HigherMagicks"] = list(garystar.HIGHER_MAGICKS)
+    assistant.character["LesserMagicks"] = list(greystar.LESSER_MAGICKS)
+    assistant.character["HigherMagicks"] = list(greystar.HIGHER_MAGICKS)
     assistant.inventory["Weapons"] = ["Wizard's Staff", "Broadsword"]
     assistant.inventory["BackpackItems"] = [
         "Meal",
@@ -137,7 +137,7 @@ def prime(section: int = 1, *, cs: int = 42, end: int = 150, wp: int = 180) -> D
     assistant.state["SectionHistory"] = []
     assistant.state["CurrentBookStats"] = {
         "BookNumber": 4,
-        "BookTitle": garystar.BOOKS[4]["Title"],
+        "BookTitle": greystar.BOOKS[4]["Title"],
         "StartSection": section,
         "LastSection": section,
         "SectionsVisited": 0,
@@ -290,8 +290,8 @@ def run_combat_behaviour(result: Result) -> None:
         _, output = capture(lambda: assistant.combat_round(["combat", "round", str(found_roll)]))
         log = assistant.combat.get("Log", [{}])[-1]
         result.check(
-            int(log.get("IgnoredPlayerLoss") or 0) > 0 and int(log.get("GrayStarLoss") or 0) == 0,
-            "Fly-by combat can ignore Gray Star END loss when enemy loss is higher.",
+            int(log.get("IgnoredPlayerLoss") or 0) > 0 and int(log.get("GreyStarLoss") or 0) == 0,
+            "Fly-by combat can ignore Grey Star END loss when enemy loss is higher.",
             f"Conditional fly-by loss failed: {log} / {output}",
         )
 

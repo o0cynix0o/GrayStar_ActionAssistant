@@ -65,7 +65,7 @@ Use **Eat Meal** and **Missed Meal** for normal food bookkeeping.
 
 ## Death Screen
 
-When Gray Star dies or reaches a terminal failure, the app presents recovery options:
+When Grey Star dies or reaches a terminal failure, the app presents recovery options:
 
 - **Rewind**: restore the state from before the current section visit.
 - **Repeat**: try the failed section again from its entry snapshot.

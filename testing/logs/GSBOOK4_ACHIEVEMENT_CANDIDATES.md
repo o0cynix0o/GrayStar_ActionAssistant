@@ -4,7 +4,7 @@ Generated: 2026-05-21T09:04:35
 
 Book: War of the Wizards
 
-Status: implemented in `garystar.py` and covered by Book 4 dry-run backfill checks for the final route.
+Status: implemented in `greystar.py` and covered by Book 4 dry-run backfill checks for the final route.
 
 | Id | Name | Category | Unlock Intent |
 |---|---|---|---|

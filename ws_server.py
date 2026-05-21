@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-WebSocket terminal bridge for the Gray Star Action Assistant.
+WebSocket terminal bridge for the Grey Star Action Assistant.
 
 The browser sends raw terminal input to this server. The server starts
-garystar.py and streams terminal output back to xterm.js.
+greystar.py and streams terminal output back to xterm.js.
 """
 
 from __future__ import annotations
@@ -31,9 +31,9 @@ if os.name != "nt":
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-ASSISTANT_SCRIPT = SCRIPT_DIR / "garystar.py"
+ASSISTANT_SCRIPT = SCRIPT_DIR / "greystar.py"
 WS_HOST = "localhost"
-WS_PORT = int(os.environ.get("GRAYSTAR_WS_PORT", "8798"))
+WS_PORT = int(os.environ.get("GREYSTAR_WS_PORT", os.environ.get("GRAYSTAR_WS_PORT", "8798")))
 INIT_COLS = 120
 INIT_ROWS = 30
 
@@ -289,7 +289,7 @@ def write_current_position() -> None:
 
 async def main() -> None:
     write_current_position()
-    print(f"Gray Star WebSocket server: ws://{WS_HOST}:{WS_PORT}", flush=True)
+    print(f"Grey Star WebSocket server: ws://{WS_HOST}:{WS_PORT}", flush=True)
     async with serve(terminal_session, WS_HOST, WS_PORT):
         await asyncio.Future()
 

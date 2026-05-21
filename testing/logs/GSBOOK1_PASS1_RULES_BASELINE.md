@@ -73,14 +73,14 @@ Book 1 character creation requires:
 
 ## Combat Rules Confirmed
 
-- Combat ratio is Gray Star's current Combat Skill minus the enemy Combat Skill.
+- Combat ratio is Grey Star's current Combat Skill minus the enemy Combat Skill.
 - If using the Wizard's Staff magically, the player must spend at least 1 Willpower.
 - A random digit is cross-referenced against the Combat Results Table.
-- Gray Star loses the table's player loss.
+- Grey Star loses the table's player loss.
 - Enemy loss from the table is multiplied by Willpower spent when using the Staff magically.
 - Combat ends when either side reaches zero or below Endurance.
 - Evade is only legal when the section text offers it.
-- If evading after a combat round, enemy damage from that round is ignored and only Gray Star's damage applies.
+- If evading after a combat round, enemy damage from that round is ignored and only Grey Star's damage applies.
 - If entering combat without the Staff, apply a -6 Combat Skill penalty.
 - If entering combat with no weapon, apply a -8 Combat Skill penalty.
 

@@ -1,12 +1,12 @@
-# Gray Star Action Assistant Wiki
+# Grey Star Action Assistant Wiki
 
-Welcome to the project wiki for **Gray Star Action Assistant**.
+Welcome to the project wiki for **Grey Star Action Assistant**.
 
-This wiki is the player-facing companion to the main repository. It explains how to use the local web assistant while playing the **World of Lone Wolf / Gray Star** gamebooks.
+This wiki is the player-facing companion to the main repository. It explains how to use the local web assistant while playing the **World of Lone Wolf / Grey Star** gamebooks.
 
 ## What This Project Is
 
-Gray Star Action Assistant is a local Python web app that acts like a digital Action Chart and play aid. It keeps the book visible on the left and the assistant on the right.
+Grey Star Action Assistant is a local Python web app that acts like a digital Action Chart and play aid. It keeps the book visible on the left and the assistant on the right.
 
 It helps with:
 
@@ -43,7 +43,7 @@ Current app support is strongest for:
 - **Book 3: Beyond the Nightmare Gate**
 - **Book 4: War of the Wizards**
 
-All four Gray Star books now have assistant rules, achievements, strategy guides, and green dry-run playtest reports.
+All four Grey Star books now have assistant rules, achievements, strategy guides, and green dry-run playtest reports.
 
 ## Project Rule
 

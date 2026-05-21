@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gray Star - Web Assistant</title>
+  <title>Grey Star - Web Assistant</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body {
@@ -113,12 +113,13 @@
     }
     .app-pane {
       background: #10130e;
+      position: relative;
     }
     .status-grid {
-      margin: 0.65rem 0.65rem 0;
+      margin: 0.65rem 2.85rem 0 0.65rem;
       padding: 0.55rem;
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: minmax(210px, 2.3fr) repeat(4, minmax(72px, 0.65fr));
       gap: 0.5rem;
       border: 1px solid #4e4528;
       border-radius: 6px;
@@ -146,6 +147,78 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+    .stat-card.status-book strong {
+      line-height: 1.15;
+      white-space: normal;
+    }
+    .app-menu-button,
+    .card-menu-button {
+      width: 20px;
+      height: 20px;
+      min-height: 20px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: #ffffff;
+      font-size: 1.05rem;
+      line-height: 1;
+    }
+    .app-menu-button:hover,
+    .card-menu-button:hover {
+      background: #26301b;
+      color: #ffffff;
+    }
+    .app-menu-button {
+      position: absolute;
+      top: 0.82rem;
+      right: 0.82rem;
+      z-index: 35;
+    }
+    .menu-popover {
+      padding: 0.45rem;
+      display: grid;
+      gap: 0.35rem;
+      border: 1px solid #6d5f35;
+      border-radius: 6px;
+      background: #171b12;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+      z-index: 40;
+    }
+    .menu-popover[hidden] {
+      display: none;
+    }
+    .app-menu-popover {
+      position: absolute;
+      top: 2.45rem;
+      right: 0.65rem;
+      width: min(310px, calc(100% - 1.3rem));
+    }
+    .menu-popover button {
+      width: 100%;
+      min-height: 28px;
+      padding: 0.22rem 0.45rem;
+      text-align: left;
+      font-size: 0.78rem;
+    }
+    .menu-heading {
+      color: #aeb091;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+    }
+    .menu-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.3rem;
+    }
+    .menu-row.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .menu-row button {
+      text-align: center;
     }
     .tabs {
       margin: 0.55rem 0.65rem 0;
@@ -288,6 +361,52 @@
       flex: 1;
       overflow: auto;
       padding: 0.65rem;
+    }
+    #view.view-card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-content: start;
+      gap: 0.65rem;
+    }
+    #view.view-card-grid > .panel {
+      margin-bottom: 0;
+    }
+    .dashboard-card {
+      position: relative;
+    }
+    .dashboard-card.card-size-small {
+      grid-column: auto;
+      padding: 0.55rem;
+    }
+    .dashboard-card.card-size-medium {
+      grid-column: auto;
+    }
+    .dashboard-card.card-size-large {
+      grid-column: 1 / -1;
+    }
+    .quick-panel .dashboard-card.card-size-large,
+    .tabs.dashboard-card.card-size-large {
+      grid-column: 1 / -1;
+    }
+    .card-menu-button {
+      position: absolute;
+      top: 0.35rem;
+      right: 0.35rem;
+      z-index: 25;
+    }
+    .card-menu {
+      position: absolute;
+      top: 1.9rem;
+      right: 0.35rem;
+      width: min(210px, calc(100% - 0.7rem));
+    }
+    .dashboard-card > h2,
+    .dashboard-card > .section-subtitle,
+    .dashboard-card .combat-meter-title-row {
+      padding-right: 1.65rem;
+    }
+    .dashboard-card [data-card-help] {
+      cursor: help;
     }
     .sheet-layout {
       display: grid;
@@ -646,6 +765,7 @@
       .top-dashboard .wide,
       .top-dashboard .extra-wide { grid-column: auto; }
       .status-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      #view.view-card-grid { grid-template-columns: 1fr; }
       .combat-meter-grid { grid-template-columns: 1fr; }
       .death-options { grid-template-columns: 1fr; }
       .sheet-layout { grid-template-columns: 1fr; }
@@ -658,7 +778,7 @@
 <body>
   <header>
     <a href="/" target="_top">Home</a>
-    <h1>Gray Star</h1>
+    <h1>Grey Star</h1>
     <div class="spacer"></div>
     <div class="status-line" id="serverStatus">Loading...</div>
   </header>
@@ -674,10 +794,12 @@
         <button type="button" id="titleBtn">Title</button>
         <span class="reader-title" id="readerTitle">Loading...</span>
       </div>
-      <iframe id="book-frame" name="book-frame" title="Gray Star book"></iframe>
+      <iframe id="book-frame" name="book-frame" title="Grey Star book"></iframe>
     </section>
 
-    <section class="app-pane" aria-label="Gray Star web assistant">
+    <section class="app-pane" aria-label="Grey Star web assistant">
+      <button class="app-menu-button" type="button" id="appMenuButton" data-app-menu-toggle aria-label="Assistant menu" title="Assistant menu">•</button>
+      <div class="menu-popover app-menu-popover" id="appMenu" hidden></div>
       <div class="status-grid" id="statusGrid"></div>
       <section class="quick-panel" id="quickPanel" aria-label="Quick actions"></section>
       <nav class="tabs" id="tabs"></nav>
@@ -716,15 +838,21 @@
     const view = document.getElementById('view');
     const toastStack = document.getElementById('toastStack');
     const message = document.getElementById('message');
+    const appMenu = document.getElementById('appMenu');
     let app = null;
     let activeView = 'sheet';
     let activeBook = 1;
     let activeSection = null;
     let draggedWidget = '';
-    const topLayoutKey = 'graystar.top.layout.v1';
-    const topSizeKey = 'graystar.top.sizes.v1';
-    const sheetLayoutKey = 'graystar.sheet.layout.v1';
-    const sheetSizeKey = 'graystar.sheet.sizes.v1';
+    let activeCardMenu = '';
+    const topLayoutKey = 'greystar.top.layout.v1';
+    const topSizeKey = 'greystar.top.sizes.v1';
+    const sheetLayoutKey = 'greystar.sheet.layout.v1';
+    const sheetSizeKey = 'greystar.sheet.sizes.v1';
+    const cardLayoutPrefix = 'greystar.cards.layout.';
+    const cardSizePrefix = 'greystar.cards.size.';
+    const cardClosedPrefix = 'greystar.cards.closed.';
+    const cardLabelPrefix = 'greystar.cards.labels.';
     const sizeOrder = ['compact', 'normal', 'full'];
     const sizeLabels = { compact: 'Compact', normal: 'Normal', full: 'Full' };
     const topWidgets = [
@@ -851,10 +979,12 @@
       renderTabs();
       if (currentDeath().Active) {
         renderDeathScreen();
+        decorateInterfaceCards('death');
         return;
       }
       if (currentBookComplete().Active) {
         renderBookCompleteScreen();
+        decorateInterfaceCards('complete');
         return;
       }
       const renderers = {
@@ -865,21 +995,23 @@
         combat: renderCombat,
         achievements: renderAchievements,
         saves: renderSaves,
-        notes: renderNotes
+        notes: renderNotes,
+        settings: renderSettings
       };
-      renderers[activeView]();
+      (renderers[activeView] || renderers.sheet)();
+      decorateInterfaceCards(activeView);
     }
 
     function renderStatus() {
       const c = currentCharacter();
       const book = bookByNumber(c.BookNumber);
       statusGrid.innerHTML = [
-        ['Book', `${c.BookNumber}. ${book.title}`],
-        ['Section', app.state.CurrentSection],
-        ['END', `${c.EnduranceCurrent}/${c.EnduranceMax}`],
-        ['WP', c.WillpowerCurrent],
-        ['CS', c.CombatSkillCurrent]
-      ].map(([label, value]) => `<div class="stat-card"><span>${label}</span><strong>${value}</strong></div>`).join('');
+        ['Book', `${c.BookNumber}. ${book.title}`, 'status-book'],
+        ['Section', app.state.CurrentSection, 'status-section'],
+        ['END', `${c.EnduranceCurrent}/${c.EnduranceMax}`, 'status-end'],
+        ['WP', c.WillpowerCurrent, 'status-wp'],
+        ['CS', c.CombatSkillCurrent, 'status-cs']
+      ].map(([label, value, className]) => `<div class="stat-card ${className}"><span>${label}</span><strong>${escapeHtml(value)}</strong></div>`).join('');
     }
 
     function renderQuickPanel() {
@@ -943,7 +1075,7 @@
           ${nextBook === 3 ? '<label class="field">Willpower Roll<input name="willpowerRoll" type="number" min="0" max="9" placeholder="Blank = random"></label>' : ''}
           <button type="submit">Continue to Book ${escapeHtml(nextBook)}</button>
         </form>
-      ` : '<p class="muted">The supported Gray Star campaign is complete.</p>';
+      ` : '<p class="muted">The supported Grey Star campaign is complete.</p>';
 
       view.innerHTML = `
         <div class="panel">
@@ -1005,7 +1137,7 @@
 
     function renderDeathScreen() {
       const death = currentDeath();
-      const outcome = String(death.Type || '').toLowerCase() === 'failure' ? 'Mission Failed' : 'Gray Star Has Fallen';
+      const outcome = String(death.Type || '').toLowerCase() === 'failure' ? 'Mission Failed' : 'Grey Star Has Fallen';
       const repeatTarget = targetLabel(death.RepeatTarget);
       const rewindTarget = targetLabel(death.RewindTarget);
       const repeatCopy = death.CanRepeat
@@ -1042,6 +1174,276 @@
             </article>
           </div>
         </div>
+      `;
+    }
+
+    function cardScopeForView(scope) {
+      return `view-${scope || activeView || 'sheet'}`;
+    }
+
+    function cardStorageKey(prefix, scope) {
+      return `${prefix}${scope}`;
+    }
+
+    function getJsonStorage(key, fallback) {
+      try {
+        const saved = localStorage.getItem(key);
+        return saved ? JSON.parse(saved) : fallback;
+      } catch {
+        return fallback;
+      }
+    }
+
+    function setJsonStorage(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function getCardLayout(scope) {
+      const layout = getJsonStorage(cardStorageKey(cardLayoutPrefix, scope), []);
+      return Array.isArray(layout) ? layout.filter(Boolean) : [];
+    }
+
+    function setCardLayout(scope, layout) {
+      setJsonStorage(cardStorageKey(cardLayoutPrefix, scope), arr(layout).map((item) => text(item)).filter(Boolean));
+    }
+
+    function getCardSizes(scope) {
+      const sizes = getJsonStorage(cardStorageKey(cardSizePrefix, scope), {});
+      return sizes && typeof sizes === 'object' && !Array.isArray(sizes) ? sizes : {};
+    }
+
+    function getCardSize(scope, id, defaultSize = 'large') {
+      const size = text(getCardSizes(scope)[id], defaultSize);
+      return ['small', 'medium', 'large'].includes(size) ? size : defaultSize;
+    }
+
+    function setCardSize(scope, id, size) {
+      const sizes = getCardSizes(scope);
+      sizes[id] = ['small', 'medium', 'large'].includes(size) ? size : 'large';
+      setJsonStorage(cardStorageKey(cardSizePrefix, scope), sizes);
+      render();
+    }
+
+    function getClosedCards(scope) {
+      const closed = getJsonStorage(cardStorageKey(cardClosedPrefix, scope), []);
+      return Array.isArray(closed) ? closed.filter(Boolean) : [];
+    }
+
+    function setClosedCards(scope, closed) {
+      setJsonStorage(cardStorageKey(cardClosedPrefix, scope), Array.from(new Set(arr(closed).map((item) => text(item)).filter(Boolean))));
+    }
+
+    function getCardLabels(scope) {
+      const labels = getJsonStorage(cardStorageKey(cardLabelPrefix, scope), {});
+      return labels && typeof labels === 'object' && !Array.isArray(labels) ? labels : {};
+    }
+
+    function rememberCardLabel(scope, id, label) {
+      const labels = getCardLabels(scope);
+      labels[id] = label;
+      setJsonStorage(cardStorageKey(cardLabelPrefix, scope), labels);
+    }
+
+    function slugCardTitle(title, fallback) {
+      const slug = text(title, fallback)
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      return slug || fallback;
+    }
+
+    function cardTitle(card, fallback = 'Section') {
+      return text(
+        card.querySelector(':scope > h2')?.textContent ||
+        card.querySelector(':scope > .quick-title')?.textContent ||
+        card.querySelector('.combat-meter-title-row h2')?.textContent,
+        fallback
+      ).trim();
+    }
+
+    function cardHelp(title, scope) {
+      const key = slugCardTitle(title, '');
+      const help = {
+        choices: 'This card shows assistant actions found in the current book section: loot, costs, status flags, combat, and section-aware rolls.',
+        'section-assistant': 'Use this when a section has rolls, loot, special costs, or combat presets that are not handled by the book link itself.',
+        'stored-gear': 'This keeps the inventory record for gear the book has taken away and may return later.',
+        'start-tracked-combat': 'Use this for fights that are not started by a section preset. Staff WP controls how much Willpower you spend with the Wizard’s Staff each round.',
+        'combat-controls': 'Resolve rounds here. Pick the active weapon, choose Staff magic when allowed, and enter the section’s roll if the book gives one.',
+        'recent-combat-rounds': 'This is the round-by-round audit trail for the current fight, including END loss, WP spend, and ignored-loss rules.',
+        'section': 'Apply section effects and section-aware rolls from the audit data.',
+        'drop-item': 'Quickly remove carried items without opening the full Inventory tab.'
+      };
+      return help[key] || (scope === 'tabs' ? 'Switch between assistant views. Re-add this from the assistant menu if you close it.' : '');
+    }
+
+    function applyCardOrder(scope, cards) {
+      const parent = cards[0]?.parentElement;
+      if (!parent) return cards;
+      const layout = getCardLayout(scope);
+      if (!layout.length) return cards;
+      const byId = new Map(cards.map((card) => [card.dataset.cardId, card]));
+      const ordered = [];
+      layout.forEach((id) => {
+        const card = byId.get(id);
+        if (card && !ordered.includes(card)) ordered.push(card);
+      });
+      cards.forEach((card) => {
+        if (!ordered.includes(card)) ordered.push(card);
+      });
+      ordered.forEach((card) => parent.appendChild(card));
+      return ordered;
+    }
+
+    function cardMenuHtml(scope, id, title, size, options) {
+      const movementDisabled = options.movable === false ? 'disabled' : '';
+      const closeDisabled = options.closeable === false ? 'disabled' : '';
+      const sizeButton = (value, label) => `<button type="button" class="${size === value ? 'active' : ''}" data-card-size="${scope}:${id}:${value}">${label}</button>`;
+      return `
+        <button class="card-menu-button" type="button" data-card-menu-toggle="${escapeHtml(scope)}:${escapeHtml(id)}" aria-label="${escapeHtml(title)} menu" title="${escapeHtml(title)} menu">•</button>
+        <div class="menu-popover card-menu" data-card-menu="${escapeHtml(scope)}:${escapeHtml(id)}" hidden>
+          <div class="menu-heading">${escapeHtml(title)}</div>
+          <div class="menu-row">
+            <button type="button" data-card-move="${escapeHtml(scope)}:${escapeHtml(id)}:up" ${movementDisabled}>Up</button>
+            <button type="button" data-card-move="${escapeHtml(scope)}:${escapeHtml(id)}:down" ${movementDisabled}>Down</button>
+            <button type="button" data-card-move="${escapeHtml(scope)}:${escapeHtml(id)}:left" ${movementDisabled}>Left</button>
+            <button type="button" data-card-move="${escapeHtml(scope)}:${escapeHtml(id)}:right" ${movementDisabled}>Right</button>
+          </div>
+          <div class="menu-heading">Size</div>
+          <div class="menu-row three">
+            ${sizeButton('small', 'Small')}
+            ${sizeButton('medium', 'Medium')}
+            ${sizeButton('large', 'Large')}
+          </div>
+          <button type="button" class="danger" data-card-close="${escapeHtml(scope)}:${escapeHtml(id)}" ${closeDisabled}>Close Section</button>
+        </div>
+      `;
+    }
+
+    function decorateCards(scope, cards, options = {}) {
+      const actualCards = arr(cards).filter(Boolean);
+      if (!actualCards.length) return;
+      const seen = {};
+      actualCards.forEach((card) => {
+        const title = cardTitle(card);
+        const base = slugCardTitle(title, 'card');
+        seen[base] = (seen[base] || 0) + 1;
+        const id = seen[base] === 1 ? base : `${base}-${seen[base]}`;
+        card.dataset.cardScope = scope;
+        card.dataset.cardId = id;
+        card.dataset.cardTitle = title;
+        rememberCardLabel(scope, id, title);
+      });
+      const ordered = options.movable === false ? actualCards : applyCardOrder(scope, actualCards);
+      const closed = new Set(getClosedCards(scope));
+      ordered.forEach((card) => {
+        const id = card.dataset.cardId;
+        const title = card.dataset.cardTitle || cardTitle(card);
+        const defaultSize = options.defaultSize || 'large';
+        const size = getCardSize(scope, id, defaultSize);
+        card.hidden = closed.has(id);
+        card.classList.add('dashboard-card');
+        card.classList.remove('card-size-small', 'card-size-medium', 'card-size-large');
+        card.classList.add(`card-size-${size}`);
+        card.querySelector(':scope > .card-menu-button')?.remove();
+        card.querySelector(':scope > .card-menu')?.remove();
+        card.insertAdjacentHTML('afterbegin', cardMenuHtml(scope, id, title, size, options));
+        const help = cardHelp(title, scope);
+        const helpTarget = card.querySelector(':scope > h2') || card.querySelector(':scope > .quick-title') || card.querySelector('.combat-meter-title-row h2');
+        if (help && helpTarget) {
+          helpTarget.title = help;
+          helpTarget.dataset.cardHelp = 'true';
+        }
+      });
+    }
+
+    function decorateInterfaceCards(scope) {
+      const viewScope = cardScopeForView(scope);
+      view.classList.add('view-card-grid');
+      decorateCards('quick', Array.from(quickPanel.querySelectorAll(':scope > .quick-card')), { defaultSize: 'medium' });
+      decorateCards('tabs', [tabs], { defaultSize: 'large', movable: false });
+      decorateCards(viewScope, Array.from(view.querySelectorAll(':scope > .panel')), { defaultSize: 'large' });
+    }
+
+    function moveCard(scope, id, direction) {
+      const cards = Array.from(document.querySelectorAll('[data-card-scope]')).filter((card) => card.dataset.cardScope === scope);
+      const ids = cards.map((card) => card.dataset.cardId).filter(Boolean);
+      if (!ids.includes(id)) return;
+      const index = ids.indexOf(id);
+      const next = ['up', 'left'].includes(direction) ? index - 1 : index + 1;
+      if (next < 0 || next >= ids.length) return;
+      [ids[index], ids[next]] = [ids[next], ids[index]];
+      setCardLayout(scope, ids);
+      render();
+    }
+
+    function closeCard(scope, id) {
+      const closed = new Set(getClosedCards(scope));
+      closed.add(id);
+      setClosedCards(scope, Array.from(closed));
+      render();
+    }
+
+    function openCard(scope, id) {
+      setClosedCards(scope, getClosedCards(scope).filter((item) => item !== id));
+      render();
+    }
+
+    function resetCardScope(scope) {
+      [cardLayoutPrefix, cardSizePrefix, cardClosedPrefix].forEach((prefix) => localStorage.removeItem(cardStorageKey(prefix, scope)));
+      render();
+    }
+
+    function resetAllCardLayouts() {
+      const prefixes = [cardLayoutPrefix, cardSizePrefix, cardClosedPrefix];
+      Object.keys(localStorage)
+        .filter((key) => prefixes.some((prefix) => key.startsWith(prefix)))
+        .forEach((key) => localStorage.removeItem(key));
+      render();
+    }
+
+    function closeMenus() {
+      appMenu.hidden = true;
+      activeCardMenu = '';
+      document.querySelectorAll('.card-menu').forEach((menu) => { menu.hidden = true; });
+    }
+
+    function toggleCardMenu(scope, id) {
+      const token = `${scope}:${id}`;
+      const currentMenu = Array.from(document.querySelectorAll('[data-card-menu]')).find((menu) => menu.dataset.cardMenu === token);
+      const wasOpen = activeCardMenu === token && currentMenu && !currentMenu.hidden;
+      closeMenus();
+      if (wasOpen) return;
+      const menu = Array.from(document.querySelectorAll('[data-card-menu]')).find((item) => item.dataset.cardMenu === token);
+      if (menu) {
+        menu.hidden = false;
+        activeCardMenu = token;
+      }
+    }
+
+    function hiddenCardEntries() {
+      const entries = [];
+      document.querySelectorAll('[data-card-scope][data-card-id][hidden]').forEach((card) => {
+        entries.push({
+          scope: card.dataset.cardScope,
+          id: card.dataset.cardId,
+          label: card.dataset.cardTitle || getCardLabels(card.dataset.cardScope)[card.dataset.cardId] || card.dataset.cardId
+        });
+      });
+      return entries;
+    }
+
+    function renderAppMenu() {
+      const hidden = hiddenCardEntries();
+      appMenu.innerHTML = `
+        <div class="menu-heading">Assistant</div>
+        <button type="button" data-save-current>Save Game</button>
+        <button type="button" data-autosave>Autosave: On</button>
+        <button type="button" data-settings-view>Settings</button>
+        <button type="button" class="danger" data-shutdown-app>Shut Down App</button>
+        <div class="menu-heading">Closed Sections</div>
+        ${hidden.length ? hidden.map((entry) => `
+          <button type="button" data-card-open="${escapeHtml(entry.scope)}:${escapeHtml(entry.id)}">Re-add ${escapeHtml(entry.label)}</button>
+        `).join('') : '<div class="muted">No closed sections.</div>'}
       `;
     }
 
@@ -1516,7 +1918,7 @@
       `).join('');
       return `
         <form id="newForm" class="grid">
-          <label class="field">Name<input name="name" value="Gray Star"></label>
+          <label class="field">Name<input name="name" value="Grey Star"></label>
           <label class="field">Book<select name="bookNumber" data-new-book>${books.map((b) => `<option value="${b.number}">${b.number}. ${b.title}</option>`).join('')}</select></label>
           <label class="field">Gift<select name="gift"><option value="">None</option><option value="dagger">Jewelled Dagger</option><option value="talisman">Magic Talisman</option><option value="laumspur">Vial of Laumspur</option></select></label>
           <div class="check-field">
@@ -1571,10 +1973,10 @@
           </div>
         </div>
         ${renderChoicesPanel()}
-        <div class="panel">
+        ${hasSavedCharacter() ? '' : `<div class="panel">
           <h2>New Character</h2>
           ${newCharacterBody()}
-        </div>
+        </div>`}
       `;
     }
 
@@ -1737,10 +2139,10 @@
       const enemyEnd = `${text(combat.EnemyEnduranceCurrent, '0')} / ${text(combat.EnemyEnduranceMax, '0')}`;
       const rows = [
         ['Enemy', text(combat.EnemyName)],
-        ['Gray Star CS', text(combat.PlayerCombatSkill ?? c.CombatSkillCurrent, '0')],
+        ['Grey Star CS', text(combat.PlayerCombatSkill ?? c.CombatSkillCurrent, '0')],
         ['Enemy CS', text(combat.EnemyCombatSkillEffective ?? combat.EnemyCombatSkill, '0')],
         ['Combat Ratio', ratio],
-        ['Gray Star END', playerEnd],
+        ['Grey Star END', playerEnd],
         ['Enemy END', enemyEnd],
         ['Weapon', text(combat.ActiveWeapon, 'Unarmed')],
         ['Staff Magic', combat.UseStaff ? 'On' : 'Off'],
@@ -1790,7 +2192,7 @@
           ${rounds.length ? rounds.map((round) => `
             <div class="item-row">
               <small>R${escapeHtml(text(round.Round, '?'))}</small>
-              <span>Roll ${escapeHtml(text(round.Roll, '?'))} | Ratio ${escapeHtml(formatSigned(round.Ratio || 0))} | Enemy -${escapeHtml(text(round.EnemyLoss, '0'))} | Gray Star -${escapeHtml(text(round.PlayerLoss ?? round.GrayStarLoss, '0'))}</span>
+              <span>Roll ${escapeHtml(text(round.Roll, '?'))} | Ratio ${escapeHtml(formatSigned(round.Ratio || 0))} | Enemy -${escapeHtml(text(round.EnemyLoss, '0'))} | Grey Star -${escapeHtml(text(round.PlayerLoss ?? round.GreyStarLoss ?? round.GrayStarLoss, '0'))}</span>
             </div>
           `).join('') : '<p class="muted">No combat rounds are recorded for the current fight.</p>'}
         </div>
@@ -1880,6 +2282,38 @@
       `;
     }
 
+    function renderSettings() {
+      const settings = app.state.Settings || {};
+      const currentScope = cardScopeForView(activeView === 'settings' ? 'sheet' : activeView);
+      view.innerHTML = `
+        <div class="panel">
+          <h2>Settings</h2>
+          <div class="grid">
+            ${field('Autosave', 'On')}
+            ${field('Save Path', escapeHtml(text(settings.SavePath, 'Not saved yet')))}
+            ${field('Current View Layout', escapeHtml(currentScope))}
+            ${field('Branding', 'Grey Star')}
+          </div>
+          <div class="controls" style="margin-top:.65rem">
+            <button type="button" data-view="sheet">Back to Sheet</button>
+            <button type="button" data-save-current>Save Game</button>
+            <button type="button" data-card-reset-scope="${escapeHtml(currentScope)}">Reset Current Layout</button>
+            <button type="button" data-card-reset-all>Reset All Card Layouts</button>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Closed Sections</h2>
+          ${hiddenCardEntries().length ? hiddenCardEntries().map((entry) => `
+            <div class="item-row">
+              <small>${escapeHtml(entry.scope)}</small>
+              <span>${escapeHtml(entry.label)}</span>
+              <button type="button" data-card-open="${escapeHtml(entry.scope)}:${escapeHtml(entry.id)}">Re-add</button>
+            </div>
+          `).join('') : '<p class="muted">No sections are currently closed.</p>'}
+        </div>
+      `;
+    }
+
     function renderNotes() {
       const notes = arr(currentCharacter().Notes);
       view.innerHTML = `
@@ -1961,7 +2395,7 @@
           </div>
           <div class="combat-meter-grid">
             ${combatMeterCard({
-              label: 'Gray Star',
+              label: 'Grey Star',
               current: combat.PlayerEnduranceCurrent ?? c.EnduranceCurrent,
               max: combat.PlayerEnduranceMax ?? c.EnduranceMax,
               combatSkill: combat.PlayerCombatSkill ?? c.CombatSkillCurrent,
@@ -2074,9 +2508,75 @@
       }).join('')}</div>`;
     }
 
+    document.addEventListener('pointerdown', (event) => {
+      if (event.target.closest?.('.menu-popover, .app-menu-button, .card-menu-button')) return;
+      closeMenus();
+    });
+
     document.addEventListener('click', async (event) => {
       const button = event.target.closest('button');
       if (!button || !app) return;
+      if (button.dataset.appMenuToggle !== undefined) {
+        const wasHidden = appMenu.hidden;
+        closeMenus();
+        if (wasHidden) {
+          renderAppMenu();
+          appMenu.hidden = false;
+        }
+        return;
+      }
+      if (button.dataset.cardMenuToggle) {
+        const [scope, id] = button.dataset.cardMenuToggle.split(':');
+        toggleCardMenu(scope, id);
+        return;
+      }
+      if (button.dataset.cardMove) {
+        const [scope, id, direction] = button.dataset.cardMove.split(':');
+        moveCard(scope, id, direction);
+        return;
+      }
+      if (button.dataset.cardSize) {
+        const [scope, id, size] = button.dataset.cardSize.split(':');
+        setCardSize(scope, id, size);
+        return;
+      }
+      if (button.dataset.cardClose) {
+        const [scope, id] = button.dataset.cardClose.split(':');
+        closeCard(scope, id);
+        return;
+      }
+      if (button.dataset.cardOpen) {
+        const [scope, id] = button.dataset.cardOpen.split(':');
+        openCard(scope, id);
+        return;
+      }
+      if (button.dataset.cardResetScope) {
+        resetCardScope(button.dataset.cardResetScope);
+        return;
+      }
+      if (button.dataset.cardResetAll !== undefined) {
+        resetAllCardLayouts();
+        return;
+      }
+      if (button.dataset.settingsView !== undefined) {
+        activeView = 'settings';
+        closeMenus();
+        render();
+        return;
+      }
+      if (button.dataset.saveCurrent !== undefined) {
+        closeMenus();
+        await action({ action: 'save', path: '' });
+        return;
+      }
+      if (button.dataset.shutdownApp !== undefined) {
+        closeMenus();
+        if (window.confirm('Shut down the local Grey Star assistant server?')) {
+          await action({ action: 'shutdown' });
+          serverStatus.textContent = 'Shutting down';
+        }
+        return;
+      }
       if (button.dataset.view) { activeView = button.dataset.view; render(); return; }
       if (button.dataset.topWidgetAdd !== undefined) {
         addTopWidget(document.getElementById('topWidgetAdd')?.value || '');
@@ -2156,7 +2656,10 @@
         await action({ action: 'set_position', book: Number(book), section: Number(section) });
       }
       if (button.dataset.load) await action({ action: 'load', path: button.dataset.load });
-      if (button.dataset.autosave) await action({ action: 'autosave' });
+      if (button.dataset.autosave) {
+        closeMenus();
+        await action({ action: 'autosave' });
+      }
       if (button.dataset.combatStop !== undefined) await action({ action: 'combat_stop' });
       if (button.dataset.combatAuto !== undefined) await action({ action: 'combat_auto' });
       if (button.dataset.combatEvade !== undefined) {

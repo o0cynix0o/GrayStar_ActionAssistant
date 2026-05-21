@@ -1,6 +1,6 @@
 # Campaign Story Run
 
-Generated: 2026-05-21T09:28:08
+Generated: 2026-05-21T11:25:22
 
 ## Summary
 
@@ -12,7 +12,7 @@ Generated: 2026-05-21T09:28:08
 
 ## Character Creation
 
-- Name: QA Story Gray Star
+- Name: QA Story Grey Star
 - Starting book: 1
 - Deterministic rolls: CS +9, WP +9, END +9
 - Starting sheet: CS 19, END 29/29, WP 29
@@ -28,7 +28,7 @@ Generated: 2026-05-21T09:28:08
 
 ## Final State
 
-- Character: QA Story Gray Star
+- Character: QA Story Grey Star
 - Current book: 4
 - Current section: 360
 - Completed books: 1, 2, 3, 4

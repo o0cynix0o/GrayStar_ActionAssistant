@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate route graph audit reports for Gray Star books."""
+"""Generate route graph audit reports for Grey Star books."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-import garystar  # noqa: E402
+import greystar  # noqa: E402
 
 
 LOG_DIR = ROOT / "testing" / "logs"
@@ -347,7 +347,7 @@ class SectionInfo:
 
 
 def section_path(book_number: int, section: int) -> Path:
-    book = garystar.BOOKS[book_number]
+    book = greystar.BOOKS[book_number]
     return ROOT / "books" / "gs" / book["Folder"] / f"sect{section}.htm"
 
 
@@ -421,7 +421,7 @@ def death_or_failure_text(text: str) -> bool:
 def classify_endpoint(book_number: int, info: SectionInfo) -> str:
     if info.links:
         return "not_endpoint"
-    max_section = int(garystar.BOOKS[book_number]["MaxSection"])
+    max_section = int(greystar.BOOKS[book_number]["MaxSection"])
     lower = info.text.lower()
     if info.section == max_section:
         return "success"
@@ -435,7 +435,7 @@ def classify_endpoint(book_number: int, info: SectionInfo) -> str:
 
 
 def read_book(book_number: int) -> dict[int, SectionInfo]:
-    max_section = int(garystar.BOOKS[book_number]["MaxSection"])
+    max_section = int(greystar.BOOKS[book_number]["MaxSection"])
     result: dict[int, SectionInfo] = {}
     for section in range(1, max_section + 1):
         path = section_path(book_number, section)
@@ -542,7 +542,7 @@ def branch_row(section: int, info: SectionInfo, success_reachable: set[int]) -> 
 
 
 def audit_book(book_number: int) -> tuple[str, dict[str, Any]]:
-    book = garystar.BOOKS[book_number]
+    book = greystar.BOOKS[book_number]
     max_section = int(book["MaxSection"])
     infos = read_book(book_number)
     graph = {section: info.links for section, info in infos.items() if info.exists}
