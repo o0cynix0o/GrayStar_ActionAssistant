@@ -24,7 +24,8 @@ The second means:
 - reports
 - proposal
 - implementation of approved findings
-- player-facing guide draft or update, when scope changes enough to matter
+- player-facing strategy guide draft or update, when route/support changes enough to matter
+- main repo push and GitHub Wiki publish for public wiki pages
 - validation
 
 ## Source Material
@@ -74,6 +75,17 @@ These are local working reports and normally stay in `testing/logs/`.
 `GSBOOKX_AUTOMATION_LEDGER.md` is the build handoff. It should be structured enough that implementation can work from it without rereading the whole book.
 
 Generated sweep artifacts belong in `testing/tmp/`.
+
+Player-facing wiki pages live under `docs/wiki/` and are a separate output from the technical reports. Strategy guides should usually update:
+
+- `docs/wiki/Book-X-Strategy-Guide.md`
+- `docs/wiki/Strategy-Guide.md`, when the guide index or style description changes
+
+After changing files in `docs/wiki/`, publish those same changed pages to the separate GitHub Wiki repository:
+
+- `https://github.com/o0cynix0o/GrayStar_ActionAssistant.wiki.git`
+
+Pushing the main repository alone does not update the live GitHub Wiki.
 
 ## Audit Steps
 
@@ -127,6 +139,8 @@ The route audit should record:
 - route-family starter groups for later human classification
 
 Do not confuse this with testing every possible playthrough. The route audit is graph coverage and route-family classification. The playtest ladder later turns the route audit into dry-run coverage.
+
+The route audit is allowed to sound technical. It is a working report. Do not copy that voice straight into the public strategy guide.
 
 ### 4. Run A Mechanical Text Sweep
 
@@ -316,6 +330,8 @@ Summarize:
 
 The reports should let a later chat continue without rereading the conversation.
 
+Reports are allowed to use audit language such as graph coverage, source links, trigger basis, branch points, and route-family classification. Keep that language in the reports unless the player-facing guide truly needs a small piece of it.
+
 ### 12. Propose Top Build Candidates
 
 Before implementation, summarize:
@@ -339,7 +355,7 @@ If the user approves build-out:
 - keep route-only choices on the book page unless the assistant needs a mechanical prompt
 - keep unlocked achievements when death recovery, rewind, repeat-book, or next-book transitions occur
 - add or update the book-complete repeat option when replay cleanup is useful
-- update player-facing docs when behavior changes
+- update player-facing strategy guides when route, achievement, or support behavior changes
 - validate in both CLI and web paths when possible
 
 The repeat-book option should:
@@ -448,6 +464,56 @@ Run a small set of realistic full-route dry runs:
 
 The success target is not "every infinite playthrough." The success target is 100% route/branch/mechanic coverage plus representative complete paths.
 
+### 15. Update Public Strategy Guides
+
+After the audit/build/playtest work, update the public strategy guide when the book now has better route knowledge, new achievements, new assistant support, or changed advice.
+
+The strategy guide is not a technical manual. It should read like a friendly BradyGames-style player guide:
+
+- conversational, warm, and useful while someone is playing
+- focused on what kind of run to make, what to chase, and what to avoid
+- spoiler-friendly, but not a dump of copied book text
+- section numbers used as helpful landmarks, not as the whole explanation
+- route advice written as paths, threads, or replay goals rather than audit classifications
+- clear first-clear advice and clear replay/achievement cleanup advice
+
+Use a public guide structure like:
+
+1. Quick start or quick answer
+2. What the book is really testing
+3. Best first playthrough
+4. Paths worth knowing
+5. Items worth chasing or respecting
+6. Combat, Magick, and inventory tips
+7. Common mistakes
+8. Achievement cleanup
+9. Final recommendation
+
+Keep story summaries and tone, but keep them short enough to help the player understand the run. The guide should feel like someone sitting beside the player saying, "Here is the play," not like an audit report.
+
+Before publishing a strategy guide, run a voice sweep and remove or rewrite report-style language such as:
+
+- `route audit`
+- `route graph`
+- `success-capable`
+- `source-link`
+- `test harness`
+- `support data`
+- `mechanical-effect`
+- `trigger basis`
+- `classification`
+
+It is fine for the app to be mentioned when the advice is practical, for example "use the Combat tab" or "let the assistant store your gear." Avoid talking about internals unless the page is explicitly a developer report.
+
+When the guide is ready:
+
+1. Commit and push the `docs/wiki/` changes to the main repository.
+2. Clone or update `https://github.com/o0cynix0o/GrayStar_ActionAssistant.wiki.git`.
+3. Copy only the changed public wiki pages into the wiki repo.
+4. Run `git diff --check` in the wiki repo.
+5. Commit and push the wiki repo.
+6. Verify the wiki remote points at the new commit.
+
 ## What Usually Stays Manual
 
 Leave rules manual when they are too ambiguous, too isolated, or easy for the player to perform once without bookkeeping pain.
@@ -492,6 +558,8 @@ The audit is successful when another chat can pick up the book with:
 - implemented/backfillable achievement status
 - local report files
 - validation notes
+- updated public strategy guide, when route/support knowledge changed
+- live GitHub Wiki publish status for changed public wiki pages
 - a completed six-level playtesting ladder, or clear notes on which levels still need data/user rulings
 
 without needing the original conversation.
