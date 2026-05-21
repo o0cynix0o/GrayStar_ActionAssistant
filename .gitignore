@@ -15,4 +15,4 @@ testing/dry-run-saves/
 testing/use-item/
 
 # Local checkout used to publish the GitHub wiki.
-wiki/
+/wiki/
