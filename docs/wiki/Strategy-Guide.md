@@ -1,24 +1,23 @@
 # Strategy Guide
 
-Spoiler warning: strategy pages discuss route structure, item priorities, and achievement targets.
+Spoiler warning: these pages talk openly about routes, items, achievements, and danger spots.
 
-The strategy guides do not replace the books. They are written as spoiler-friendly route articles that explain how each book works, what kind of play it rewards, and how the assistant helps you keep the bookkeeping under control.
+The strategy guides are meant to feel like friendly player guides. Use them when you want to know what kind of run to make, what items are worth chasing, and what mistakes to avoid before the book starts taking payment in Willpower.
 
 ## Available Guides
 
 - [Book 1 Strategy Guide](Book-1-Strategy-Guide)
 - [Book 2 Strategy Guide](Book-2-Strategy-Guide)
 
-## Guide Style
+## What To Expect
 
-Each guide focuses on:
+Each guide gives you:
 
-- a practical first-clear recommendation
-- the story shape of the book
-- major route families
-- item and discovery routes that matter
-- risky mechanics and assistant-supported effects
-- achievement cleanup runs
-- known manual or watch-list moments
+- a quick first-clear recommendation
+- a plain-English read on what the book is testing
+- the big paths worth replaying
+- items and discoveries that actually matter
+- combat, magic, and inventory tips
+- achievement cleanup advice
 
-The guides avoid copying book prose. They use the section audits, route audits, playtest reports, and achievement data to turn the raw book support into readable player advice.
+These pages are the front-facing version: soft, clean, and written for someone who is actually playing.
