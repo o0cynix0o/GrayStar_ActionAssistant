@@ -26,6 +26,8 @@ Current supported flow includes:
 - repeat the completed book with the same character
 - preserve completed-book records and achievements
 
+For a full example of one character moving through all four books, see the [Full Campaign Story Run](Full-Campaign-Story-Run).
+
 ## Repeat Book
 
 Repeat Book starts that book again at section 1.

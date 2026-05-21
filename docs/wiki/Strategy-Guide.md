@@ -11,6 +11,11 @@ The strategy guides are meant to feel like friendly player guides. Use them when
 - [Book 3 Strategy Guide](Book-3-Strategy-Guide)
 - [Book 4 Strategy Guide](Book-4-Strategy-Guide)
 
+## Campaign Guides
+
+- [Full Campaign Story Run](Full-Campaign-Story-Run): the clean one-character route from Book 1 through Book 4.
+- [100 Percent Achievement Guide](Achievement-100-Percent-Guide): the replay plan for unlocking all `102/102` achievements.
+
 ## What To Expect
 
 Each guide gives you:

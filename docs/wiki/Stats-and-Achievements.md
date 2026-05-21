@@ -32,7 +32,8 @@ Some achievements are naturally replay targets.
 
 For example, if a route was never taken or a choice was never made, that achievement should stay locked until a later run.
 
+For a full cleanup route, see the [100 Percent Achievement Guide](Achievement-100-Percent-Guide).
+
 ## Repeat Book
 
 Repeating a completed book resets Endurance and Willpower to base values for that book run, but keeps the same character and preserves already unlocked achievements.
-
