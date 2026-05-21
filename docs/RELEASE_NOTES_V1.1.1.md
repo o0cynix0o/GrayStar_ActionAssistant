@@ -14,3 +14,14 @@ This release corrects the public package so Project Aon book files are no longer
 ## Notes
 
 Your local `books/gs` folder can still exist and the app will still use it. It is now ignored by git and excluded from release ZIPs.
+
+## Verified
+
+- Python compile check passed.
+- Release package guard confirms `books/gs` is not tracked.
+- Book 1 playtest: 26 passed, 0 warnings, 0 failures.
+- Book 2 playtest: 19 passed, 0 warnings, 0 failures.
+- Book 3 playtest: 23 passed, 0 warnings, 0 failures.
+- Book 4 playtest: 24 passed, 0 warnings, 0 failures.
+- Campaign story run: 11 passed, 0 warnings, 0 failures.
+- Achievement 100% run: 7 passed, 0 warnings, 0 failures.

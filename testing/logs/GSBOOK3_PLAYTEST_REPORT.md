@@ -1,6 +1,6 @@
 # GS Book 3 Playtest Report
 
-Generated: 2026-05-21T14:17:30
+Generated: 2026-05-21T15:08:08
 
 Scope: dry-run source, automation, flow, Book 3 edge mechanics, completion, achievements, and repeat-book checks. The script uses in-memory saves and does not touch the live campaign pointer.
 
