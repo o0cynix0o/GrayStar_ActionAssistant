@@ -408,6 +408,11 @@
     .dashboard-card {
       position: relative;
     }
+    .dashboard-card[hidden],
+    .quick-card[hidden],
+    .tabs[hidden] {
+      display: none !important;
+    }
     .dashboard-card.card-size-small {
       grid-column: auto;
       padding: 0.55rem;
@@ -1599,11 +1604,15 @@
 
     function getClosedCards(scope) {
       const closed = getJsonStorage(cardStorageKey(cardClosedPrefix, scope), []);
-      return Array.isArray(closed) ? closed.filter(Boolean) : [];
+      if (!Array.isArray(closed)) return [];
+      return closed.map((id) => normalizeCardId(scope, id)).filter(Boolean);
     }
 
     function setClosedCards(scope, closed) {
-      setJsonStorage(cardStorageKey(cardClosedPrefix, scope), Array.from(new Set(arr(closed).map((item) => text(item)).filter(Boolean))));
+      setJsonStorage(
+        cardStorageKey(cardClosedPrefix, scope),
+        Array.from(new Set(arr(closed).map((item) => normalizeCardId(scope, item)).filter(Boolean)))
+      );
       persistUiPreferences(true);
     }
 
@@ -1626,8 +1635,15 @@
       return slug || fallback;
     }
 
+    function normalizeCardId(scope, id) {
+      const value = text(id).trim();
+      if (scope === 'tabs' && value === 'section') return 'tabs';
+      return value;
+    }
+
     function cardTitle(card, fallback = 'Section') {
       return text(
+        card.dataset.cardTitleOverride ||
         card.querySelector(':scope > h2')?.textContent ||
         card.querySelector(':scope > .quick-title')?.textContent ||
         card.querySelector('.combat-meter-title-row h2')?.textContent,
@@ -1647,7 +1663,7 @@
         'section': 'Apply section effects and section-aware rolls from the audit data.',
         'drop-item': 'Quickly remove carried items without opening the full Inventory tab.'
       };
-      return help[key] || (scope === 'tabs' ? 'Switch between assistant views. Re-add this from the assistant menu if you close it.' : '');
+      return help[key] || (scope === 'tabs' ? 'Switch between assistant views. Re-add this from Settings if you close it.' : '');
     }
 
     function applyCardOrder(scope, cards) {
@@ -1688,7 +1704,7 @@
             ${sizeButton('medium', 'Medium')}
             ${sizeButton('large', 'Large')}
           </div>
-          <button type="button" class="danger" data-card-close="${escapeHtml(scope)}:${escapeHtml(id)}" ${closeDisabled}>Close Section</button>
+          <button type="button" class="danger" data-card-close="${escapeHtml(scope)}:${escapeHtml(id)}" ${closeDisabled}>Close Card</button>
         </div>
       `;
     }
@@ -1733,6 +1749,7 @@
     function decorateInterfaceCards(scope) {
       const viewScope = cardScopeForView(scope);
       view.classList.add('view-card-grid');
+      tabs.dataset.cardTitleOverride = 'Tabs';
       decorateCards('quick', Array.from(quickPanel.querySelectorAll(':scope > .quick-card')), { defaultSize: 'medium' });
       decorateCards('tabs', [tabs], { defaultSize: 'large', movable: false });
       decorateCards(viewScope, Array.from(view.querySelectorAll(':scope > .panel')), { defaultSize: 'large' });
@@ -1752,13 +1769,21 @@
 
     function closeCard(scope, id) {
       const closed = new Set(getClosedCards(scope));
-      closed.add(id);
+      const normalizedId = normalizeCardId(scope, id);
+      closed.add(normalizedId);
       setClosedCards(scope, Array.from(closed));
+      document.querySelectorAll('[data-card-scope][data-card-id]').forEach((card) => {
+        if (card.dataset.cardScope === scope && normalizeCardId(scope, card.dataset.cardId) === normalizedId) {
+          card.hidden = true;
+        }
+      });
+      closeMenus();
       render();
     }
 
     function openCard(scope, id) {
-      setClosedCards(scope, getClosedCards(scope).filter((item) => item !== id));
+      const normalizedId = normalizeCardId(scope, id);
+      setClosedCards(scope, getClosedCards(scope).filter((item) => normalizeCardId(scope, item) !== normalizedId));
       render();
     }
 
@@ -1798,18 +1823,47 @@
 
     function hiddenCardEntries() {
       const entries = [];
-      document.querySelectorAll('[data-card-scope][data-card-id][hidden]').forEach((card) => {
-        entries.push({
-          scope: card.dataset.cardScope,
-          id: card.dataset.cardId,
-          label: card.dataset.cardTitle || getCardLabels(card.dataset.cardScope)[card.dataset.cardId] || card.dataset.cardId
+      hiddenCardScopes().forEach((scope) => {
+        const labels = getCardLabels(scope);
+        getClosedCards(scope).forEach((id) => {
+          entries.push({
+            scope,
+            id,
+            label: labels[id] || fallbackCardLabel(scope, id)
+          });
         });
       });
-      return entries;
+      return entries.sort((a, b) => `${a.scope}:${a.label}`.localeCompare(`${b.scope}:${b.label}`));
+    }
+
+    function hiddenCardScopes() {
+      const scopes = new Set(['quick', 'tabs']);
+      views.forEach(([id]) => scopes.add(cardScopeForView(id)));
+      scopes.add(cardScopeForView('settings'));
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith(cardClosedPrefix)) scopes.add(key.slice(cardClosedPrefix.length));
+      });
+      return Array.from(scopes).filter(Boolean);
+    }
+
+    function fallbackCardLabel(scope, id) {
+      const key = normalizeCardId(scope, id);
+      const quickLabels = {
+        section: 'Section',
+        vitals: 'Vitals',
+        'add-item': 'Add Item',
+        'drop-item': 'Drop Item'
+      };
+      if (scope === 'quick') return quickLabels[key] || key;
+      if (scope === 'tabs') return 'Tabs';
+      return key
+        .split('-')
+        .filter(Boolean)
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(' ') || 'Section';
     }
 
     function renderAppMenu() {
-      const hidden = hiddenCardEntries();
       appMenu.innerHTML = `
         <div class="menu-heading">Assistant</div>
         <div class="menu-heading">Mode</div>
@@ -1824,10 +1878,6 @@
         <button type="button" data-autosave>Autosave: On</button>
         <button type="button" data-settings-view>Settings</button>
         <button type="button" class="danger" data-shutdown-app>Shut Down App</button>
-        <div class="menu-heading">Closed Sections</div>
-        ${hidden.length ? hidden.map((entry) => `
-          <button type="button" data-card-open="${escapeHtml(entry.scope)}:${escapeHtml(entry.id)}">Re-add ${escapeHtml(entry.label)}</button>
-        `).join('') : '<div class="muted">No closed sections.</div>'}
       `;
     }
 
@@ -2708,14 +2758,14 @@
           </div>
         </div>
         <div class="panel">
-          <h2>Closed Sections</h2>
+          <h2>Closed Cards</h2>
           ${hiddenCardEntries().length ? hiddenCardEntries().map((entry) => `
             <div class="item-row">
               <small>${escapeHtml(entry.scope)}</small>
               <span>${escapeHtml(entry.label)}</span>
               <button type="button" data-card-open="${escapeHtml(entry.scope)}:${escapeHtml(entry.id)}">Re-add</button>
             </div>
-          `).join('') : '<p class="muted">No sections are currently closed.</p>'}
+          `).join('') : '<p class="muted">No cards are currently closed.</p>'}
         </div>
       `;
     }
