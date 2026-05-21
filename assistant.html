@@ -164,8 +164,16 @@
       border-radius: 999px;
       background: transparent;
       color: #ffffff;
-      font-size: 1.05rem;
-      line-height: 1;
+      font-size: 0;
+      line-height: 0;
+    }
+    .app-menu-button::before,
+    .card-menu-button::before {
+      content: "";
+      width: 4px;
+      height: 4px;
+      border-radius: 999px;
+      background: currentColor;
     }
     .app-menu-button:hover,
     .card-menu-button:hover {
