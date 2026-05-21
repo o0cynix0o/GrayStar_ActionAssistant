@@ -164,6 +164,7 @@ Wiki source pages live in `docs/wiki/` and are mirrored to the GitHub wiki. Play
 - Game Modes
 - Combat Guide
 - Inventory and Item Rules
+- FAQ
 - Book 1-4 Strategy Guides
 - Full Campaign Story Run
 - Achievement 100 Percent Guide
