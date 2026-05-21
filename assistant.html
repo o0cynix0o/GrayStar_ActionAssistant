@@ -398,7 +398,7 @@
     }
     .card-menu-button {
       position: absolute;
-      top: 0.35rem;
+      top: 0.22rem;
       right: 0.35rem;
       z-index: 25;
     }
@@ -806,7 +806,7 @@
     </section>
 
     <section class="app-pane" aria-label="Grey Star web assistant">
-      <button class="app-menu-button" type="button" id="appMenuButton" data-app-menu-toggle aria-label="Assistant menu" title="Assistant menu">•</button>
+      <button class="app-menu-button" type="button" id="appMenuButton" data-app-menu-toggle aria-label="Assistant menu" title="Assistant menu"></button>
       <div class="menu-popover app-menu-popover" id="appMenu" hidden></div>
       <div class="status-grid" id="statusGrid"></div>
       <section class="quick-panel" id="quickPanel" aria-label="Quick actions"></section>
@@ -1307,7 +1307,7 @@
       const closeDisabled = options.closeable === false ? 'disabled' : '';
       const sizeButton = (value, label) => `<button type="button" class="${size === value ? 'active' : ''}" data-card-size="${scope}:${id}:${value}">${label}</button>`;
       return `
-        <button class="card-menu-button" type="button" data-card-menu-toggle="${escapeHtml(scope)}:${escapeHtml(id)}" aria-label="${escapeHtml(title)} menu" title="${escapeHtml(title)} menu">•</button>
+        <button class="card-menu-button" type="button" data-card-menu-toggle="${escapeHtml(scope)}:${escapeHtml(id)}" aria-label="${escapeHtml(title)} menu" title="${escapeHtml(title)} menu"></button>
         <div class="menu-popover card-menu" data-card-menu="${escapeHtml(scope)}:${escapeHtml(id)}" hidden>
           <div class="menu-heading">${escapeHtml(title)}</div>
           <div class="menu-row">
