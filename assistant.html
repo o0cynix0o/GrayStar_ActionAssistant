@@ -170,6 +170,7 @@
       white-space: normal;
     }
     .app-menu-button,
+    .card-collapse-button,
     .card-menu-button {
       width: 20px;
       height: 20px;
@@ -192,7 +193,16 @@
       border-radius: 999px;
       background: currentColor;
     }
+    .card-collapse-button::before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid currentColor;
+    }
     .app-menu-button:hover,
+    .card-collapse-button:hover,
     .card-menu-button:hover {
       background: #26301b;
       color: #ffffff;
@@ -433,7 +443,16 @@
       right: 0.35rem;
       z-index: 25;
     }
+    .card-collapse-button {
+      position: absolute;
+      top: 0.22rem;
+      right: 1.75rem;
+      z-index: 25;
+    }
     .quick-panel .card-menu-button {
+      top: -0.08rem;
+    }
+    .quick-panel .card-collapse-button {
       top: -0.08rem;
     }
     .card-menu {
@@ -445,10 +464,36 @@
     .dashboard-card > h2,
     .dashboard-card > .section-subtitle,
     .dashboard-card .combat-meter-title-row {
-      padding-right: 1.65rem;
+      padding-right: 3.35rem;
     }
     .dashboard-card [data-card-help] {
       cursor: help;
+    }
+    .card-collapsed-title {
+      display: none;
+      min-height: 20px;
+      padding-right: 3.35rem;
+      color: #f2d27a;
+      font: 700 0.82rem Georgia, "Times New Roman", serif;
+      line-height: 20px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .dashboard-card.card-collapsed {
+      min-height: 34px;
+    }
+    .dashboard-card.card-collapsed > :not(.card-collapse-button):not(.card-menu-button):not(.card-menu):not(.card-collapsed-title) {
+      display: none !important;
+    }
+    .dashboard-card.card-collapsed > .card-collapsed-title {
+      display: block;
+    }
+    .dashboard-card.card-collapsed > .card-collapse-button::before {
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 6px solid currentColor;
+      border-right: 0;
     }
     .sheet-layout {
       display: grid;
@@ -942,9 +987,10 @@
     const cardLayoutPrefix = 'greystar.cards.layout.';
     const cardSizePrefix = 'greystar.cards.size.';
     const cardClosedPrefix = 'greystar.cards.closed.';
+    const cardCollapsedPrefix = 'greystar.cards.collapsed.';
     const cardLabelPrefix = 'greystar.cards.labels.';
     const uiPreferenceStaticKeys = [topLayoutKey, topSizeKey, sheetLayoutKey, sheetSizeKey];
-    const uiPreferencePrefixes = [cardLayoutPrefix, cardSizePrefix, cardClosedPrefix, cardLabelPrefix];
+    const uiPreferencePrefixes = [cardLayoutPrefix, cardSizePrefix, cardClosedPrefix, cardCollapsedPrefix, cardLabelPrefix];
     const sizeOrder = ['compact', 'normal', 'full'];
     const sizeLabels = { compact: 'Compact', normal: 'Normal', full: 'Full' };
     let uiPreferencesReady = false;
@@ -1616,6 +1662,20 @@
       persistUiPreferences(true);
     }
 
+    function getCollapsedCards(scope) {
+      const collapsed = getJsonStorage(cardStorageKey(cardCollapsedPrefix, scope), []);
+      if (!Array.isArray(collapsed)) return [];
+      return collapsed.map((id) => normalizeCardId(scope, id)).filter(Boolean);
+    }
+
+    function setCollapsedCards(scope, collapsed) {
+      setJsonStorage(
+        cardStorageKey(cardCollapsedPrefix, scope),
+        Array.from(new Set(arr(collapsed).map((item) => normalizeCardId(scope, item)).filter(Boolean)))
+      );
+      persistUiPreferences(true);
+    }
+
     function getCardLabels(scope) {
       const labels = getJsonStorage(cardStorageKey(cardLabelPrefix, scope), {});
       return labels && typeof labels === 'object' && !Array.isArray(labels) ? labels : {};
@@ -1709,6 +1769,11 @@
       `;
     }
 
+    function cardCollapseButtonHtml(scope, id, title, collapsed) {
+      const action = collapsed ? 'Expand' : 'Collapse';
+      return `<button class="card-collapse-button" type="button" data-card-collapse="${escapeHtml(scope)}:${escapeHtml(id)}" aria-label="${action} ${escapeHtml(title)} card" aria-expanded="${collapsed ? 'false' : 'true'}" title="${action} card"></button>`;
+    }
+
     function decorateCards(scope, cards, options = {}) {
       const actualCards = arr(cards).filter(Boolean);
       if (!actualCards.length) return;
@@ -1725,17 +1790,24 @@
       });
       const ordered = options.movable === false ? actualCards : applyCardOrder(scope, actualCards);
       const closed = new Set(getClosedCards(scope));
+      const collapsedCards = new Set(getCollapsedCards(scope));
       ordered.forEach((card) => {
         const id = card.dataset.cardId;
         const title = card.dataset.cardTitle || cardTitle(card);
         const defaultSize = options.defaultSize || 'large';
         const size = getCardSize(scope, id, defaultSize);
+        const collapsed = collapsedCards.has(id);
         card.hidden = closed.has(id);
         card.classList.add('dashboard-card');
+        card.classList.toggle('card-collapsed', collapsed);
         card.classList.remove('card-size-small', 'card-size-medium', 'card-size-large');
         card.classList.add(`card-size-${size}`);
+        card.querySelector(':scope > .card-collapse-button')?.remove();
+        card.querySelector(':scope > .card-collapsed-title')?.remove();
         card.querySelector(':scope > .card-menu-button')?.remove();
         card.querySelector(':scope > .card-menu')?.remove();
+        card.insertAdjacentHTML('afterbegin', `<div class="card-collapsed-title">${escapeHtml(title)}</div>`);
+        card.insertAdjacentHTML('afterbegin', cardCollapseButtonHtml(scope, id, title, collapsed));
         card.insertAdjacentHTML('afterbegin', cardMenuHtml(scope, id, title, size, options));
         const help = cardHelp(title, scope);
         const helpTarget = card.querySelector(':scope > h2') || card.querySelector(':scope > .quick-title') || card.querySelector('.combat-meter-title-row h2');
@@ -1787,14 +1859,24 @@
       render();
     }
 
+    function toggleCardCollapsed(scope, id) {
+      const normalizedId = normalizeCardId(scope, id);
+      const collapsed = new Set(getCollapsedCards(scope));
+      if (collapsed.has(normalizedId)) collapsed.delete(normalizedId);
+      else collapsed.add(normalizedId);
+      setCollapsedCards(scope, Array.from(collapsed));
+      closeMenus();
+      render();
+    }
+
     function resetCardScope(scope) {
-      [cardLayoutPrefix, cardSizePrefix, cardClosedPrefix].forEach((prefix) => localStorage.removeItem(cardStorageKey(prefix, scope)));
+      [cardLayoutPrefix, cardSizePrefix, cardClosedPrefix, cardCollapsedPrefix].forEach((prefix) => localStorage.removeItem(cardStorageKey(prefix, scope)));
       persistUiPreferences(true);
       render();
     }
 
     function resetAllCardLayouts() {
-      const prefixes = [cardLayoutPrefix, cardSizePrefix, cardClosedPrefix];
+      const prefixes = [cardLayoutPrefix, cardSizePrefix, cardClosedPrefix, cardCollapsedPrefix];
       Object.keys(localStorage)
         .filter((key) => prefixes.some((prefix) => key.startsWith(prefix)))
         .forEach((key) => localStorage.removeItem(key));
@@ -3012,6 +3094,11 @@
       if (button.dataset.cardMenuToggle) {
         const [scope, id] = button.dataset.cardMenuToggle.split(':');
         toggleCardMenu(scope, id);
+        return;
+      }
+      if (button.dataset.cardCollapse) {
+        const [scope, id] = button.dataset.cardCollapse.split(':');
+        toggleCardCollapsed(scope, id);
         return;
       }
       if (button.dataset.cardMove) {
