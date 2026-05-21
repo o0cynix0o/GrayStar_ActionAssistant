@@ -12,8 +12,10 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import os
 import random
 import re
+import sys
 import textwrap
 from datetime import datetime
 from pathlib import Path
@@ -29,6 +31,41 @@ SCREEN_WIDTH = 74
 SECTION_AUTOMATION_GLOB = "book*-simple-automations.json"
 SECTION_FLOW_GLOB = "book*-section-flows.json"
 ACHIEVEMENT_SCHEMA_VERSION = 1
+
+ANSI_COLORS = {
+    "Black": "30",
+    "DarkBlue": "34",
+    "DarkGreen": "32",
+    "DarkCyan": "36",
+    "DarkRed": "31",
+    "DarkMagenta": "35",
+    "DarkYellow": "33",
+    "Gray": "37",
+    "DarkGray": "90",
+    "Blue": "94",
+    "Green": "92",
+    "Cyan": "96",
+    "Red": "91",
+    "Magenta": "95",
+    "Yellow": "93",
+    "White": "97",
+}
+
+SCREEN_ACCENTS = {
+    "sheet": "Cyan",
+    "inventory": "DarkYellow",
+    "magicks": "Magenta",
+    "sections": "Cyan",
+    "combat": "Red",
+    "death": "Red",
+    "loot": "DarkYellow",
+    "choices": "DarkYellow",
+    "notes": "Cyan",
+    "stats": "Cyan",
+    "campaign": "Green",
+}
+
+_ANSI_SUPPORT: bool | None = None
 
 BOOKS = {
     1: {"Title": "Grey Star the Wizard", "Folder": "01gstw", "MaxSection": 350},
@@ -1092,6 +1129,73 @@ def book_title(book_number: int) -> str:
     return BOOKS.get(int(book_number), BOOKS[1])["Title"]
 
 
+def terminal_supports_ansi() -> bool:
+    global _ANSI_SUPPORT
+    if _ANSI_SUPPORT is not None:
+        return _ANSI_SUPPORT
+    if os.environ.get("NO_COLOR") or os.environ.get("GREYSTAR_NO_COLOR"):
+        _ANSI_SUPPORT = False
+        return _ANSI_SUPPORT
+    forced = str(os.environ.get("GREYSTAR_COLOR") or "").strip().lower()
+    if forced in {"1", "true", "yes", "on"}:
+        _ANSI_SUPPORT = True
+        return _ANSI_SUPPORT
+    if not sys.stdout.isatty():
+        _ANSI_SUPPORT = False
+        return _ANSI_SUPPORT
+    if os.name != "nt":
+        _ANSI_SUPPORT = True
+        return _ANSI_SUPPORT
+    _ANSI_SUPPORT = bool(
+        os.environ.get("WT_SESSION")
+        or str(os.environ.get("TERM_PROGRAM") or "").lower() == "vscode"
+        or os.environ.get("ANSICON")
+        or str(os.environ.get("ConEmuANSI") or "").upper() == "ON"
+    )
+    return _ANSI_SUPPORT
+
+
+def color_text(text: Any, color: str = "") -> str:
+    value = "" if text is None else str(text)
+    if not color or not terminal_supports_ansi():
+        return value
+    code = ANSI_COLORS.get(color)
+    if not code:
+        return value
+    return f"\033[{code}m{value}\033[0m"
+
+
+def write_line(text: Any = "", color: str = "") -> None:
+    print(color_text(text, color))
+
+
+def write_segments(segments: list[tuple[Any, str]]) -> None:
+    if not terminal_supports_ansi():
+        print("".join("" if text is None else str(text) for text, _ in segments))
+        return
+    print("".join(color_text(text, color) for text, color in segments))
+
+
+def format_signed(value: int) -> str:
+    return f"+{value}" if int(value) >= 0 else str(value)
+
+
+def endurance_color(current: Any, maximum: Any) -> str:
+    try:
+        current_int = int(current)
+        maximum_int = max(1, int(maximum))
+    except (TypeError, ValueError):
+        return "Gray"
+    ratio = current_int / maximum_int
+    if current_int <= 0:
+        return "Red"
+    if ratio <= 0.25:
+        return "Red"
+    if ratio <= 0.5:
+        return "Yellow"
+    return "Green"
+
+
 def clip_text(text: Any, width: int) -> str:
     value = "" if text is None else str(text)
     if width <= 0:
@@ -1103,34 +1207,54 @@ def clip_text(text: Any, width: int) -> str:
     return value[: width - 3] + "..."
 
 
-def panel_header(title: str, width: int = SCREEN_WIDTH) -> None:
+def panel_header(title: str, width: int = SCREEN_WIDTH, accent: str = "Cyan") -> None:
     usable = max(12, width - 2)
     label = f" {title.upper()} "
     label = clip_text(label, usable)
     left = (usable - len(label)) // 2
     right = usable - len(label) - left
     print("")
-    print("+" + ("-" * left) + label + ("-" * right) + "+")
+    write_line("+" + ("-" * left) + label + ("-" * right) + "+", accent)
 
 
 def panel_footer(width: int = SCREEN_WIDTH) -> None:
-    print("+" + ("-" * max(12, width - 2)) + "+")
+    write_line("+" + ("-" * max(12, width - 2)) + "+", "DarkGray")
 
 
-def panel_text(text: str, width: int = SCREEN_WIDTH, indent: int = 2) -> None:
+def panel_text(text: str, width: int = SCREEN_WIDTH, indent: int = 2, color: str = "Gray") -> None:
     inner = max(12, width - 4)
     available = max(8, inner - indent)
     lines = textwrap.wrap(str(text), width=available) or [""]
     for line in lines:
         content = (" " * indent) + line
-        print("| " + clip_text(content, inner).ljust(inner) + " |")
+        write_segments(
+            [
+                ("| ", "DarkGray"),
+                (clip_text(content, inner).ljust(inner), color),
+                (" |", "DarkGray"),
+            ]
+        )
 
 
-def panel_row(label: str, value: Any, width: int = SCREEN_WIDTH, label_width: int = 18) -> None:
+def panel_row(
+    label: str,
+    value: Any,
+    width: int = SCREEN_WIDTH,
+    label_width: int = 18,
+    value_color: str = "Gray",
+    label_color: str = "DarkYellow",
+) -> None:
     inner = max(12, width - 4)
     prefix = f"{label:<{label_width}}: "
     value_width = max(0, inner - len(prefix))
-    print("| " + prefix + clip_text(value, value_width).ljust(value_width) + " |")
+    write_segments(
+        [
+            ("| ", "DarkGray"),
+            (prefix, label_color),
+            (clip_text(value, value_width).ljust(value_width), value_color),
+            (" |", "DarkGray"),
+        ]
+    )
 
 
 def panel_pair_row(
@@ -1140,20 +1264,29 @@ def panel_pair_row(
     right_value: Any,
     width: int = SCREEN_WIDTH,
     label_width: int = 13,
+    left_color: str = "Gray",
+    right_color: str = "Gray",
+    label_color: str = "DarkYellow",
 ) -> None:
     inner = max(12, width - 4)
     gap = "  "
     half = (inner - len(gap)) // 2
     left_prefix = f"{left_label:<{label_width}}: "
     right_prefix = f"{right_label:<{label_width}}: "
-    left = left_prefix + clip_text(left_value, max(0, half - len(left_prefix))).ljust(
-        max(0, half - len(left_prefix))
-    )
     right_width = inner - len(gap) - half
-    right = right_prefix + clip_text(right_value, max(0, right_width - len(right_prefix))).ljust(
-        max(0, right_width - len(right_prefix))
+    left_value_width = max(0, half - len(left_prefix))
+    right_value_width = max(0, right_width - len(right_prefix))
+    write_segments(
+        [
+            ("| ", "DarkGray"),
+            (left_prefix, label_color),
+            (clip_text(left_value, left_value_width).ljust(left_value_width), left_color),
+            (gap, "DarkGray"),
+            (right_prefix, label_color),
+            (clip_text(right_value, right_value_width).ljust(right_value_width), right_color),
+            (" |", "DarkGray"),
+        ]
     )
-    print("| " + left + gap + right + " |")
 
 
 def capacity_text(items: Any, maximum: int) -> str:
@@ -1190,6 +1323,18 @@ def read_yes_no(prompt: str, default: bool = True) -> bool:
         if raw in {"n", "no"}:
             return False
         print("Enter y or n.")
+
+
+def write_info(message: str) -> None:
+    write_segments([("[INFO] ", "Cyan"), (message, "Gray")])
+
+
+def write_warn(message: str) -> None:
+    write_segments([("[WARN] ", "Yellow"), (message, "Gray")])
+
+
+def write_error(message: str) -> None:
+    write_segments([("[ERROR] ", "Red"), (message, "Gray")])
 
 
 def rest_of_line(tokens: list[str], start_index: int) -> str:
@@ -2782,6 +2927,178 @@ class GreyStarAssistant:
         for message in messages:
             print(message)
 
+    def flow_loot_options(self) -> list[dict[str, Any]]:
+        flow = self.current_section_flow_entry() or {}
+        return [option for option in as_list(flow.get("loot")) if isinstance(option, dict)]
+
+    def show_loot_screen(self) -> None:
+        options = self.flow_loot_options()
+        panel_header("Section Loot", accent=SCREEN_ACCENTS["loot"])
+        panel_pair_row(
+            "Book",
+            f"{self.character['BookNumber']}. {book_title(int(self.character['BookNumber']))}",
+            "Section",
+            self.state["CurrentSection"],
+            left_color="White",
+            right_color="White",
+        )
+        panel_row("Inventory", self.inventory_capacity_line(), label_width=12)
+        if not options:
+            panel_text("No audited loot options are recorded for this section.", color="DarkGray")
+        else:
+            for index, option in enumerate(options, 1):
+                option_id = str(option.get("id") or index)
+                label = str(option.get("label") or option_id)
+                panel_row(f"{index}. {option_id}", label, label_width=18, value_color="White")
+        panel_footer()
+        self.show_helpful_commands("loot")
+
+    def resolve_loot_selection(self, selection: str) -> dict[str, Any] | None:
+        text = str(selection or "").strip()
+        options = self.flow_loot_options()
+        if not text:
+            return None
+        if text.isdigit():
+            index = int(text) - 1
+            if 0 <= index < len(options):
+                return options[index]
+        exact = [option for option in options if str(option.get("id") or "").lower() == text.lower()]
+        if exact:
+            return exact[0]
+        prefix = [
+            option
+            for option in options
+            if str(option.get("id") or "").lower().startswith(text.lower())
+            or str(option.get("label") or "").lower().startswith(text.lower())
+        ]
+        if len(prefix) == 1:
+            return prefix[0]
+        return None
+
+    def loot_command(self, tokens: list[str]) -> None:
+        options = self.flow_loot_options()
+        if not options:
+            self.show_loot_screen()
+            return
+
+        if len(tokens) >= 2:
+            selection = rest_of_line(tokens, 1).strip()
+            if selection.lower() == "all":
+                for option in options:
+                    self.apply_flow_loot(str(option.get("id") or ""))
+                return
+            option = self.resolve_loot_selection(selection)
+            if not option:
+                write_warn(f"Loot option not found: {selection}")
+                self.show_loot_screen()
+                return
+            self.apply_flow_loot(str(option.get("id") or ""))
+            return
+
+        while True:
+            self.show_loot_screen()
+            raw = input("Loot choice [0 done, D drop, all]: ").strip()
+            if not raw or raw == "0":
+                write_info("Loot picker closed.")
+                return
+            if raw.lower() == "d":
+                self.interactive_drop_item()
+                continue
+            if raw.lower() == "all":
+                for option in options:
+                    self.apply_flow_loot(str(option.get("id") or ""))
+                return
+            option = self.resolve_loot_selection(raw)
+            if not option:
+                write_warn("Choose a listed number, D to drop, all, or 0 when you are done.")
+                continue
+            self.apply_flow_loot(str(option.get("id") or ""))
+            return
+
+    def show_choices_screen(self) -> None:
+        flow = self.current_section_flow_payload()
+        routes = [route for route in as_list(flow.get("SourceRoutes")) if isinstance(route, dict)]
+        entry = flow.get("Entry") if isinstance(flow.get("Entry"), dict) else {}
+        panel_header("Section Choices", accent=SCREEN_ACCENTS["choices"])
+        panel_pair_row(
+            "Book",
+            f"{self.character['BookNumber']}. {book_title(int(self.character['BookNumber']))}",
+            "Section",
+            self.state["CurrentSection"],
+            left_color="White",
+            right_color="White",
+        )
+        if not routes:
+            panel_text("No section routes were found in the local book HTML.", color="DarkGray")
+        else:
+            for index, route in enumerate(routes, 1):
+                target = route.get("Section")
+                label = str(route.get("Label") or f"Go to {target}")
+                panel_row(f"{index}. {target}", label, label_width=10, value_color="White")
+        panel_footer()
+
+        if isinstance(entry.get("roll"), dict):
+            roll = entry.get("roll") or {}
+            panel_header("Roll Helper", accent="Magenta")
+            panel_row("Summary", roll.get("summary", "Roll 0-9"), label_width=12)
+            last_roll = flow.get("LastRoll")
+            if isinstance(last_roll, dict):
+                route = last_roll.get("Route")
+                panel_pair_row("Last Raw", last_roll.get("Raw"), "Total", last_roll.get("Total"))
+                panel_row("Outcome", last_roll.get("Outcome") or "None", label_width=12)
+                if route:
+                    panel_row("Route", f"section {route}", label_width=12, value_color="White")
+            panel_footer()
+
+        combat_entries = self.flow_combat_entries()
+        if combat_entries:
+            panel_header("Combat Presets", accent=SCREEN_ACCENTS["combat"])
+            for index, preset in enumerate(combat_entries, 1):
+                enemies = [enemy for enemy in as_list(preset.get("enemies") or preset.get("enemy")) if isinstance(enemy, dict)]
+                first = enemies[0] if enemies else {}
+                label = str(preset.get("label") or first.get("name") or preset.get("id") or f"Combat {index}")
+                stats = ""
+                if first:
+                    stats = f"CS {first.get('cs', '?')} END {first.get('endurance', first.get('end', '?'))}"
+                panel_row(f"{index}. {preset.get('id', '')}", f"{label} {stats}".strip(), label_width=18, value_color="White")
+            panel_footer()
+
+        if self.flow_loot_options():
+            self.show_loot_screen()
+        else:
+            self.show_helpful_commands("choices")
+
+    def show_death_screen(self) -> None:
+        death = self.death_recovery_payload()
+        if not bool(death.get("Active")):
+            panel_header("Death", accent=SCREEN_ACCENTS["death"])
+            panel_text("No active death or failed mission is waiting for recovery.", color="DarkGray")
+            panel_footer()
+            self.show_helpful_commands("sheet")
+            return
+
+        cause = str(death.get("Cause") or "A fatal choice ended this path.")
+        panel_header(str(death.get("Type") or "Death"), accent=SCREEN_ACCENTS["death"])
+        panel_pair_row("Character", death.get("CharacterName", self.character.get("Name")), "Book / Section", f"{death.get('BookNumber')} / {death.get('Section')}", left_color="White", right_color="Gray")
+        panel_pair_row("Endurance", f"{death.get('EnduranceCurrent')} / {death.get('EnduranceMax')}", "Willpower", death.get("WillpowerCurrent"), left_color=endurance_color(death.get("EnduranceCurrent"), death.get("EnduranceMax")), right_color="Magenta")
+        panel_row("Cause", cause, label_width=12)
+        panel_footer()
+
+        panel_header("Recovery", accent="DarkYellow")
+        repeat = death.get("RepeatTarget") if isinstance(death.get("RepeatTarget"), dict) else None
+        rewind = death.get("RewindTarget") if isinstance(death.get("RewindTarget"), dict) else None
+        if bool(death.get("CanRepeat")) and repeat:
+            panel_row("repeat", f"retry Book {repeat.get('BookNumber')}, section {repeat.get('Section')}", label_width=12, value_color="Green")
+        else:
+            panel_row("repeat", "not available for this death", label_width=12, value_color="DarkGray")
+        if bool(death.get("CanRewind")) and rewind:
+            panel_row("rewind", f"return to Book {rewind.get('BookNumber')}, section {rewind.get('Section')}", label_width=12, value_color="Yellow")
+        else:
+            panel_row("rewind", "no previous checkpoint", label_width=12, value_color="DarkGray")
+        panel_text("Repeat restores the state from when this section was ready. Rewind returns to the previous section checkpoint.", color="Gray")
+        panel_footer()
+        self.show_helpful_commands("death")
+
     def consumable_item_effect(self, item: str) -> dict[str, Any] | None:
         text = str(item).lower()
         if "senara potion" in text:
@@ -2825,21 +3142,26 @@ class GreyStarAssistant:
         mapping = {
             "backpack": "BackpackItems",
             "herb": "HerbPouchItems",
+            "herbpouch": "HerbPouchItems",
         }
-        key = mapping.get(str(item_type).lower())
+        resolved_type = self.resolve_inventory_type(item_type) or str(item_type).lower()
+        key = mapping.get(resolved_type)
         if not key:
             print("Only Backpack and Herb Pouch consumables can be used here.")
             return
 
-        effect = self.consumable_item_effect(item)
-        if not effect:
-            print(f"No configured use action for: {item}")
-            return
-
-        removed, items = remove_first_matching(self.inventory[key], item)
-        if not removed:
+        index, resolved_item = self.resolve_inventory_selection(key, item)
+        if index is None or resolved_item is None:
             print(f"Item not found: {item}")
             return
+
+        effect = self.consumable_item_effect(resolved_item)
+        if not effect:
+            print(f"No configured use action for: {resolved_item}")
+            return
+
+        items = as_list(self.inventory[key])
+        items.pop(index)
         self.inventory[key] = items
 
         if effect["stat"] == "end":
@@ -2860,6 +3182,39 @@ class GreyStarAssistant:
             message = "unknown effect"
         self.autosave()
         print(f"Used {effect['label']}: {message}")
+
+    def use_item_command(self, tokens: list[str]) -> None:
+        if len(tokens) < 2:
+            panel_header("Use Item", accent=SCREEN_ACCENTS["inventory"])
+            panel_text("Use consumables from the Backpack or Herb Pouch. Enter a numbered slot or item name.", color="Gray")
+            panel_footer()
+            self.show_inventory_slots("Backpack", self.inventory["BackpackItems"], 8)
+            if self.inventory.get("HasHerbPouch"):
+                self.show_inventory_slots("Herb Pouch", self.inventory["HerbPouchItems"], 8)
+            item_type = input("Container [backpack]: ").strip() or "backpack"
+            item = input("Slot or item to use: ").strip()
+            if not item:
+                write_info("Use cancelled.")
+                return
+            self.use_item(item_type, item)
+            return
+
+        if len(tokens) >= 3 and self.resolve_inventory_type(tokens[1]) in {"backpack", "herb"}:
+            self.use_item(tokens[1], rest_of_line(tokens, 2))
+            return
+
+        # Convenience: "use 2" means Backpack slot 2, and "use laumspur" searches the Backpack first.
+        selection = rest_of_line(tokens, 1)
+        backpack_index, backpack_item = self.resolve_inventory_selection("BackpackItems", selection)
+        if backpack_index is not None and backpack_item is not None:
+            self.use_item("backpack", selection)
+            return
+        if self.inventory.get("HasHerbPouch"):
+            herb_index, herb_item = self.resolve_inventory_selection("HerbPouchItems", selection)
+            if herb_index is not None and herb_item is not None:
+                self.use_item("herb", selection)
+                return
+        print(f"Item not found: {selection}")
 
     def set_status_flag(self, key: str, value: Any) -> None:
         if isinstance(value, str):
@@ -2996,7 +3351,7 @@ class GreyStarAssistant:
         return entries
 
     def show_banner(self) -> None:
-        panel_header("Grey Star Action Assistant")
+        panel_header("Grey Star Action Assistant", accent="Cyan")
         panel_pair_row("Rules", "World of Lone Wolf", "Engine", "Python")
         panel_pair_row("Books", "1-4", "Saves", str(self.save_dir))
         panel_footer()
@@ -3011,15 +3366,16 @@ class GreyStarAssistant:
             ],
             "sheet": [
                 ("section <n>", "advance current section"),
+                ("choices", "show book links from this section"),
+                ("loot", "open section loot picker"),
                 ("inv", "inventory screen"),
                 ("magicks", "powers screen"),
-                ("save", "write save"),
             ],
             "inventory": [
-                ("add backpack <item>", "add an item"),
-                ("drop backpack <item>", "remove an item"),
+                ("add <type> <item>", "add an item"),
+                ("drop", "remove by numbered slot"),
+                ("use", "use a Backpack or Herb item"),
                 ("meal", "consume one Meal"),
-                ("sheet", "return to action chart"),
             ],
             "magicks": [
                 ("power add <name>", "add a Magick"),
@@ -3030,8 +3386,8 @@ class GreyStarAssistant:
             "sections": [
                 ("section <n>", "set current section"),
                 ("book <n> <sec>", "set book and section"),
+                ("choices", "show available routes"),
                 ("history", "recent section path"),
-                ("current", "show this screen"),
             ],
             "load": [
                 ("load <number>", "load save by list number"),
@@ -3042,24 +3398,42 @@ class GreyStarAssistant:
             "combat": [
                 ("combat round [wp]", "resolve a round"),
                 ("combat evade [wp]", "evade one round"),
+                ("combat weapon <name>", "change active weapon"),
                 ("combat stop", "end combat tracking"),
+            ],
+            "death": [
+                ("repeat", "retry the section from entry-ready state"),
+                ("rewind", "return to the previous section"),
+                ("load", "open save catalog"),
+                ("new", "start over"),
+            ],
+            "loot": [
+                ("loot <number>", "take a listed loot option"),
+                ("loot all", "apply every listed option"),
+                ("drop", "make room by slot"),
+                ("inv", "review inventory"),
+            ],
+            "choices": [
+                ("section <n>", "go to the numbered section"),
+                ("go <n>", "same as section <n>"),
+                ("roll", "roll 0-9 when the text asks"),
                 ("sheet", "return to action chart"),
             ],
         }
         rows = rows_by_screen.get(screen, rows_by_screen["sheet"])
-        panel_header("Helpful Commands")
+        panel_header("Helpful Commands", accent="DarkYellow")
         for label, value in rows:
-            panel_row(label, value, label_width=20)
+            panel_row(label, value, label_width=20, label_color="DarkYellow")
         panel_footer()
 
     def show_welcome_screen(self) -> None:
         self.show_banner()
-        panel_header("Welcome")
+        panel_header("Welcome", accent="Cyan")
         panel_pair_row("load", "open a save", "new", "create character", label_width=8)
         panel_pair_row("sheet", "action chart", "help", "commands", label_width=8)
         panel_footer()
 
-        panel_header("Quick Start")
+        panel_header("Quick Start", accent="DarkYellow")
         panel_text("1. Load a save or create a new Grey Star character.")
         panel_text("2. Use sheet, inv, magicks, sections, notes, stats, and campaign to review state.")
         panel_text("3. Use section <n> as you read. Web book links also update this state.")
@@ -3068,7 +3442,7 @@ class GreyStarAssistant:
 
     def show_load_screen(self) -> list[dict[str, Any]]:
         entries = self.catalog_saves()
-        panel_header("Save Catalog")
+        panel_header("Save Catalog", accent="Cyan")
         if not entries:
             panel_text(f"No saves found in {self.save_dir}.")
         else:
@@ -3328,10 +3702,12 @@ class GreyStarAssistant:
                     ("inv", "inventory slots and containers"),
                     ("magicks", "Lesser and Higher Magicks"),
                     ("sections", "current section and path history"),
+                    ("choices", "current section links, roll help, combat presets, and loot"),
                     ("notes", "saved reminders"),
                     ("stats", "current-book numbers"),
                     ("campaign", "whole-run overview"),
                     ("history", "recent sections and combat"),
+                    ("death", "active death and recovery options"),
                 ],
             ),
             (
@@ -3342,7 +3718,9 @@ class GreyStarAssistant:
                     ("roll", "roll a random digit, 0-9"),
                     ("wp/end/cs +/-n", "adjust Willpower, Endurance, or Combat Skill"),
                     ("meal / meal missed", "consume a Meal or take starvation loss"),
-                    ("add / drop", "add or remove carried items"),
+                    ("add / drop", "add items or remove them by name/slot"),
+                    ("use <item|slot>", "use Backpack or Herb Pouch consumables"),
+                    ("loot [number|all]", "apply audited loot in the current section"),
                     ("nobles +/-n", "adjust Nobles"),
                     ("note <text>", "add a short reminder"),
                 ],
@@ -3365,13 +3743,15 @@ class GreyStarAssistant:
                     ("load [number|path]", "open save catalog or load directly"),
                     ("save [path]", "write current save"),
                     ("complete", "finish current book and transition"),
+                    ("repeat", "after death, retry the failed section"),
+                    ("rewind", "after death, restore the previous section"),
                     ("autosave", "write the current always-on autosave"),
                     ("quit", "leave the app"),
                 ],
             ),
         ]
         for title, rows in panels:
-            panel_header(title)
+            panel_header(title, accent=SCREEN_ACCENTS.get(title.lower(), "Cyan"))
             for label, value in rows:
                 panel_row(label, value, label_width=24)
             panel_footer()
@@ -3380,22 +3760,22 @@ class GreyStarAssistant:
     def show_sheet(self) -> None:
         book = BOOKS.get(int(self.character["BookNumber"]), BOOKS[1])
         self.show_banner()
-        panel_header("Action Chart")
+        panel_header("Action Chart", accent=SCREEN_ACCENTS["sheet"])
         panel_row("Name", self.character["Name"])
         panel_pair_row("Book", f"{self.character['BookNumber']}. {book['Title']}", "Section", self.state["CurrentSection"])
-        panel_pair_row("Combat Skill", f"{self.character['CombatSkillCurrent']} (base {self.character['CombatSkillBase']})", "Endurance", f"{self.character['EnduranceCurrent']}/{self.character['EnduranceMax']}")
-        panel_pair_row("Willpower", self.character["WillpowerCurrent"], "Nobles", self.inventory["Nobles"])
+        panel_pair_row("Combat Skill", f"{self.character['CombatSkillCurrent']} (base {self.character['CombatSkillBase']})", "Endurance", f"{self.character['EnduranceCurrent']}/{self.character['EnduranceMax']}", left_color="Cyan", right_color=endurance_color(self.character["EnduranceCurrent"], self.character["EnduranceMax"]))
+        panel_pair_row("Willpower", self.character["WillpowerCurrent"], "Nobles", self.inventory["Nobles"], left_color="Magenta", right_color="Yellow")
         panel_pair_row("Completed", format_list(self.character["CompletedBooks"]), "Autosave", "On")
         if str(self.settings.get("SavePath", "")).strip():
             panel_row("Save", self.settings["SavePath"])
         panel_footer()
 
-        panel_header("Magicks")
+        panel_header("Magicks", accent=SCREEN_ACCENTS["magicks"])
         panel_row("Lesser", format_list(self.character["LesserMagicks"]))
         panel_row("Higher", format_list(self.character["HigherMagicks"]))
         panel_footer()
 
-        panel_header("Inventory Summary")
+        panel_header("Inventory Summary", accent=SCREEN_ACCENTS["inventory"])
         backpack_status = (
             "unavailable"
             if not bool(self.automation_flags.get("backpackAvailable", True))
@@ -3408,7 +3788,7 @@ class GreyStarAssistant:
         self.show_helpful_commands("sheet")
 
     def show_inventory_screen(self) -> None:
-        panel_header("Inventory")
+        panel_header("Inventory", accent=SCREEN_ACCENTS["inventory"])
         panel_pair_row("Nobles", self.inventory["Nobles"], "Weapons", capacity_text(self.inventory["Weapons"], 2))
         panel_pair_row("Backpack", capacity_text(self.inventory["BackpackItems"], 8), "Special Items", str(len(as_list(self.inventory["SpecialItems"]))))
         panel_pair_row("Herb Pouch", capacity_text(self.inventory["HerbPouchItems"], 8) if self.inventory.get("HasHerbPouch") else "none", "Meals", as_list(self.inventory["BackpackItems"]).count("Meal"))
@@ -3437,7 +3817,7 @@ class GreyStarAssistant:
         )
         if not gear_unavailable and not weapons and not backpack:
             return
-        panel_header("Stored Gear")
+        panel_header("Stored Gear", accent="DarkYellow")
         panel_row("Status", "unavailable" if gear_unavailable else "recorded")
         panel_row("Weapons", format_list(weapons))
         panel_row("Backpack Items", format_list(backpack))
@@ -3446,7 +3826,8 @@ class GreyStarAssistant:
     def show_inventory_slots(self, title: str, items: Any, capacity: int | None) -> None:
         values = as_list(items)
         suffix = f" {len(values)}/{capacity}" if capacity else f" {len(values)}"
-        panel_header(title + suffix)
+        accent = "DarkYellow" if title in {"Weapons", "Backpack", "Special Items"} else "Magenta"
+        panel_header(title + suffix, accent=accent)
         slot_count = capacity if capacity is not None else max(len(values), 1)
         for index in range(slot_count):
             value = values[index] if index < len(values) else "(empty)"
@@ -3457,19 +3838,19 @@ class GreyStarAssistant:
         self.show_magicks_screen()
 
     def show_magicks_screen(self) -> None:
-        panel_header("Magicks")
+        panel_header("Magicks", accent=SCREEN_ACCENTS["magicks"])
         panel_row("Willpower", self.character["WillpowerCurrent"])
         panel_row("Lesser Known", f"{len(as_list(self.character['LesserMagicks']))}/7")
         panel_row("Higher Known", f"{len(as_list(self.character['HigherMagicks']))}/6")
         panel_footer()
 
-        panel_header("Lesser Magicks")
+        panel_header("Lesser Magicks", accent=SCREEN_ACCENTS["magicks"])
         for name in LESSER_MAGICKS:
             marker = "known" if name in as_list(self.character["LesserMagicks"]) else "available"
             panel_row(name, marker, label_width=18)
         panel_footer()
 
-        panel_header("Higher Magicks")
+        panel_header("Higher Magicks", accent=SCREEN_ACCENTS["magicks"])
         for name in HIGHER_MAGICKS:
             marker = "known" if name in as_list(self.character["HigherMagicks"]) else "Book 4"
             panel_row(name, marker, label_width=18)
@@ -3481,13 +3862,13 @@ class GreyStarAssistant:
         book = BOOKS.get(book_number, BOOKS[1])
         stats = self.state.get("CurrentBookStats", {})
         history = as_list(self.state.get("SectionHistory"))[-10:]
-        panel_header("Sections")
+        panel_header("Sections", accent=SCREEN_ACCENTS["sections"])
         panel_pair_row("Book", f"{book_number}. {book['Title']}", "Current", self.state["CurrentSection"])
         panel_pair_row("Range", f"1-{book['MaxSection']}", "Unique Seen", stats.get("SectionsVisited", 0))
         panel_row("Start Section", stats.get("StartSection", self.state["CurrentSection"]))
         panel_footer()
 
-        panel_header("Recent Path")
+        panel_header("Recent Path", accent="DarkYellow")
         if not history:
             panel_text("No section path recorded yet.")
         else:
@@ -3502,21 +3883,21 @@ class GreyStarAssistant:
 
     def show_notes_screen(self) -> None:
         notes = as_list(self.character["Notes"])
-        panel_header("Notes")
+        panel_header("Notes", accent=SCREEN_ACCENTS["notes"])
         if not notes:
             panel_text("No notes yet. Use note <text> to add one.")
         else:
             for index, note in enumerate(notes, 1):
                 panel_row(str(index), note, label_width=4)
         panel_footer()
-        panel_header("Summary")
+        panel_header("Summary", accent="DarkYellow")
         panel_row("Total Notes", len(notes))
         panel_footer()
 
     def show_stats_screen(self) -> None:
         stats = self.state.get("CurrentBookStats", {})
         combat_log = as_list(self.combat.get("Log"))
-        panel_header("Current Book Stats")
+        panel_header("Current Book Stats", accent=SCREEN_ACCENTS["stats"])
         panel_row("Book", f"{stats.get('BookNumber', self.character['BookNumber'])}. {stats.get('BookTitle', book_title(int(self.character['BookNumber'])))}")
         panel_pair_row("Start Section", stats.get("StartSection", 1), "Last Section", stats.get("LastSection", self.state["CurrentSection"]))
         panel_pair_row("Unique Sections", stats.get("SectionsVisited", 0), "Combat Rounds", len(combat_log))
@@ -3526,12 +3907,12 @@ class GreyStarAssistant:
 
     def show_campaign_screen(self) -> None:
         completed = [int(item) for item in as_list(self.character["CompletedBooks"]) if str(item).strip()]
-        panel_header("Campaign")
+        panel_header("Campaign", accent=SCREEN_ACCENTS["campaign"])
         for number in range(1, 5):
             status = "current" if number == int(self.character["BookNumber"]) else ("complete" if number in completed else "not started")
             panel_row(f"Book {number}", f"{BOOKS[number]['Title']} :: {status}", label_width=10)
         panel_footer()
-        panel_header("Run Summary")
+        panel_header("Run Summary", accent="DarkYellow")
         panel_pair_row("Completed", format_list(completed), "Current Section", self.state["CurrentSection"])
         panel_pair_row("Notes", len(as_list(self.character["Notes"])), "Recent Path", len(as_list(self.state.get("SectionHistory"))))
         panel_footer()
@@ -3539,7 +3920,7 @@ class GreyStarAssistant:
     def show_history_screen(self) -> None:
         self.show_sections_screen()
         log = as_list(self.combat.get("Log"))[-8:]
-        panel_header("Recent Combat")
+        panel_header("Recent Combat", accent=SCREEN_ACCENTS["combat"])
         if not log:
             panel_text("No combat rounds recorded in the active fight.")
         else:
@@ -3577,6 +3958,8 @@ class GreyStarAssistant:
         print(f"Current section: {section}")
         for message in automation_messages:
             print(message)
+        if self.death_active():
+            self.show_death_screen()
 
     def set_book(self, book_number: int, section: int | None = None) -> None:
         book = BOOKS.get(book_number)
@@ -3609,6 +3992,8 @@ class GreyStarAssistant:
         print(f"Current book: {book_number}. {book['Title']}; section {next_section}")
         for message in automation_messages:
             print(message)
+        if self.death_active():
+            self.show_death_screen()
 
     def number_change(self, tokens: list[str]) -> tuple[str, int] | None:
         if len(tokens) < 2:
@@ -3693,6 +4078,135 @@ class GreyStarAssistant:
         self.autosave()
         print(f"Consumed one Meal. Backpack: {format_list(items)}")
 
+    def inventory_type_choices(self) -> dict[str, dict[str, Any]]:
+        return {
+            "weapon": {"key": "Weapons", "label": "Weapons", "capacity": 2},
+            "backpack": {"key": "BackpackItems", "label": "Backpack", "capacity": 8},
+            "special": {"key": "SpecialItems", "label": "Special Items", "capacity": None},
+            "herb": {"key": "HerbPouchItems", "label": "Herb Pouch", "capacity": 8},
+        }
+
+    def resolve_inventory_type(self, value: str) -> str | None:
+        text = str(value or "").strip().lower().replace("_", "").replace("-", "")
+        aliases = {
+            "w": "weapon",
+            "weapon": "weapon",
+            "weapons": "weapon",
+            "b": "backpack",
+            "bp": "backpack",
+            "pack": "backpack",
+            "backpack": "backpack",
+            "backpackitems": "backpack",
+            "s": "special",
+            "special": "special",
+            "specials": "special",
+            "specialitems": "special",
+            "h": "herb",
+            "herb": "herb",
+            "herbs": "herb",
+            "herbpouch": "herb",
+            "herbpouchitems": "herb",
+        }
+        return aliases.get(text)
+
+    def inventory_type_spec(self, item_type: str) -> dict[str, Any] | None:
+        resolved = self.resolve_inventory_type(item_type)
+        if not resolved:
+            return None
+        return self.inventory_type_choices()[resolved]
+
+    def inventory_type_from_key(self, key: str) -> str:
+        reverse = {
+            "Weapons": "weapon",
+            "BackpackItems": "backpack",
+            "SpecialItems": "special",
+            "HerbPouchItems": "herb",
+        }
+        return reverse.get(key, "")
+
+    def inventory_capacity_line(self) -> str:
+        backpack = "unavailable" if not bool(self.automation_flags.get("backpackAvailable", True)) else capacity_text(self.inventory["BackpackItems"], 8)
+        herb = capacity_text(self.inventory["HerbPouchItems"], 8) if self.inventory.get("HasHerbPouch") else "none"
+        return (
+            f"Weapons {capacity_text(self.inventory['Weapons'], 2)} | "
+            f"Backpack {backpack} | Herb Pouch {herb} | "
+            f"Special {len(as_list(self.inventory['SpecialItems']))}"
+        )
+
+    def resolve_inventory_selection(self, key: str, selection: str) -> tuple[int | None, str | None]:
+        items = as_list(self.inventory.get(key))
+        text = str(selection or "").strip()
+        if not text:
+            return None, None
+        if text.isdigit():
+            index = int(text) - 1
+            if 0 <= index < len(items):
+                return index, str(items[index])
+            return None, None
+        exact = [index for index, item in enumerate(items) if str(item).lower() == text.lower()]
+        if exact:
+            index = exact[0]
+            return index, str(items[index])
+        prefix = [index for index, item in enumerate(items) if str(item).lower().startswith(text.lower())]
+        if len(prefix) == 1:
+            index = prefix[0]
+            return index, str(items[index])
+        return None, None
+
+    def remove_inventory_item_by_index(self, key: str, index: int) -> str | None:
+        items = as_list(self.inventory.get(key))
+        if index < 0 or index >= len(items):
+            return None
+        item = str(items.pop(index))
+        self.inventory[key] = items
+        return item
+
+    def show_inventory_type_slots(self, item_type: str) -> None:
+        spec = self.inventory_type_spec(item_type)
+        if not spec:
+            write_warn("Type must be weapon, backpack, special, or herb.")
+            return
+        self.show_inventory_slots(str(spec["label"]), self.inventory.get(str(spec["key"])), spec.get("capacity"))
+
+    def interactive_drop_item(self, item_type: str = "") -> None:
+        resolved = self.resolve_inventory_type(item_type)
+        if not resolved:
+            panel_header("Drop Item", accent=SCREEN_ACCENTS["inventory"])
+            panel_text("Choose a container to remove from.", color="Gray")
+            for index, key in enumerate(["weapon", "backpack", "special", "herb"], 1):
+                spec = self.inventory_type_choices()[key]
+                if key == "herb" and not self.inventory.get("HasHerbPouch"):
+                    continue
+                panel_row(str(index), spec["label"], label_width=4)
+            panel_footer()
+            raw = input("Container (weapon/backpack/special/herb): ").strip()
+            resolved = self.resolve_inventory_type(raw)
+        if not resolved:
+            write_warn("Type must be weapon, backpack, special, or herb.")
+            return
+
+        spec = self.inventory_type_choices()[resolved]
+        key = str(spec["key"])
+        if key == "HerbPouchItems" and not self.inventory.get("HasHerbPouch"):
+            write_warn("No Herb Pouch is available.")
+            return
+        self.show_inventory_type_slots(resolved)
+        items = as_list(self.inventory.get(key))
+        if not items:
+            write_warn(f"No {spec['label']} items to remove.")
+            return
+        raw = input(f"{spec['label']} slot or item to drop [0 cancel]: ").strip()
+        if raw in {"", "0"}:
+            write_info("Drop cancelled.")
+            return
+        index, item = self.resolve_inventory_selection(key, raw)
+        if index is None or item is None:
+            write_warn("That item was not found.")
+            return
+        removed = self.remove_inventory_item_by_index(key, index)
+        self.autosave()
+        write_info(f"Dropped: {removed}")
+
     def add_item(self, tokens: list[str]) -> None:
         if len(tokens) < 3:
             print("Use: add <weapon|backpack|special|herb> <item>")
@@ -3729,28 +4243,25 @@ class GreyStarAssistant:
         print(f"Added: {item}")
 
     def drop_item(self, tokens: list[str]) -> None:
+        if len(tokens) < 2:
+            self.interactive_drop_item()
+            return
+        spec = self.inventory_type_spec(tokens[1])
+        if not spec:
+            print(f"Unknown item type: {tokens[1]}")
+            return
         if len(tokens) < 3:
-            print("Use: drop <weapon|backpack|special|herb> <item>")
+            self.interactive_drop_item(tokens[1])
             return
-        item_type = tokens[1].lower()
-        item = rest_of_line(tokens, 2)
-        mapping = {
-            "weapon": "Weapons",
-            "backpack": "BackpackItems",
-            "special": "SpecialItems",
-            "herb": "HerbPouchItems",
-        }
-        key = mapping.get(item_type)
-        if not key:
-            print(f"Unknown item type: {item_type}")
+        key = str(spec["key"])
+        selection = rest_of_line(tokens, 2)
+        index, item = self.resolve_inventory_selection(key, selection)
+        if index is None or item is None:
+            print(f"Item not found: {selection}")
             return
-        removed, items = remove_first_matching(self.inventory[key], item)
-        if not removed:
-            print(f"Item not found: {item}")
-            return
-        self.inventory[key] = items
+        removed_item = self.remove_inventory_item_by_index(key, index)
         self.autosave()
-        print(f"Dropped: {item}")
+        print(f"Dropped: {removed_item}")
 
     def power_command(self, tokens: list[str]) -> None:
         if len(tokens) < 3:
@@ -4049,6 +4560,7 @@ class GreyStarAssistant:
                 return True
             self.register_death("combat", f"Defeated by {enemy_name}.")
             self.autosave()
+            self.show_death_screen()
             return True
 
         limit = int(self.combat.get("RoundLimit") or 0)
@@ -4165,18 +4677,18 @@ class GreyStarAssistant:
 
     def show_combat_status(self) -> None:
         if not self.combat.get("Active"):
-            panel_header("Combat")
+            panel_header("Combat", accent=SCREEN_ACCENTS["combat"])
             panel_text("No active combat. Use combat start <name> <cs> <end>.")
             panel_footer()
             self.show_helpful_commands("combat")
             return
         player_cs = self.combat_skill_for_round()
         ratio = player_cs - int(self.combat["EnemyCombatSkill"])
-        panel_header("Combat")
+        panel_header("Combat", accent=SCREEN_ACCENTS["combat"])
         panel_row("Enemy", self.combat["EnemyName"])
         panel_pair_row("Enemy CS", self.combat["EnemyCombatSkill"], "Enemy END", f"{self.combat['EnemyEnduranceCurrent']}/{self.combat['EnemyEnduranceMax']}")
-        panel_pair_row("Grey Star CS", player_cs, "END / WP", f"{self.character['EnduranceCurrent']}/{self.character['EnduranceMax']} / {self.character['WillpowerCurrent']}")
-        panel_pair_row("Ratio", ratio, "Weapon", self.combat_active_weapon() or "Unarmed")
+        panel_pair_row("Grey Star CS", player_cs, "END / WP", f"{self.character['EnduranceCurrent']}/{self.character['EnduranceMax']} / {self.character['WillpowerCurrent']}", left_color="Cyan", right_color=endurance_color(self.character["EnduranceCurrent"], self.character["EnduranceMax"]))
+        panel_pair_row("Ratio", ratio, "Weapon", self.combat_active_weapon() or "Unarmed", left_color="Yellow" if ratio < 0 else "Green", right_color="White")
         panel_row("Staff Magic", self.combat_uses_magical_staff())
         panel_row("Modifier", self.combat["Modifier"])
         panel_footer()
@@ -4626,6 +5138,11 @@ class GreyStarAssistant:
                     self.show_sections_screen()
                 else:
                     self.set_section(int(tokens[1]))
+            elif command == "go":
+                if len(tokens) < 2:
+                    self.show_choices_screen()
+                else:
+                    self.set_section(int(tokens[1]))
             elif command == "book":
                 if len(tokens) < 2:
                     self.show_sections_screen()
@@ -4634,10 +5151,23 @@ class GreyStarAssistant:
                     self.set_book(int(tokens[1]), section)
             elif command in {"sections", "current", "path"}:
                 self.show_sections_screen()
+            elif command in {"choices", "routes", "links"}:
+                self.show_choices_screen()
             elif command in {"automation", "effects"}:
                 self.apply_current_section_automation()
+                if self.death_active():
+                    self.show_death_screen()
+            elif command == "loot":
+                self.loot_command(tokens)
             elif command in {"roll", "random"}:
-                print(f"Random digit: {random_digit()}")
+                result = self.roll_current_section()
+                print(f"Random digit: {result['Raw']}")
+                if result.get("Total") != result.get("Raw"):
+                    print(f"Modified total: {result['Total']}")
+                if result.get("Outcome"):
+                    print(f"Outcome: {result['Outcome']}")
+                if result.get("Route"):
+                    print(f"Route: section {result['Route']}")
             elif command in {"wp", "will", "willpower"}:
                 self.adjust_willpower(tokens)
             elif command in {"end", "endurance"}:
@@ -4662,16 +5192,29 @@ class GreyStarAssistant:
                 self.adjust_nobles(tokens)
             elif command == "meal":
                 self.meal_command(tokens)
+            elif command in {"eat"}:
+                self.meal_command(["meal"] + tokens[1:])
             elif command == "add":
                 self.add_item(tokens)
             elif command == "drop":
                 self.drop_item(tokens)
+            elif command == "use":
+                self.use_item_command(tokens)
             elif command in {"powers", "magicks", "disciplines"}:
                 self.show_powers()
             elif command in {"power", "magick"}:
                 self.power_command(tokens)
             elif command == "combat":
                 self.combat_command(tokens)
+                if self.death_active():
+                    self.show_death_screen()
+            elif command == "death":
+                self.show_death_screen()
+            elif command in {"repeat", "retry"}:
+                self.restore_death_checkpoint("repeat")
+            elif command in {"rewind", "recover"}:
+                mode = tokens[1] if len(tokens) > 1 else "rewind"
+                self.restore_death_checkpoint(mode)
             elif command == "complete":
                 self.complete_book()
             elif command == "notes":
