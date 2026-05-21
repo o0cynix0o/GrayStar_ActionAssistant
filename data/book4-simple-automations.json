@@ -1,0 +1,1479 @@
+{
+  "4": {
+    "2": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "27": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "44": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "54": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "80": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "94": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "96": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "130": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "153": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "160": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "176": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "192": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "263": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "299": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "308": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "315": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "319": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "322": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "335": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "339": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "346": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "349": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "357": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "1": {
+      "summary": "begin Book 4 with the Moonstone",
+      "actions": [
+        {
+          "type": "add_item",
+          "name": "Moonstone",
+          "container": "special"
+        }
+      ]
+    },
+    "5": {
+      "summary": "the Wizard's Staff is shattered",
+      "actions": [
+        {
+          "type": "remove_item",
+          "name": "Wizard's Staff",
+          "count": 1,
+          "match": "exact",
+          "containers": [
+            "weapons"
+          ]
+        },
+        {
+          "type": "flag",
+          "key": "staffAvailable",
+          "value": false
+        }
+      ]
+    },
+    "7": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "16": {
+      "summary": "lose 2 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "21": {
+      "summary": "raise the Moonstone and suffer Shasarak's drain",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        },
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "22": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "25": {
+      "summary": "lose 1 WP for Staff light",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "26": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "35": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "37": {
+      "summary": "wear the Shadakine uniform",
+      "actions": [
+        {
+          "type": "flag",
+          "key": "shadakineUniform",
+          "value": true
+        }
+      ]
+    },
+    "38": {
+      "summary": "Masbate healer restores 1 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": 1
+        }
+      ]
+    },
+    "40": {
+      "summary": "lose 3 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -3
+        }
+      ]
+    },
+    "41": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "45": {
+      "summary": "wear the Shadakine uniform",
+      "actions": [
+        {
+          "type": "flag",
+          "key": "shadakineUniform",
+          "value": true
+        }
+      ]
+    },
+    "46": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "49": {
+      "summary": "brew a Potion of Invulnerability",
+      "actions": [
+        {
+          "type": "remove_item",
+          "name": "Empty Vial",
+          "count": 1,
+          "match": "contains",
+          "containers": [
+            "herb",
+            "backpack"
+          ]
+        },
+        {
+          "type": "add_item",
+          "name": "Potion of Invulnerability",
+          "container": "herb_or_backpack"
+        }
+      ]
+    },
+    "55": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "58": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "59": {
+      "summary": "lose 1 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "64": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "65": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "66": {
+      "summary": "lose 1 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "67": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "69": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "72": {
+      "summary": "lose 3 END before the next combat",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -3
+        }
+      ]
+    },
+    "73": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "77": {
+      "summary": "lose 1 END from heat exhaustion",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "83": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "84": {
+      "summary": "drink Potion of Invulnerability",
+      "actions": [
+        {
+          "type": "remove_item",
+          "name": "Potion of Invulnerability",
+          "count": 1,
+          "match": "contains",
+          "containers": [
+            "herb",
+            "backpack"
+          ]
+        },
+        {
+          "type": "add_item",
+          "name": "Empty Vial",
+          "container": "herb_or_backpack"
+        },
+        {
+          "type": "flag",
+          "key": "invulnerabilityActive",
+          "value": true
+        }
+      ]
+    },
+    "87": {
+      "summary": "lose 3 END before the four-demon combat",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -3
+        }
+      ]
+    },
+    "88": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "91": {
+      "summary": "lose 4 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -4,
+          "allowNegative": true
+        }
+      ]
+    },
+    "95": {
+      "summary": "lose 2 END from heat exhaustion",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "102": {
+      "summary": "lose 3 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -3
+        }
+      ]
+    },
+    "104": {
+      "summary": "lose 2 WP and 1 END reaching the portal",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        },
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "108": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "111": {
+      "summary": "lose 2 WP before the fly-by combat",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "112": {
+      "summary": "lose 1 WP trying to close the portal",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "113": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "114": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "117": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "122": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "124": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "125": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "127": {
+      "summary": "lose 1 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "133": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "137": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "139": {
+      "summary": "lose 1 WP trying to close the portal",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "143": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "145": {
+      "summary": "lose 1 WP using the Moonstone against Shasarak",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "146": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "154": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "157": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "159": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "162": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "164": {
+      "summary": "lose 6 WP and 2 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -6,
+          "allowNegative": true
+        },
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "167": {
+      "summary": "lose 2 WP resisting Agarash",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "169": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "171": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "173": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "174": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "177": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "179": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "180": {
+      "summary": "both Wizard's Staffs burn to ashes",
+      "actions": [
+        {
+          "type": "remove_item",
+          "name": "Wizard's Staff",
+          "count": 1,
+          "match": "exact",
+          "containers": [
+            "weapons"
+          ]
+        },
+        {
+          "type": "flag",
+          "key": "staffAvailable",
+          "value": false
+        }
+      ]
+    },
+    "181": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "182": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "185": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "189": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "193": {
+      "summary": "lose 2 WP escaping the demon press",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "194": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "195": {
+      "summary": "lose 2 WP teleporting",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "198": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "204": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "205": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "206": {
+      "summary": "lose 2 END in the fall",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "209": {
+      "summary": "lose 4 WP and 3 END closing the portal",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -4,
+          "allowNegative": true
+        },
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -3
+        }
+      ]
+    },
+    "211": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "217": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "219": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "220": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "221": {
+      "summary": "lose 2 WP before the ape-demon combat",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "229": {
+      "summary": "lose 1 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "234": {
+      "summary": "lose 1 END from heat and thirst",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "243": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "249": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "255": {
+      "summary": "lose 5 WP forcing the doors",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -5,
+          "allowNegative": true
+        }
+      ]
+    },
+    "258": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "276": {
+      "summary": "lose 3 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -3
+        }
+      ]
+    },
+    "278": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "285": {
+      "summary": "wear the Shadakine uniform",
+      "actions": [
+        {
+          "type": "flag",
+          "key": "shadakineUniform",
+          "value": true
+        }
+      ]
+    },
+    "288": {
+      "summary": "lose 2 WP before the demon combat",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "289": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "291": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "292": {
+      "summary": "wear the Shadakine uniform",
+      "actions": [
+        {
+          "type": "flag",
+          "key": "shadakineUniform",
+          "value": true
+        }
+      ]
+    },
+    "294": {
+      "summary": "drink Potion of Invulnerability",
+      "actions": [
+        {
+          "type": "remove_item",
+          "name": "Potion of Invulnerability",
+          "count": 1,
+          "match": "contains",
+          "containers": [
+            "herb",
+            "backpack"
+          ]
+        },
+        {
+          "type": "add_item",
+          "name": "Empty Vial",
+          "container": "herb_or_backpack"
+        },
+        {
+          "type": "flag",
+          "key": "invulnerabilityActive",
+          "value": true
+        }
+      ]
+    },
+    "300": {
+      "summary": "restore 4 END and 3 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": 4
+        },
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": 3
+        }
+      ]
+    },
+    "303": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "304": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "305": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "309": {
+      "summary": "lose 3 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -3
+        }
+      ]
+    },
+    "312": {
+      "summary": "Laumspur restores 4 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": 4
+        }
+      ]
+    },
+    "314": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "317": {
+      "summary": "lose 2 WP before the fly-by combat",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "324": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "327": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "328": {
+      "summary": "restore 8 END and 9 WP during the pursuit",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": 8
+        },
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": 9
+        }
+      ]
+    },
+    "332": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "333": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "338": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "360": {
+      "summary": "successful Book 4 ending",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "success",
+          "completeBook": 4
+        }
+      ]
+    }
+  }
+}

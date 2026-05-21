@@ -36,6 +36,7 @@ NO_INCOMING_NOTES = {
 ROUTE_STATUS = {
     1: "machine route-graph baseline plus first named route-family pass. Endpoint classifications and full dry-run branch coverage still need review.",
     3: "machine route-graph baseline plus named route-family pass. Sections 144 and 190 are source irregularities called out by the local footnotes.",
+    4: "machine route-graph baseline plus named route-family pass. All 360 section files are reachable from section 1 in the local source graph.",
 }
 
 BOOK_ROUTE_FAMILIES = {
@@ -225,6 +226,85 @@ BOOK_ROUTE_FAMILIES = {
             "Route-audit notes only.",
         ],
     ],
+    4: [
+        [
+            "Opening: Shianti Counsel",
+            "1, 348, 6, 340, 326, 50",
+            "The last quiet moment before Grey Star returns to Magnamund.",
+            "All three opening questions merge quickly. They are good smoke checks for the Moonstone handoff and the Book 4 start state.",
+            "`gs4_moonstone_bearer`; Book 4 start rules, Moonstone inventory, Higher Magick setup.",
+        ],
+        [
+            "Lissan Plain Survival",
+            "239, 172, 60, 267, 36, 234, 43, 241",
+            "The water, heat, and first Masbate trail across the Lissan Plain.",
+            "This family catches early END attrition, Prophecy/Visionary scouting, and the Phinomel plant branch.",
+            "`gs4_phinomel_harvest`; END losses, Phinomel roll helpers, Phinomel loot buttons.",
+        ],
+        [
+            "Masbate Rescue And Hidden Tribe",
+            "58, 67, 85, 97, 116, 126, 38, 150, 298",
+            "The tortured Masbate survivor, demon trap, and return of Samu's people.",
+            "The route can go through scouting magic, ambushes, and several demon fights before revealing that the Masbate survived.",
+            "`gs4_masbate_found`; demon combat presets, scouting WP costs, Masbate route checks.",
+        ],
+        [
+            "Invulnerability And Portal Prep",
+            "10, 15, 19, 24, 29, 34, 49, 76, 84",
+            "The planning phase before the ride to Tilos.",
+            "This family covers Theurgy/Thaumaturgy/Necromancy choices, Potion of Invulnerability crafting, and the Masbate supply cache.",
+            "`gs4_invulnerability_brewed`, `gs4_invulnerability_used`; potion loot/use automation and protection flags.",
+        ],
+        [
+            "Demon Portal Of Tilos",
+            "70, 76, 90, 98, 104, 112, 134, 139, 158, 167, 209, 268",
+            "The ride to the portal and the confrontation with Agarash through the fire.",
+            "This family contains several expensive Moonstone and Staff costs, including the Book 4 footnote cases that allow negative WP or END substitution.",
+            "`gs4_portal_closed`; WP-cost buttons, invulnerability combat variants, portal close route.",
+        ],
+        [
+            "Demon Chase And Shadakine Uniform",
+            "13, 17, 37, 45, 220, 250, 285, 292, 302",
+            "The route where Grey Star turns the pursuing demon horde toward the Shadakine.",
+            "The Shadakine uniform matters because it helps steer the horde into the enemy army instead of into Grey Star.",
+            "`gs4_uniform_taken`; uniform flag, horseman combat, chase-route survival checks.",
+        ],
+        [
+            "Bridge At Lanzi",
+            "75, 175, 252, 256, 270, 353",
+            "The Masbate bridge action and the demon/Shadakine collision.",
+            "This is the big set-piece in the middle of the book: bridge destruction, mass combat, and the Demon Master.",
+            "`gs4_lanzi_bridge`; high WP bridge cost, Demon Master timed combat, route outcomes.",
+        ],
+        [
+            "Freedom Guild And Fernmost",
+            "282, 321, 312, 300, 331, 336, 355, 359",
+            "Rejoining Sado, retreating to Fernmost, and gathering the late-game herb cache.",
+            "This family handles the best recovery stretch in the book and the Leafwater opportunity for a stronger Staff.",
+            "`gs4_freedom_guild`, `gs4_fernmost_rest`, `gs4_alchemy_cache`, `gs4_leafwater_staff`; healing, potion loot, CS boost.",
+        ],
+        [
+            "Night Battle And Road To Shadaki",
+            "347, 275, 351, 328, 191, 342, 12",
+            "The late war against the Shadakine and the final approach to Shasarak.",
+            "This family includes night-fighting choices, the Morn Pass danger, and the teleport decision into Shadaki.",
+            "`gs4_shadaki_arrival`; night-battle WP costs, teleport choices, Skeleton Warrior combat.",
+        ],
+        [
+            "Shasarak And Agarash",
+            "39, 92, 129, 131, 145, 180, 310, 316, 350, 356, 360",
+            "The final duel, the broken Staff, and the choice that seals Agarash's portal.",
+            "This family is the final endgame spine. It needs direct tests for Shasarak combat, Staff removal, Book 4 completion, and repeat-final-book behavior.",
+            "`gs4_shasarak_duel`, `gs4_staff_shattered`, `gs4_agarash_defied`, `gs4_wizard_regent`; final combats and completion screen.",
+        ],
+        [
+            "Failure / Death Endpoint Families",
+            "2, 27, 44, 54, 80, 94, 96, 130, 153, 160, 176, 192, 263, 299, 308, 315, 319, 322, 335, 339, 346, 349, 357",
+            "Terminal failure leaves detected in the Book 4 graph.",
+            "These are the endpoints the death screen and rewind/repeat flow should handle.",
+            "Death/failure automation and endpoint coverage.",
+        ],
+    ],
 }
 
 BOOK_ROUTE_TESTING_NOTES = {
@@ -237,6 +317,11 @@ BOOK_ROUTE_TESTING_NOTES = {
         "Both opening branches can reach section 350, but the path merges often. Use route-family coverage plus mechanic coverage rather than trying to name every possible full path.",
         "Sections 144 and 190 are source irregularities from the local footnotes and should not be counted as missed legal player routes.",
         "The final combat at section 243 needs special testing because combat defeat routes to the successful ending at section 350.",
+    ],
+    4: [
+        "All Book 4 section files are reachable from section 1 in the source graph, so route testing should focus on state gates and mechanic coverage rather than missing links.",
+        "The Book 4 final stretch has multiple ways to reach Shasarak and multiple ways to resolve Agarash. Treat sections 316, 356, and 360 as separate endgame checks.",
+        "Several portal sections use the Book 4 footnote rule for insufficient Willpower. Test both straight negative-WP spending and END-for-missing-WP handling.",
     ],
 }
 
@@ -320,6 +405,8 @@ def death_or_failure_text(text: str) -> bool:
         "your life and your quest are now over",
         "your life and your quest are over",
         "your quest has failed and your adventure is over",
+        "your quest has failed; your adventure is over",
+        "your adventure is over",
         "your quest is over",
         "you have failed",
         "you are dead",

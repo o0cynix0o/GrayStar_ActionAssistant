@@ -45,8 +45,6 @@ The app follows the book rules. If a book-legal effect can push Willpower below 
 
 No. The `saves` folder is ignored by git. Your character state stays local.
 
-## What Is Done For Book 3 And Book 4?
+## What Is Done For The Books?
 
-Books 1, 2, and 3 have assistant rules, achievements, strategy guides, and green dry-run playtest reports.
-
-Book 4 is available in the local reader, but still needs the full book workflow before it has the same level of assistant help.
+Books 1, 2, 3, and 4 have assistant rules, achievements, strategy guides, and green dry-run playtest reports.

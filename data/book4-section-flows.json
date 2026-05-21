@@ -1,0 +1,1720 @@
+{
+  "4": {
+    "3": {
+      "roll": {
+        "summary": "Turn the well mechanism",
+        "outcomes": [
+          {
+            "test": "values",
+            "values": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
+            "route": 79,
+            "label": "Rope gives way"
+          },
+          {
+            "test": "values",
+            "values": [
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            "route": 63,
+            "label": "Raise the bucket"
+          }
+        ],
+        "modifiers": []
+      }
+    },
+    "4": {
+      "roll": {
+        "summary": "Gather Phinomel Pods",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 29,
+            "route": 40,
+            "label": "Bad burn: three pods"
+          },
+          {
+            "test": "range",
+            "min": 30,
+            "max": 49,
+            "route": 16,
+            "label": "Painful harvest: six pods"
+          },
+          {
+            "test": "range",
+            "min": 50,
+            "max": 999,
+            "route": 11,
+            "label": "Clean harvest: nine pods"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Current WP",
+            "valueFrom": "wp"
+          },
+          {
+            "label": "Current END",
+            "valueFrom": "end"
+          }
+        ]
+      }
+    },
+    "62": {
+      "roll": {
+        "summary": "Reach the Forest of Fernmost",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 11,
+            "route": 96,
+            "label": "Too exhausted"
+          },
+          {
+            "test": "range",
+            "min": 12,
+            "max": 999,
+            "route": 71,
+            "label": "Reach the forest"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Current END",
+            "valueFrom": "end"
+          }
+        ]
+      }
+    },
+    "148": {
+      "roll": {
+        "summary": "Teleport without seeing the destination",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 5,
+            "route": 130,
+            "label": "Teleport mishap"
+          },
+          {
+            "test": "range",
+            "min": 6,
+            "max": 999,
+            "route": 55,
+            "label": "Safe arrival"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Silver Charm of Jnana",
+            "value": 1,
+            "condition": {
+              "type": "item",
+              "name": "Silver Charm",
+              "match": "contains",
+              "containers": [
+                "special"
+              ]
+            }
+          },
+          {
+            "label": "Magic Talisman",
+            "value": 1,
+            "condition": {
+              "type": "item",
+              "name": "Talisman",
+              "match": "contains",
+              "containers": [
+                "special"
+              ]
+            }
+          },
+          {
+            "label": "Sorcery",
+            "value": 1,
+            "condition": {
+              "type": "power",
+              "name": "Sorcery"
+            }
+          },
+          {
+            "label": "Prophecy",
+            "value": 1,
+            "condition": {
+              "type": "power",
+              "name": "Prophecy"
+            }
+          },
+          {
+            "label": "Psychomancy",
+            "value": 1,
+            "condition": {
+              "type": "power",
+              "name": "Psychomancy"
+            }
+          },
+          {
+            "label": "Visionary",
+            "value": 1,
+            "condition": {
+              "type": "power",
+              "name": "Visionary"
+            }
+          },
+          {
+            "label": "Telergy",
+            "value": 1,
+            "condition": {
+              "type": "power",
+              "name": "Telergy"
+            }
+          }
+        ]
+      }
+    },
+    "149": {
+      "roll": {
+        "summary": "Long-range shot at the winged reptile",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 5,
+            "route": 171,
+            "label": "Shot fails"
+          },
+          {
+            "test": "range",
+            "min": 6,
+            "max": 999,
+            "route": 182,
+            "label": "Shot hits"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Silver Charm of Jnana",
+            "value": 1,
+            "condition": {
+              "type": "item",
+              "name": "Silver Charm",
+              "match": "contains",
+              "containers": [
+                "special"
+              ]
+            }
+          },
+          {
+            "label": "Magic Talisman",
+            "value": 1,
+            "condition": {
+              "type": "item",
+              "name": "Talisman",
+              "match": "contains",
+              "containers": [
+                "special"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "238": {
+      "roll": {
+        "summary": "Swim the River Dosar in armour",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 12,
+            "route": 80,
+            "label": "Dragged under"
+          },
+          {
+            "test": "range",
+            "min": 13,
+            "max": 999,
+            "route": 86,
+            "label": "Reach the far bank"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Current END",
+            "valueFrom": "end"
+          }
+        ]
+      }
+    },
+    "255": {
+      "roll": {
+        "summary": "Sorcery blast against the stone doors",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 3,
+            "route": 208,
+            "label": "Door resists"
+          },
+          {
+            "test": "range",
+            "min": 4,
+            "max": 999,
+            "route": 283,
+            "label": "Door breaks"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Magic Talisman",
+            "value": 2,
+            "condition": {
+              "type": "item",
+              "name": "Talisman",
+              "match": "contains",
+              "containers": [
+                "special"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "259": {
+      "roll": {
+        "summary": "Dodge the charging chariot",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 11,
+            "route": 263,
+            "label": "Trampled"
+          },
+          {
+            "test": "range",
+            "min": 12,
+            "max": 999,
+            "route": 199,
+            "label": "Dodge clear"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Current END",
+            "valueFrom": "end"
+          }
+        ]
+      }
+    },
+    "295": {
+      "roll": {
+        "summary": "Thaumaturgy door assault: total is WP spent; reroll if the result is 0",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 0,
+            "route": null,
+            "label": "Reroll or review the book text"
+          },
+          {
+            "test": "range",
+            "min": 1,
+            "max": 999,
+            "route": 156,
+            "label": "Spend this many WP, then go to 156"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Subtract 1",
+            "value": -1
+          }
+        ]
+      }
+    },
+    "318": {
+      "roll": {
+        "summary": "Long-range shot at the Shadakine horseman",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 24,
+            "route": 173,
+            "label": "Shot misses"
+          },
+          {
+            "test": "range",
+            "min": 25,
+            "max": 999,
+            "route": 220,
+            "label": "Shot succeeds"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Current WP",
+            "valueFrom": "wp"
+          },
+          {
+            "label": "Current END",
+            "valueFrom": "end"
+          }
+        ]
+      }
+    },
+    "28": {
+      "combat": [
+        {
+          "id": "28-toad",
+          "label": "Toad Demon: win within 3 rounds",
+          "enemy": {
+            "name": "Toad Demon",
+            "cs": 17,
+            "endurance": 16
+          },
+          "canEvade": true,
+          "evadeAfterRounds": 1,
+          "evadeRoute": 41,
+          "winWithinRounds": 3,
+          "winWithinRoute": 72,
+          "tooLateRoute": 87,
+          "roundLimit": 3,
+          "roundExceededRoute": 87
+        }
+      ]
+    },
+    "33": {
+      "combat": [
+        {
+          "id": "33-shadakine",
+          "label": "Shadakine",
+          "enemy": {
+            "name": "Shadakine",
+            "cs": 19,
+            "endurance": 16
+          },
+          "victoryRoute": 17
+        }
+      ]
+    },
+    "51": {
+      "combat": [
+        {
+          "id": "51-ape",
+          "label": "Ape Demon: win speed matters",
+          "enemy": {
+            "name": "Ape Demon",
+            "cs": 20,
+            "endurance": 15
+          },
+          "modifier": -1,
+          "winWithinRounds": 3,
+          "winWithinRoute": 109,
+          "tooLateRoute": 123
+        }
+      ]
+    },
+    "72": {
+      "combat": [
+        {
+          "id": "72-three-demons",
+          "label": "Three Demons of the Plain",
+          "enemy": {
+            "name": "Three Demons of the Plain",
+            "cs": 20,
+            "endurance": 30
+          },
+          "victoryRoute": 251
+        }
+      ]
+    },
+    "78": {
+      "combat": [
+        {
+          "id": "78-man-demon",
+          "label": "Man Demon",
+          "enemy": {
+            "name": "Man Demon",
+            "cs": 20,
+            "endurance": 21
+          },
+          "victoryRoute": 144
+        }
+      ]
+    },
+    "82": {
+      "combat": [
+        {
+          "id": "82-reptile",
+          "label": "Reptile Demon of the Plains",
+          "enemy": {
+            "name": "Reptile Demon of the Plains",
+            "cs": 21,
+            "endurance": 22
+          },
+          "victoryRoute": 163
+        }
+      ]
+    },
+    "87": {
+      "combat": [
+        {
+          "id": "87-four-demons",
+          "label": "Four Demons of the Plains",
+          "enemy": {
+            "name": "Four Demons of the Plains",
+            "cs": 21,
+            "endurance": 34
+          },
+          "modifier": -2,
+          "victoryRoute": 251
+        }
+      ]
+    },
+    "111": {
+      "combat": [
+        {
+          "id": "111-winged",
+          "label": "Winged Demon fly-by",
+          "enemy": {
+            "name": "Winged Demon",
+            "cs": 20,
+            "endurance": 20
+          },
+          "roundLimit": 1,
+          "roundExceededRoute": 306,
+          "victoryRoute": 306,
+          "ignorePlayerLossIfEnemyLossGreater": true
+        }
+      ]
+    },
+    "123": {
+      "combat": [
+        {
+          "id": "123-three-ape",
+          "label": "Three Ape Demons",
+          "enemy": {
+            "name": "Three Ape Demons",
+            "cs": 24,
+            "endurance": 25
+          },
+          "canEvade": true,
+          "evadeAfterRounds": 1,
+          "evadeRoute": 155,
+          "victoryRoute": 168
+        }
+      ]
+    },
+    "126": {
+      "combat": [
+        {
+          "id": "126-reptile",
+          "label": "Reptile Demon",
+          "enemy": {
+            "name": "Reptile Demon",
+            "cs": 21,
+            "endurance": 22
+          },
+          "victoryRoute": 13
+        }
+      ]
+    },
+    "128": {
+      "combat": [
+        {
+          "id": "128-rat",
+          "label": "Rat Demon on the saddle",
+          "enemy": {
+            "name": "Rat Demon",
+            "cs": 19,
+            "endurance": 20
+          },
+          "modifier": -2,
+          "victoryRoute": 136
+        }
+      ]
+    },
+    "129": {
+      "combat": [
+        {
+          "id": "129-shasarak-weakened",
+          "label": "Wytch-king Shasarak: weakened duel",
+          "enemy": {
+            "name": "Wytch-king Shasarak",
+            "cs": 10,
+            "endurance": 20
+          },
+          "victoryRoute": 180
+        }
+      ]
+    },
+    "131": {
+      "combat": [
+        {
+          "id": "131-shasarak",
+          "label": "Wytch-king Shasarak",
+          "enemy": {
+            "name": "Wytch-king Shasarak",
+            "cs": 30,
+            "endurance": 30
+          },
+          "victoryRoute": 180
+        }
+      ]
+    },
+    "152": {
+      "combat": [
+        {
+          "id": "152-flying-snake",
+          "label": "Flying Snake fly-by",
+          "enemy": {
+            "name": "Flying Snake",
+            "cs": 20,
+            "endurance": 23
+          },
+          "roundLimit": 1,
+          "roundExceededRoute": 306,
+          "victoryRoute": 306,
+          "ignorePlayerLossIfEnemyLossGreater": true
+        }
+      ]
+    },
+    "161": {
+      "combat": [
+        {
+          "id": "161-winged",
+          "label": "Winged Demon: one round",
+          "enemy": {
+            "name": "Winged Demon",
+            "cs": 20,
+            "endurance": 31
+          },
+          "roundLimit": 1,
+          "roundExceededRoute": 184,
+          "victoryRoute": 178
+        },
+        {
+          "id": "161-winged-invulnerable",
+          "label": "Winged Demon: invulnerable",
+          "enemy": {
+            "name": "Winged Demon",
+            "cs": 20,
+            "endurance": 31
+          },
+          "roundLimit": 1,
+          "roundExceededRoute": 184,
+          "victoryRoute": 178,
+          "ignorePlayerLossRounds": 999
+        }
+      ]
+    },
+    "166": {
+      "combat": [
+        {
+          "id": "166-demon",
+          "label": "Demon",
+          "enemy": {
+            "name": "Demon",
+            "cs": 16,
+            "endurance": 19
+          },
+          "victoryRoute": 183
+        }
+      ]
+    },
+    "184": {
+      "combat": [
+        {
+          "id": "184-wounded-winged",
+          "label": "Wounded Winged Demon: one round",
+          "enemy": {
+            "name": "Wounded Winged Demon",
+            "cs": 15,
+            "endurance": 12
+          },
+          "roundLimit": 1,
+          "roundExceededRoute": 214,
+          "victoryRoute": 178
+        },
+        {
+          "id": "184-wounded-winged-invulnerable",
+          "label": "Wounded Winged Demon: invulnerable",
+          "enemy": {
+            "name": "Wounded Winged Demon",
+            "cs": 15,
+            "endurance": 12
+          },
+          "roundLimit": 1,
+          "roundExceededRoute": 214,
+          "victoryRoute": 178,
+          "ignorePlayerLossRounds": 999
+        }
+      ]
+    },
+    "202": {
+      "combat": [
+        {
+          "id": "202-flying-snake",
+          "label": "Flying Snake fly-by",
+          "enemy": {
+            "name": "Flying Snake",
+            "cs": 19,
+            "endurance": 18
+          },
+          "roundLimit": 1,
+          "roundExceededRoute": 226,
+          "victoryRoute": 226,
+          "ignorePlayerLossIfEnemyLossGreater": true
+        }
+      ]
+    },
+    "216": {
+      "combat": [
+        {
+          "id": "216-officer",
+          "label": "Shadakine Officer",
+          "enemy": {
+            "name": "Shadakine Officer",
+            "cs": 20,
+            "endurance": 24
+          },
+          "canEvade": true,
+          "evadeRoute": 290,
+          "victoryRoute": 301
+        }
+      ]
+    },
+    "221": {
+      "combat": [
+        {
+          "id": "221-ape",
+          "label": "Ape Demon",
+          "enemy": {
+            "name": "Ape Demon",
+            "cs": 18,
+            "endurance": 17
+          },
+          "victoryRoute": 150
+        }
+      ]
+    },
+    "226": {
+      "combat": [
+        {
+          "id": "226-insect",
+          "label": "Insect Demon fly-by",
+          "enemy": {
+            "name": "Insect Demon",
+            "cs": 18,
+            "endurance": 17
+          },
+          "roundLimit": 1,
+          "roundExceededRoute": 265,
+          "victoryRoute": 265,
+          "ignorePlayerLossIfEnemyLossGreater": true
+        }
+      ]
+    },
+    "233": {
+      "combat": [
+        {
+          "id": "233-spiderfly",
+          "label": "Demon Spiderfly",
+          "enemy": {
+            "name": "Demon Spiderfly",
+            "cs": 25,
+            "endurance": 24
+          },
+          "victoryRoute": 197
+        },
+        {
+          "id": "233-spiderfly-invulnerable",
+          "label": "Demon Spiderfly: invulnerable",
+          "enemy": {
+            "name": "Demon Spiderfly",
+            "cs": 25,
+            "endurance": 24
+          },
+          "victoryRoute": 197,
+          "ignorePlayerLossRounds": 999
+        }
+      ]
+    },
+    "235": {
+      "combat": [
+        {
+          "id": "235-flying-snake",
+          "label": "Flying Snake: mounted penalty",
+          "enemy": {
+            "name": "Flying Snake",
+            "cs": 21,
+            "endurance": 24
+          },
+          "modifier": -2,
+          "roundLimit": 1,
+          "roundExceededRoute": 313,
+          "victoryRoute": 313,
+          "ignorePlayerLossIfEnemyLossGreater": true
+        }
+      ]
+    },
+    "236": {
+      "combat": [
+        {
+          "id": "236-three-demons",
+          "label": "Three Demons",
+          "enemy": {
+            "name": "Three Demons",
+            "cs": 18,
+            "endurance": 24
+          },
+          "victoryRoute": 245
+        }
+      ]
+    },
+    "244": {
+      "combat": [
+        {
+          "id": "244-flying-snake",
+          "label": "Flying Snake fly-by",
+          "enemy": {
+            "name": "Flying Snake",
+            "cs": 20,
+            "endurance": 20
+          },
+          "roundLimit": 1,
+          "roundExceededRoute": 287,
+          "victoryRoute": 287,
+          "ignorePlayerLossIfEnemyLossGreater": true
+        }
+      ]
+    },
+    "256": {
+      "combat": [
+        {
+          "id": "256-shadakine",
+          "label": "Shadakine Warriors",
+          "enemy": {
+            "name": "Shadakine Warriors",
+            "cs": 22,
+            "endurance": 40
+          },
+          "modifier": 3,
+          "victoryRoute": 353
+        }
+      ]
+    },
+    "264": {
+      "combat": [
+        {
+          "id": "264-four-demons",
+          "label": "Four Demons of the Plains",
+          "enemy": {
+            "name": "Four Demons of the Plains",
+            "cs": 21,
+            "endurance": 34
+          },
+          "victoryRoute": 281
+        }
+      ]
+    },
+    "265": {
+      "combat": [
+        {
+          "id": "265-winged-ape",
+          "label": "Winged Ape: win in 1-2 rounds",
+          "enemy": {
+            "name": "Winged Ape",
+            "cs": 22,
+            "endurance": 16
+          },
+          "winWithinRounds": 2,
+          "winWithinRoute": 68,
+          "tooLateRoute": 206,
+          "roundLimit": 3,
+          "roundExceededRoute": 206
+        }
+      ]
+    },
+    "269": {
+      "combat": [
+        {
+          "id": "269-horseman",
+          "label": "Shadakine Horseman charge",
+          "enemy": {
+            "name": "Shadakine Horseman",
+            "cs": 19,
+            "endurance": 20
+          },
+          "roundLimit": 1,
+          "roundExceededRoute": 33,
+          "victoryRoute": 17
+        }
+      ]
+    },
+    "270": {
+      "combat": [
+        {
+          "id": "270-demon-master",
+          "label": "Demon Master: win within 3 rounds",
+          "enemy": {
+            "name": "Demon Master",
+            "cs": 30,
+            "endurance": 40
+          },
+          "winWithinRounds": 3,
+          "winWithinRoute": 188,
+          "tooLateRoute": 276,
+          "roundLimit": 4,
+          "roundExceededRoute": 276
+        }
+      ]
+    },
+    "288": {
+      "combat": [
+        {
+          "id": "288-two-demons",
+          "label": "Two Demons of the Plains",
+          "enemy": {
+            "name": "Two Demons of the Plains",
+            "cs": 18,
+            "endurance": 20
+          },
+          "victoryRoute": 163
+        }
+      ]
+    },
+    "296": {
+      "combat": [
+        {
+          "id": "296-ipage",
+          "label": "Ipage Demon",
+          "enemy": {
+            "name": "Ipage Demon",
+            "cs": 20,
+            "endurance": 20
+          },
+          "victoryRoute": 39
+        }
+      ]
+    },
+    "302": {
+      "combat": [
+        {
+          "id": "302-three-reptiles",
+          "label": "Three Reptile Demons: win speed matters",
+          "enemy": {
+            "name": "Three Reptile Demons",
+            "cs": 24,
+            "endurance": 25
+          },
+          "winWithinRounds": 3,
+          "winWithinRoute": 56,
+          "tooLateRoute": 319
+        }
+      ]
+    },
+    "317": {
+      "combat": [
+        {
+          "id": "317-winged",
+          "label": "Winged Demon fly-by",
+          "enemy": {
+            "name": "Winged Demon",
+            "cs": 20,
+            "endurance": 19
+          },
+          "roundLimit": 1,
+          "roundExceededRoute": 287,
+          "victoryRoute": 287,
+          "ignorePlayerLossIfEnemyLossGreater": true
+        }
+      ]
+    },
+    "342": {
+      "combat": [
+        {
+          "id": "342-skeleton",
+          "label": "Skeleton Warrior",
+          "enemy": {
+            "name": "Skeleton Warrior",
+            "cs": 20,
+            "endurance": 25
+          },
+          "victoryRoute": 12
+        }
+      ]
+    },
+    "345": {
+      "combat": [
+        {
+          "id": "345-shasarak",
+          "label": "Wytch-king Shasarak: final duel",
+          "enemy": {
+            "name": "Wytch-king Shasarak",
+            "cs": 30,
+            "endurance": 25
+          },
+          "victoryRoute": 180
+        }
+      ]
+    },
+    "11": {
+      "loot": [
+        {
+          "id": "phinomel-9",
+          "label": "Add Phinomel Pods (9 pods / 3 spaces)",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Phinomel Pods (9)",
+              "container": "herb_or_backpack"
+            }
+          ]
+        }
+      ]
+    },
+    "16": {
+      "loot": [
+        {
+          "id": "phinomel-6",
+          "label": "Add Phinomel Pods (6 pods / 2 spaces)",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Phinomel Pods (6)",
+              "container": "herb_or_backpack"
+            }
+          ]
+        }
+      ]
+    },
+    "25": {
+      "loot": [
+        {
+          "id": "rope",
+          "label": "Coil of Rope",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Coil of Rope",
+              "container": "backpack"
+            }
+          ]
+        },
+        {
+          "id": "sword",
+          "label": "Sword",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Sword",
+              "container": "weapon"
+            }
+          ]
+        },
+        {
+          "id": "spear",
+          "label": "Spear",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Spear",
+              "container": "weapon"
+            }
+          ]
+        },
+        {
+          "id": "dagger",
+          "label": "Dagger",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Dagger",
+              "container": "weapon"
+            }
+          ]
+        },
+        {
+          "id": "water-bottle",
+          "label": "Water Bottle",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Water Bottle",
+              "container": "special"
+            }
+          ]
+        },
+        {
+          "id": "torches",
+          "label": "4 Torches",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Torch",
+              "container": "backpack"
+            },
+            {
+              "type": "add_item",
+              "name": "Torch",
+              "container": "backpack"
+            },
+            {
+              "type": "add_item",
+              "name": "Torch",
+              "container": "backpack"
+            },
+            {
+              "type": "add_item",
+              "name": "Torch",
+              "container": "backpack"
+            }
+          ]
+        },
+        {
+          "id": "tinderbox",
+          "label": "Tinderbox",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Tinderbox",
+              "container": "backpack"
+            }
+          ]
+        }
+      ]
+    },
+    "29": {
+      "loot": [
+        {
+          "id": "rope",
+          "label": "Coil of Rope",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Coil of Rope",
+              "container": "backpack"
+            }
+          ]
+        },
+        {
+          "id": "water-bottle",
+          "label": "Water Bottle",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Water Bottle",
+              "container": "special"
+            }
+          ]
+        },
+        {
+          "id": "tinderbox",
+          "label": "Tinderbox",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Tinderbox",
+              "container": "backpack"
+            }
+          ]
+        },
+        {
+          "id": "sword",
+          "label": "Sword",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Sword",
+              "container": "weapon"
+            }
+          ]
+        },
+        {
+          "id": "battle-horn",
+          "label": "Masbate Battle Horn",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Masbate Battle Horn",
+              "container": "special"
+            }
+          ]
+        }
+      ]
+    },
+    "34": {
+      "loot": [
+        {
+          "id": "empty-vials",
+          "label": "2 Empty Vials",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Empty Vial",
+              "container": "herb_or_backpack"
+            },
+            {
+              "type": "add_item",
+              "name": "Empty Vial",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "saltpetre",
+          "label": "Vial of Saltpetre",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Vial of Saltpetre",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "sulphur",
+          "label": "Vial of Sulphur",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Vial of Sulphur",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "zakutsk",
+          "label": "Zakutsk Flower",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Zakutsk Flower",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "demeril",
+          "label": "Demeril Root",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Demeril Root",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "pestle",
+          "label": "Pestle and Mortar",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Pestle and Mortar",
+              "container": "backpack"
+            }
+          ]
+        },
+        {
+          "id": "tinderbox",
+          "label": "Tinderbox",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Tinderbox",
+              "container": "backpack"
+            }
+          ]
+        }
+      ]
+    },
+    "40": {
+      "loot": [
+        {
+          "id": "phinomel-3",
+          "label": "Add Phinomel Pods (3 pods / 1 space)",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Phinomel Pods (3)",
+              "container": "herb_or_backpack"
+            }
+          ]
+        }
+      ]
+    },
+    "312": {
+      "loot": [
+        {
+          "id": "laumspur-clump",
+          "label": "Store a clump of Laumspur (+4 END)",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Laumspur (+4 END)",
+              "container": "backpack"
+            }
+          ]
+        }
+      ]
+    },
+    "331": {
+      "loot": [
+        {
+          "id": "laumspur-potions",
+          "label": "2 Potions of Laumspur (+6 END)",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Potion of Laumspur (+6 END)",
+              "container": "herb_or_backpack"
+            },
+            {
+              "type": "add_item",
+              "name": "Potion of Laumspur (+6 END)",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "alether",
+          "label": "Potion of Alether (+2 CS)",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Potion of Alether (+2 CS)",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "tarama-seeds",
+          "label": "2 Tarama Seeds",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Tarama Seed",
+              "container": "special"
+            },
+            {
+              "type": "add_item",
+              "name": "Tarama Seed",
+              "container": "special"
+            }
+          ]
+        },
+        {
+          "id": "calacena",
+          "label": "Calacena Potion",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Calacena Potion",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "mustow",
+          "label": "Potion of Mustow",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Potion of Mustow",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "temeris",
+          "label": "Potion of Temeris",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Potion of Temeris",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "ezeran-acid",
+          "label": "Potion of Ezeran Acid",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Potion of Ezeran Acid",
+              "container": "herb_or_backpack"
+            }
+          ]
+        }
+      ]
+    },
+    "336": {
+      "loot": [
+        {
+          "id": "laumspur-potions",
+          "label": "2 Potions of Laumspur (+6 END)",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Potion of Laumspur (+6 END)",
+              "container": "herb_or_backpack"
+            },
+            {
+              "type": "add_item",
+              "name": "Potion of Laumspur (+6 END)",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "alether",
+          "label": "Potion of Alether (+2 CS)",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Potion of Alether (+2 CS)",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "tarama-seeds",
+          "label": "2 Tarama Seeds",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Tarama Seed",
+              "container": "special"
+            },
+            {
+              "type": "add_item",
+              "name": "Tarama Seed",
+              "container": "special"
+            }
+          ]
+        },
+        {
+          "id": "calacena",
+          "label": "Calacena Potion",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Calacena Potion",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "mustow",
+          "label": "Potion of Mustow",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Potion of Mustow",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "temeris",
+          "label": "Potion of Temeris",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Potion of Temeris",
+              "container": "herb_or_backpack"
+            }
+          ]
+        },
+        {
+          "id": "ezeran-acid",
+          "label": "Potion of Ezeran Acid",
+          "actions": [
+            {
+              "type": "add_item",
+              "name": "Potion of Ezeran Acid",
+              "container": "herb_or_backpack"
+            }
+          ]
+        }
+      ]
+    },
+    "355": {
+      "loot": [
+        {
+          "id": "leafwater-3",
+          "label": "Use 3 Phinomel Pods for +3 CS",
+          "actions": [
+            {
+              "type": "remove_item",
+              "name": "Phinomel Pods",
+              "count": 1,
+              "match": "contains",
+              "containers": [
+                "herb",
+                "backpack"
+              ]
+            },
+            {
+              "type": "stat",
+              "stat": "cs",
+              "delta": 3,
+              "permanent": true
+            }
+          ]
+        },
+        {
+          "id": "leafwater-6",
+          "label": "Use 6 Phinomel Pods for +6 CS",
+          "actions": [
+            {
+              "type": "remove_item",
+              "name": "Phinomel Pods",
+              "count": 1,
+              "match": "contains",
+              "containers": [
+                "herb",
+                "backpack"
+              ]
+            },
+            {
+              "type": "stat",
+              "stat": "cs",
+              "delta": 6,
+              "permanent": true
+            }
+          ]
+        },
+        {
+          "id": "leafwater-9",
+          "label": "Use 9 Phinomel Pods for +9 CS",
+          "actions": [
+            {
+              "type": "remove_item",
+              "name": "Phinomel Pods",
+              "count": 1,
+              "match": "contains",
+              "containers": [
+                "herb",
+                "backpack"
+              ]
+            },
+            {
+              "type": "stat",
+              "stat": "cs",
+              "delta": 9,
+              "permanent": true
+            }
+          ]
+        }
+      ]
+    },
+    "5": {
+      "wpCosts": [
+        {
+          "cost": 3,
+          "label": "Power the Moonstone against the wall"
+        }
+      ]
+    },
+    "12": {
+      "wpCosts": [
+        {
+          "cost": 2,
+          "label": "Thaumaturgy teleport"
+        },
+        {
+          "cost": 4,
+          "label": "Moonstone Dimension Door teleport"
+        }
+      ]
+    },
+    "19": {
+      "wpCosts": [
+        {
+          "cost": 4,
+          "label": "Thaumaturgy invulnerability"
+        }
+      ],
+      "status": [
+        {
+          "key": "invulnerabilityActive",
+          "label": "Thaumaturgy invulnerability active"
+        }
+      ]
+    },
+    "24": {
+      "wpCosts": [
+        {
+          "cost": 3,
+          "label": "Necromantic aura"
+        }
+      ],
+      "status": [
+        {
+          "key": "necromancyAuraActive",
+          "label": "Necromantic protection active"
+        }
+      ]
+    },
+    "52": {
+      "wpCosts": [
+        {
+          "cost": 2,
+          "label": "Long-range Staff attack"
+        }
+      ]
+    },
+    "92": {
+      "wpCosts": [
+        {
+          "cost": 1,
+          "label": "Throw Moonstone power at Shasarak"
+        }
+      ]
+    },
+    "158": {
+      "wpCosts": [
+        {
+          "cost": 2,
+          "label": "Resist Agarash"
+        }
+      ]
+    },
+    "165": {
+      "wpCosts": [
+        {
+          "cost": 2,
+          "label": "Use Sorcery through the Mind Gem"
+        },
+        {
+          "cost": 1,
+          "label": "Use Thaumaturgy through the Mind Gem"
+        }
+      ]
+    },
+    "175": {
+      "wpCosts": [
+        {
+          "cost": 9,
+          "label": "Destroy the bridge with the Staff"
+        }
+      ]
+    },
+    "180": {
+      "wpCosts": [
+        {
+          "cost": 3,
+          "label": "Power the Moonstone against the wall"
+        }
+      ]
+    },
+    "196": {
+      "wpCosts": [
+        {
+          "cost": 1,
+          "label": "Raise a quick Sorcery shield"
+        },
+        {
+          "cost": 2,
+          "label": "Raise a stronger Sorcery shield"
+        }
+      ]
+    },
+    "237": {
+      "wpCosts": [
+        {
+          "cost": 2,
+          "label": "Visionary reading"
+        },
+        {
+          "cost": 1,
+          "label": "Prophecy reading"
+        }
+      ]
+    },
+    "328": {
+      "wpCosts": [
+        {
+          "cost": 2,
+          "label": "Thaumaturgy teleport to Shadaki"
+        },
+        {
+          "cost": 4,
+          "label": "Moonstone Dimension Door to Shadaki"
+        }
+      ]
+    },
+    "347": {
+      "wpCosts": [
+        {
+          "cost": 2,
+          "label": "Elementalism against the Shadakine"
+        },
+        {
+          "cost": 1,
+          "label": "Physiurgy wind"
+        }
+      ]
+    },
+    "352": {
+      "wpCosts": [
+        {
+          "cost": 2,
+          "label": "Thaumaturgy across the river"
+        }
+      ]
+    },
+    "358": {
+      "wpCosts": [
+        {
+          "cost": 1,
+          "label": "Cast Staff light"
+        }
+      ]
+    },
+    "70": {
+      "status": [
+        {
+          "key": "necromancyAuraActive",
+          "label": "Necromantic protection active"
+        }
+      ]
+    },
+    "84": {
+      "status": [
+        {
+          "key": "invulnerabilityActive",
+          "label": "Potion invulnerability active"
+        }
+      ]
+    },
+    "294": {
+      "status": [
+        {
+          "key": "invulnerabilityActive",
+          "label": "Potion invulnerability active"
+        }
+      ]
+    }
+  }
+}

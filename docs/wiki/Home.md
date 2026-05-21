@@ -41,8 +41,9 @@ Current app support is strongest for:
 - **Book 1: Grey Star the Wizard**
 - **Book 2: The Forbidden City**
 - **Book 3: Beyond the Nightmare Gate**
+- **Book 4: War of the Wizards**
 
-Book 4 is present as a local reader asset, but its assistant rules, achievements, and playtest work still need the full book workflow.
+All four Gray Star books now have assistant rules, achievements, strategy guides, and green dry-run playtest reports.
 
 ## Project Rule
 

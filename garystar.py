@@ -610,6 +610,167 @@ ACHIEVEMENT_DEFINITIONS = [
         "Category": "Journey",
         "Description": "Claim the Moonstone.",
     },
+    {
+        "Id": "gs4_complete",
+        "Name": "Book Four Complete",
+        "BookNumber": 4,
+        "Category": "Journey",
+        "Description": "Complete War of the Wizards.",
+    },
+    {
+        "Id": "gs4_long_road",
+        "Name": "The Last Road",
+        "BookNumber": 4,
+        "Category": "Exploration",
+        "Description": "Visit 100 or more unique sections in Book 4.",
+    },
+    {
+        "Id": "gs4_first_blood",
+        "Name": "First Blood at the End",
+        "BookNumber": 4,
+        "Category": "Combat",
+        "Description": "Win your first recorded Book 4 combat.",
+    },
+    {
+        "Id": "gs4_against_the_odds",
+        "Name": "Last Stand Nerve",
+        "BookNumber": 4,
+        "Category": "Combat",
+        "Description": "Win a Book 4 combat at combat ratio 0 or lower.",
+    },
+    {
+        "Id": "gs4_seasoned_fighter",
+        "Name": "War-Worn Wizard",
+        "BookNumber": 4,
+        "Category": "Combat",
+        "Description": "Fight 20 or more recorded rounds in Book 4.",
+    },
+    {
+        "Id": "gs4_moonstone_bearer",
+        "Name": "Moonstone Bearer",
+        "BookNumber": 4,
+        "Category": "Story",
+        "Description": "Begin the final quest with the Moonstone.",
+    },
+    {
+        "Id": "gs4_phinomel_harvest",
+        "Name": "Phinomel Harvest",
+        "BookNumber": 4,
+        "Category": "Discovery",
+        "Description": "Gather Phinomel Pods on the Lissan Plain.",
+    },
+    {
+        "Id": "gs4_invulnerability_brewed",
+        "Name": "Blue-Light Brew",
+        "BookNumber": 4,
+        "Category": "Discovery",
+        "Description": "Prepare a Potion of Invulnerability.",
+    },
+    {
+        "Id": "gs4_invulnerability_used",
+        "Name": "Untouchable For Now",
+        "BookNumber": 4,
+        "Category": "Survival",
+        "Description": "Use a Potion of Invulnerability.",
+    },
+    {
+        "Id": "gs4_masbate_found",
+        "Name": "Masbate Found",
+        "BookNumber": 4,
+        "Category": "Story",
+        "Description": "Find the hidden Masbate survivors.",
+    },
+    {
+        "Id": "gs4_portal_closed",
+        "Name": "Portal Breaker",
+        "BookNumber": 4,
+        "Category": "Journey",
+        "Description": "Close the demon portal at Tilos.",
+    },
+    {
+        "Id": "gs4_uniform_taken",
+        "Name": "Borrowed Colors",
+        "BookNumber": 4,
+        "Category": "Story",
+        "Description": "Use a Shadakine uniform to mislead the enemy.",
+    },
+    {
+        "Id": "gs4_lanzi_bridge",
+        "Name": "Bridge at Lanzi",
+        "BookNumber": 4,
+        "Category": "Story",
+        "Description": "Bring the chase to the bridge at Lanzi.",
+    },
+    {
+        "Id": "gs4_freedom_guild",
+        "Name": "Freedom Guild Reached",
+        "BookNumber": 4,
+        "Category": "Story",
+        "Description": "Rejoin Sado and the Freedom Guild.",
+    },
+    {
+        "Id": "gs4_fernmost_rest",
+        "Name": "Fernmost Respite",
+        "BookNumber": 4,
+        "Category": "Survival",
+        "Description": "Rest and recover in the Forest of Fernmost.",
+    },
+    {
+        "Id": "gs4_alchemy_cache",
+        "Name": "Final Herbcraft",
+        "BookNumber": 4,
+        "Category": "Discovery",
+        "Description": "Prepare the late-book herb and potion cache.",
+    },
+    {
+        "Id": "gs4_leafwater_staff",
+        "Name": "Leafwater Blessing",
+        "BookNumber": 4,
+        "Category": "Discovery",
+        "Description": "Use Phinomel Pods in Leafwater to strengthen your Staff.",
+    },
+    {
+        "Id": "gs4_shadaki_arrival",
+        "Name": "Into Shadaki",
+        "BookNumber": 4,
+        "Category": "Journey",
+        "Description": "Reach Shasarak's fortress city.",
+    },
+    {
+        "Id": "gs4_ipage_guardian",
+        "Name": "Ipage Guardian",
+        "BookNumber": 4,
+        "Category": "Combat",
+        "Description": "Defeat the guardian outside Shasarak's chamber.",
+    },
+    {
+        "Id": "gs4_shasarak_duel",
+        "Name": "Wytch-King Duel",
+        "BookNumber": 4,
+        "Category": "Combat",
+        "Description": "Defeat Shasarak in direct combat.",
+    },
+    {
+        "Id": "gs4_staff_shattered",
+        "Name": "Staff in Ashes",
+        "BookNumber": 4,
+        "Category": "Story",
+        "Description": "Reach the moment when the Staff is destroyed.",
+    },
+    {
+        "Id": "gs4_agarash_defied",
+        "Name": "Agarash Defied",
+        "BookNumber": 4,
+        "Category": "Journey",
+        "Description": "Turn the last attack against Agarash's portal.",
+    },
+    {
+        "Id": "gs4_wizard_regent",
+        "Name": "Wizard Regent",
+        "BookNumber": 4,
+        "Category": "Journey",
+        "Description": "Become the Wizard Regent of the Free Peoples.",
+    },
 ]
 
 
@@ -698,8 +859,9 @@ def default_state() -> dict[str, Any]:
             "Modifier": 0,
             "ActiveWeapon": "",
             "UseStaff": True,
-            "ForceUnarmed": False,
-            "StaffWillpower": 1,
+        "ForceUnarmed": False,
+        "IgnorePlayerLossIfEnemyLossGreater": False,
+        "StaffWillpower": 1,
             "CanEvade": False,
             "EvadeAfterRounds": 0,
             "VictoryRoute": None,
@@ -1553,6 +1715,52 @@ class GrayStarAssistant:
             return 243 in sections
         if achievement_id == "gs3_moonstone_claimed":
             return self.book_completed(3) and 350 in sections
+        if achievement_id == "gs4_complete":
+            return self.book_completed(4)
+        if achievement_id == "gs4_long_road":
+            return max(len(sections), self.summary_metric_for_book(4, "UniqueSectionsVisited")) >= 100
+        if achievement_id == "gs4_first_blood":
+            return victory_count >= 1
+        if achievement_id == "gs4_against_the_odds":
+            return any(int(entry.get("CombatRatio") or 0) <= 0 for entry in victories)
+        if achievement_id == "gs4_seasoned_fighter":
+            return int(rounds_fought) >= 20
+        if achievement_id == "gs4_moonstone_bearer":
+            return 1 in sections or "moonstone" in items
+        if achievement_id == "gs4_phinomel_harvest":
+            return self.has_any_section(4, 11, 16, 40) or any("phinomel" in item for item in items)
+        if achievement_id == "gs4_invulnerability_brewed":
+            return 49 in sections or any("potion of invulnerability" in item for item in items)
+        if achievement_id == "gs4_invulnerability_used":
+            return self.has_any_section(4, 8, 84, 294)
+        if achievement_id == "gs4_masbate_found":
+            return self.has_any_section(4, 38, 150, 298)
+        if achievement_id == "gs4_portal_closed":
+            return self.has_any_section(4, 209, 268)
+        if achievement_id == "gs4_uniform_taken":
+            return self.has_any_section(4, 17, 37, 45, 220, 285, 292)
+        if achievement_id == "gs4_lanzi_bridge":
+            return self.has_any_section(4, 75, 353)
+        if achievement_id == "gs4_freedom_guild":
+            return self.has_any_section(4, 282, 354)
+        if achievement_id == "gs4_fernmost_rest":
+            return self.has_any_section(4, 300, 312)
+        if achievement_id == "gs4_alchemy_cache":
+            return self.has_any_section(4, 331, 336)
+        if achievement_id == "gs4_leafwater_staff":
+            return 355 in sections
+        if achievement_id == "gs4_shadaki_arrival":
+            return self.has_any_section(4, 191, 39)
+        if achievement_id == "gs4_ipage_guardian":
+            return any("ipag" in str(entry.get("EnemyName") or "").lower() for entry in victories) or self.has_sections(4, 296, 39)
+        if achievement_id == "gs4_shasarak_duel":
+            return any("shasarak" in str(entry.get("EnemyName") or "").lower() for entry in victories) or self.has_any_section(4, 129, 131, 345) and 180 in sections
+        if achievement_id == "gs4_staff_shattered":
+            return self.has_any_section(4, 5, 180)
+        if achievement_id == "gs4_agarash_defied":
+            return self.has_any_section(4, 316, 356)
+        if achievement_id == "gs4_wizard_regent":
+            return self.book_completed(4) and 360 in sections
         return False
 
     def unlock_achievement(self, definition: dict[str, Any]) -> dict[str, Any]:
@@ -2401,6 +2609,17 @@ class GrayStarAssistant:
                 loss = int(self.character["EnduranceCurrent"]) // 2
                 return self.change_endurance(-loss)
             return self.change_endurance(int(action.get("delta") or 0))
+        if stat in {"cs", "combat_skill", "combat skill"}:
+            before = int(self.character["CombatSkillCurrent"])
+            if mode == "set":
+                self.character["CombatSkillCurrent"] = int(action.get("value") or 0)
+            else:
+                self.character["CombatSkillCurrent"] = before + int(action.get("delta") or 0)
+            if bool(action.get("permanent")):
+                self.character["CombatSkillBase"] = int(self.character["CombatSkillBase"]) + (
+                    self.character["CombatSkillCurrent"] - before
+                )
+            return f"CS {before}->{self.character['CombatSkillCurrent']}"
         if stat == "nobles":
             before = int(self.inventory["Nobles"])
             if action.get("storeAs"):
@@ -2541,9 +2760,28 @@ class GrayStarAssistant:
             return {"stat": "end", "delta": 4, "label": "Potion of Healing"}
         if "rendalim" in text:
             return {"stat": "end", "delta": 6, "label": "Potion of Rendalim's Elixir"}
+        if "potion of invulnerability" in text:
+            return {
+                "stat": "flag",
+                "key": "invulnerabilityActive",
+                "value": True,
+                "label": "Potion of Invulnerability",
+                "addEmptyVial": True,
+            }
+        if "potion of alether" in text:
+            return {"stat": "cs", "delta": 2, "label": "Potion of Alether"}
+        if "tarama seed" in text:
+            return {
+                "stat": "flag",
+                "key": "taramaSeedReady",
+                "value": True,
+                "label": "Tarama Seed",
+            }
         if "laumspur" in text:
             if "small" in text:
                 return {"stat": "end", "delta": 2, "label": "Small Vial of Laumspur"}
+            if "+6" in text:
+                return {"stat": "end", "delta": 6, "label": "Potion of Laumspur"}
             if "+4" in text:
                 return {"stat": "end", "delta": 4, "label": "Potion of Laumspur"}
             if "potion" in text:
@@ -2576,6 +2814,16 @@ class GrayStarAssistant:
             message = self.change_endurance(int(effect["delta"]))
         elif effect["stat"] == "wp":
             message = self.change_willpower(int(effect["delta"]), allow_negative=False)
+        elif effect["stat"] == "cs":
+            before = int(self.character["CombatSkillCurrent"])
+            self.character["CombatSkillCurrent"] = before + int(effect["delta"])
+            message = f"CS {before}->{self.character['CombatSkillCurrent']}"
+        elif effect["stat"] == "flag":
+            key_name = str(effect.get("key") or "")
+            self.automation_flags[key_name] = effect.get("value", True)
+            if effect.get("addEmptyVial"):
+                self.add_flexible_storage_item("Empty Vial")
+            message = f"{key_name}={effect.get('value', True)}"
         else:
             message = "unknown effect"
         self.autosave()
@@ -2645,6 +2893,7 @@ class GrayStarAssistant:
                     manual_wp_cost
                     and str(action.get("type") or "").lower() == "stat"
                     and str(action.get("stat") or "").lower() in {"wp", "willpower"}
+                    and int(action.get("delta") or 0) < 0
                 ):
                     messages.append("WP cost awaits section choice")
                     continue
@@ -3534,6 +3783,8 @@ class GrayStarAssistant:
                 notes.append(f"Fixed combat skill {int(self.combat['FixedPlayerCombatSkill'])}")
             if int(self.combat.get("RoundLimit") or 0):
                 notes.append(f"Round limit {int(self.combat['RoundLimit'])}")
+            if bool(self.combat.get("IgnorePlayerLossIfEnemyLossGreater")):
+                notes.append("Ignore Gray Star END loss when enemy loss is higher.")
             _, weapon_notes = self.combat_weapon_modifier_and_notes()
             notes.extend(weapon_notes)
             if self.combat_uses_magical_staff():
@@ -3673,6 +3924,9 @@ class GrayStarAssistant:
                 "Modifier": int(preset.get("modifier") or 0),
                 "UseStaff": bool(preset.get("useStaff", self.combat.get("UseStaff"))),
                 "ForceUnarmed": bool(preset.get("forceUnarmed", False)),
+                "IgnorePlayerLossIfEnemyLossGreater": bool(
+                    preset.get("ignorePlayerLossIfEnemyLossGreater", False)
+                ),
                 "CanEvade": bool(preset.get("canEvade", False)),
                 "EvadeAfterRounds": max(0, int(preset.get("evadeAfterRounds") or 0)),
                 "VictoryRoute": preset.get("victoryRoute"),
@@ -3839,6 +4093,7 @@ class GrayStarAssistant:
                 "ActiveWeapon": active_weapon,
                 "UseStaff": use_staff,
                 "ForceUnarmed": False,
+                "IgnorePlayerLossIfEnemyLossGreater": False,
                 "StaffWillpower": 1,
                 "CanEvade": False,
                 "EvadeAfterRounds": 0,
@@ -3943,6 +4198,14 @@ class GrayStarAssistant:
         if not evade:
             multiplier = max(1, wp_spend) if use_staff else 1
             enemy_loss = min(int(self.combat["EnemyEnduranceCurrent"]), base_enemy_loss * multiplier)
+
+        if (
+            not evade
+            and bool(self.combat.get("IgnorePlayerLossIfEnemyLossGreater"))
+            and enemy_loss > player_loss
+        ):
+            ignored_player_loss = player_loss
+            player_loss = 0
 
         if use_staff:
             self.character["WillpowerCurrent"] -= wp_spend
