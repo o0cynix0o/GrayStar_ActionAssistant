@@ -2175,8 +2175,8 @@
               <label class="field">Staff Magic<select name="useStaff"><option value="true">On</option><option value="false">Off</option></select></label>
               <label class="field" title="Default Willpower spent with the Wizard's Staff each combat round. The round form can override it.">Default Staff WP Spend<input name="staffWillpower" type="number" min="1" value="1" title="Minimum 1 when using the Wizard's Staff. Enemy END loss is multiplied by this value."></label>
               <label class="field">Evade After Rounds<input name="evadeAfterRounds" type="number" min="0" value="0"></label>
-              <label class="field">Victory Section<input name="victoryRoute" type="number" min="1" placeholder="Optional"></label>
-              <label class="field">Evade Section<input name="evadeRoute" type="number" min="1" placeholder="Optional"></label>
+              <label class="field" title="Optional. Use this when the book says where to turn after winning this fight. The assistant can offer that section after victory.">Victory Section<input name="victoryRoute" type="number" min="1" placeholder="Optional" title="Section number to use after winning, if the book gives one."></label>
+              <label class="field" title="Optional. Use this when the book gives a section for evading the fight. The assistant can use this target when you press Evade.">Evade Section<input name="evadeRoute" type="number" min="1" placeholder="Optional" title="Section number to use after evading, if the book gives one."></label>
               <label class="field"><span>Can Evade</span><select name="canEvade"><option value="">No</option><option value="true">Yes</option></select></label>
               <button type="submit">Start Combat</button>
             </form>
