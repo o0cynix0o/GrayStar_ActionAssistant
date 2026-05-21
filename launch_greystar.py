@@ -48,7 +48,7 @@ def main() -> int:
 
     print("")
     print("  =========================================")
-    print("   GRAY STAR  --  Python Launcher")
+    print("   GREY STAR  --  Python Launcher")
     print("  =========================================")
     print("")
 
