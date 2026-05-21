@@ -864,8 +864,13 @@
     const cardSizePrefix = 'greystar.cards.size.';
     const cardClosedPrefix = 'greystar.cards.closed.';
     const cardLabelPrefix = 'greystar.cards.labels.';
+    const uiPreferenceStaticKeys = [topLayoutKey, topSizeKey, sheetLayoutKey, sheetSizeKey];
+    const uiPreferencePrefixes = [cardLayoutPrefix, cardSizePrefix, cardClosedPrefix, cardLabelPrefix];
     const sizeOrder = ['compact', 'normal', 'full'];
     const sizeLabels = { compact: 'Compact', normal: 'Normal', full: 'Full' };
+    let uiPreferencesReady = false;
+    let uiPreferenceSaveTimer = null;
+    let uiPreferenceSaveSuspended = false;
     const topWidgets = [
       ['page-layout', 'Page Layout'],
       ['status-book', 'Book'],
@@ -937,6 +942,7 @@
       const response = await fetch('/api/state', { cache: 'no-store' });
       if (!response.ok) throw new Error('Could not load state');
       app = await response.json();
+      syncUiPreferences(app.uiPreferences);
       serverStatus.textContent = 'Connected';
       syncBookToState();
       render();
@@ -950,6 +956,7 @@
       });
       app = await response.json();
       if (!response.ok) throw new Error(app.error || 'Action failed');
+      syncUiPreferences(app.uiPreferences);
       message.textContent = app.message || 'Updated.';
       showAchievementUnlocks(app.achievementUnlocks);
       syncBookToState();
@@ -1196,6 +1203,78 @@
       return `${prefix}${scope}`;
     }
 
+    function isUiPreferenceStorageKey(key) {
+      return uiPreferenceStaticKeys.includes(key) || uiPreferencePrefixes.some((prefix) => key.startsWith(prefix));
+    }
+
+    function uiPreferenceStorageKeys() {
+      const keys = new Set(uiPreferenceStaticKeys);
+      Object.keys(localStorage).forEach((key) => {
+        if (isUiPreferenceStorageKey(key)) keys.add(key);
+      });
+      return Array.from(keys);
+    }
+
+    function collectUiPreferences() {
+      const values = {};
+      uiPreferenceStorageKeys().forEach((key) => {
+        const value = localStorage.getItem(key);
+        if (value !== null) values[key] = value;
+      });
+      return { version: 1, values };
+    }
+
+    function hasUiPreferenceValues(preferences) {
+      return Boolean(preferences?.values && typeof preferences.values === 'object' && Object.keys(preferences.values).length);
+    }
+
+    function hasLocalUiPreferenceValues() {
+      return uiPreferenceStorageKeys().some((key) => localStorage.getItem(key) !== null);
+    }
+
+    function applyUiPreferences(preferences) {
+      const values = preferences?.values && typeof preferences.values === 'object' ? preferences.values : {};
+      uiPreferenceSaveSuspended = true;
+      uiPreferenceStorageKeys().forEach((key) => {
+        if (!(key in values)) localStorage.removeItem(key);
+      });
+      Object.entries(values).forEach(([key, value]) => {
+        if (isUiPreferenceStorageKey(key)) localStorage.setItem(key, String(value));
+      });
+      uiPreferenceSaveSuspended = false;
+      uiPreferencesReady = true;
+    }
+
+    function syncUiPreferences(preferences) {
+      if (uiPreferencesReady) return;
+      if (!hasUiPreferenceValues(preferences) && hasLocalUiPreferenceValues()) {
+        uiPreferencesReady = true;
+        persistUiPreferences(true);
+        return;
+      }
+      applyUiPreferences(preferences || { version: 1, values: {} });
+    }
+
+    function persistUiPreferences(immediate = false) {
+      if (!uiPreferencesReady || uiPreferenceSaveSuspended) return;
+      if (uiPreferenceSaveTimer) window.clearTimeout(uiPreferenceSaveTimer);
+      const payload = collectUiPreferences();
+      const save = async () => {
+        try {
+          await fetch('/api/ui-preferences', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        } catch {}
+      };
+      if (immediate) {
+        save();
+      } else {
+        uiPreferenceSaveTimer = window.setTimeout(save, 180);
+      }
+    }
+
     function getJsonStorage(key, fallback) {
       try {
         const saved = localStorage.getItem(key);
@@ -1206,7 +1285,10 @@
     }
 
     function setJsonStorage(key, value) {
-      localStorage.setItem(key, JSON.stringify(value));
+      const next = JSON.stringify(value);
+      if (localStorage.getItem(key) === next) return;
+      localStorage.setItem(key, next);
+      if (isUiPreferenceStorageKey(key)) persistUiPreferences();
     }
 
     function getCardLayout(scope) {
@@ -1216,6 +1298,7 @@
 
     function setCardLayout(scope, layout) {
       setJsonStorage(cardStorageKey(cardLayoutPrefix, scope), arr(layout).map((item) => text(item)).filter(Boolean));
+      persistUiPreferences(true);
     }
 
     function getCardSizes(scope) {
@@ -1232,6 +1315,7 @@
       const sizes = getCardSizes(scope);
       sizes[id] = ['small', 'medium', 'large'].includes(size) ? size : 'large';
       setJsonStorage(cardStorageKey(cardSizePrefix, scope), sizes);
+      persistUiPreferences(true);
       render();
     }
 
@@ -1242,6 +1326,7 @@
 
     function setClosedCards(scope, closed) {
       setJsonStorage(cardStorageKey(cardClosedPrefix, scope), Array.from(new Set(arr(closed).map((item) => text(item)).filter(Boolean))));
+      persistUiPreferences(true);
     }
 
     function getCardLabels(scope) {
@@ -1401,6 +1486,7 @@
 
     function resetCardScope(scope) {
       [cardLayoutPrefix, cardSizePrefix, cardClosedPrefix].forEach((prefix) => localStorage.removeItem(cardStorageKey(prefix, scope)));
+      persistUiPreferences(true);
       render();
     }
 
@@ -1409,6 +1495,7 @@
       Object.keys(localStorage)
         .filter((key) => prefixes.some((prefix) => key.startsWith(prefix)))
         .forEach((key) => localStorage.removeItem(key));
+      persistUiPreferences(true);
       render();
     }
 
@@ -1490,7 +1577,7 @@
       const nextSize = normalizeWidgetSize(size);
       if (nextSize === 'normal') delete sizes[id];
       else sizes[id] = nextSize;
-      localStorage.setItem(sizeStorageKey(scope), JSON.stringify(sizes));
+      setJsonStorage(sizeStorageKey(scope), sizes);
       render();
     }
 
@@ -1528,13 +1615,14 @@
     }
 
     function setTopLayout(layout) {
-      localStorage.setItem(topLayoutKey, JSON.stringify(cleanTopLayout(layout)));
+      setJsonStorage(topLayoutKey, cleanTopLayout(layout));
       render();
     }
 
     function resetTopLayout() {
       localStorage.removeItem(topLayoutKey);
       localStorage.removeItem(topSizeKey);
+      persistUiPreferences();
       render();
     }
 
@@ -1704,13 +1792,14 @@
     }
 
     function setSheetLayout(layout) {
-      localStorage.setItem(sheetLayoutKey, JSON.stringify(cleanSheetLayout(layout)));
+      setJsonStorage(sheetLayoutKey, cleanSheetLayout(layout));
       render();
     }
 
     function resetSheetLayout() {
       localStorage.removeItem(sheetLayoutKey);
       localStorage.removeItem(sheetSizeKey);
+      persistUiPreferences();
       render();
     }
 

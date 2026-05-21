@@ -20,9 +20,23 @@ import greystar
 
 
 ROOT = Path(__file__).resolve().parent
+UI_PREFERENCES_FILE = ROOT / "data" / "ui-preferences.json"
 STATE_LOCK = threading.RLock()
 ASSISTANT = greystar.GreyStarAssistant(save_dir=ROOT / "saves", data_dir=ROOT / "data")
 LAST_OUTPUT = ""
+
+UI_PREFERENCE_KEYS = {
+    "greystar.top.layout.v1",
+    "greystar.top.sizes.v1",
+    "greystar.sheet.layout.v1",
+    "greystar.sheet.sizes.v1",
+}
+UI_PREFERENCE_PREFIXES = (
+    "greystar.cards.layout.",
+    "greystar.cards.size.",
+    "greystar.cards.closed.",
+    "greystar.cards.labels.",
+)
 
 
 def capture_output(func) -> str:
@@ -75,6 +89,41 @@ def truthy(value) -> bool:
     return str(value or "").strip().lower() in {"1", "true", "yes", "on"}
 
 
+def is_ui_preference_key(key: str) -> bool:
+    return key in UI_PREFERENCE_KEYS or key.startswith(UI_PREFERENCE_PREFIXES)
+
+
+def load_ui_preferences() -> dict:
+    try:
+        data = json.loads(UI_PREFERENCES_FILE.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {"version": 1, "values": {}}
+    values = data.get("values") if isinstance(data, dict) else {}
+    if not isinstance(values, dict):
+        values = {}
+    clean = {
+        str(key): str(value)
+        for key, value in values.items()
+        if is_ui_preference_key(str(key)) and len(str(value)) <= 50000
+    }
+    return {"version": 1, "values": clean}
+
+
+def save_ui_preferences(payload: dict) -> dict:
+    values = payload.get("values") if isinstance(payload, dict) else {}
+    if not isinstance(values, dict):
+        values = {}
+    clean = {
+        str(key): str(value)
+        for key, value in values.items()
+        if is_ui_preference_key(str(key)) and len(str(value)) <= 50000
+    }
+    data = {"version": 1, "values": clean}
+    UI_PREFERENCES_FILE.parent.mkdir(parents=True, exist_ok=True)
+    UI_PREFERENCES_FILE.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    return data
+
+
 def state_payload(message: str = "", achievement_unlocks: list[dict] | None = None) -> dict:
     new_unlocks = ASSISTANT.sync_achievements(save=False)
     if new_unlocks:
@@ -93,6 +142,7 @@ def state_payload(message: str = "", achievement_unlocks: list[dict] | None = No
         "achievements": ASSISTANT.achievement_payload(),
         "achievementUnlocks": achievement_unlocks or [],
         "saves": public_save_entries(),
+        "uiPreferences": load_ui_preferences(),
         "message": message,
         "lastOutput": LAST_OUTPUT,
     }
@@ -349,11 +399,15 @@ class GreyStarHandler(BaseHTTPRequestHandler):
             with STATE_LOCK:
                 self.send_json({"saves": public_save_entries()})
             return
+        if parsed.path == "/api/ui-preferences":
+            with STATE_LOCK:
+                self.send_json(load_ui_preferences())
+            return
         self.serve_static(parsed.path)
 
     def do_POST(self) -> None:  # noqa: N802
         parsed = urlparse(self.path)
-        if parsed.path != "/api/action":
+        if parsed.path not in {"/api/action", "/api/ui-preferences"}:
             self.send_json({"error": "Not found"}, HTTPStatus.NOT_FOUND)
             return
         length = int(self.headers.get("Content-Length") or 0)
@@ -361,6 +415,10 @@ class GreyStarHandler(BaseHTTPRequestHandler):
             payload = json.loads(self.rfile.read(length).decode("utf-8") or "{}")
         except json.JSONDecodeError:
             self.send_json({"error": "Invalid JSON"}, HTTPStatus.BAD_REQUEST)
+            return
+        if parsed.path == "/api/ui-preferences":
+            with STATE_LOCK:
+                self.send_json(save_ui_preferences(payload))
             return
 
         global LAST_OUTPUT
