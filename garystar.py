@@ -449,6 +449,167 @@ ACHIEVEMENT_DEFINITIONS = [
         "Category": "Journey",
         "Description": "Open the Shadow Gate and pass into the Daziarn.",
     },
+    {
+        "Id": "gs3_complete",
+        "Name": "Book Three Complete",
+        "BookNumber": 3,
+        "Category": "Journey",
+        "Description": "Complete Beyond the Nightmare Gate.",
+    },
+    {
+        "Id": "gs3_long_road",
+        "Name": "Nightmare Road",
+        "BookNumber": 3,
+        "Category": "Exploration",
+        "Description": "Visit 100 or more unique sections in Book 3.",
+    },
+    {
+        "Id": "gs3_first_blood",
+        "Name": "First Blood Beyond",
+        "BookNumber": 3,
+        "Category": "Combat",
+        "Description": "Win your first recorded Book 3 combat.",
+    },
+    {
+        "Id": "gs3_against_the_odds",
+        "Name": "Nightmare Edge",
+        "BookNumber": 3,
+        "Category": "Combat",
+        "Description": "Win a Book 3 combat at combat ratio 0 or lower.",
+    },
+    {
+        "Id": "gs3_seasoned_fighter",
+        "Name": "Daziarn Veteran",
+        "BookNumber": 3,
+        "Category": "Combat",
+        "Description": "Fight 15 or more recorded rounds in Book 3.",
+    },
+    {
+        "Id": "gs3_daemonak_slayer",
+        "Name": "Daemonak Slayer",
+        "BookNumber": 3,
+        "Category": "Combat",
+        "Description": "Defeat the Daemonak in the Crystal Tower.",
+    },
+    {
+        "Id": "gs3_ethetron_pilot",
+        "Name": "Ethetron Pilot",
+        "BookNumber": 3,
+        "Category": "Story",
+        "Description": "Take command of the Ethetron.",
+    },
+    {
+        "Id": "gs3_singing_city",
+        "Name": "Singing City",
+        "BookNumber": 3,
+        "Category": "Exploration",
+        "Description": "Reach the realm of the Elessin.",
+    },
+    {
+        "Id": "gs3_crystal_tower",
+        "Name": "Crystal Tower Opened",
+        "BookNumber": 3,
+        "Category": "Exploration",
+        "Description": "Open the Crystal Tower.",
+    },
+    {
+        "Id": "gs3_keybearer",
+        "Name": "Keybearer",
+        "BookNumber": 3,
+        "Category": "Discovery",
+        "Description": "Claim one of the Crystal Tower keys.",
+    },
+    {
+        "Id": "gs3_serpent_solution",
+        "Name": "Serpent Solution",
+        "BookNumber": 3,
+        "Category": "Discovery",
+        "Description": "Find the key that opens the Crystal Tower.",
+    },
+    {
+        "Id": "gs3_senara_brewer",
+        "Name": "Senara Brewer",
+        "BookNumber": 3,
+        "Category": "Discovery",
+        "Description": "Find Senara buds or prepare a Senara potion.",
+    },
+    {
+        "Id": "gs3_guardians_song",
+        "Name": "Guardian's Song",
+        "BookNumber": 3,
+        "Category": "Story",
+        "Description": "Earn the Guardian's help with the Gyronome.",
+    },
+    {
+        "Id": "gs3_weapons_taken",
+        "Name": "Weapons Taken",
+        "BookNumber": 3,
+        "Category": "Story",
+        "Description": "Have your weapons confiscated by the Elessin.",
+    },
+    {
+        "Id": "gs3_weapons_returned",
+        "Name": "Weapons Returned",
+        "BookNumber": 3,
+        "Category": "Story",
+        "Description": "Recover weapons confiscated by the Elessin.",
+    },
+    {
+        "Id": "gs3_ethetron_stash",
+        "Name": "Ethetron Stash",
+        "BookNumber": 3,
+        "Category": "Survival",
+        "Description": "Leave your Backpack hidden in the Ethetron.",
+    },
+    {
+        "Id": "gs3_ethetron_recovery",
+        "Name": "Ethetron Recovery",
+        "BookNumber": 3,
+        "Category": "Survival",
+        "Description": "Recover the Backpack left in the Ethetron.",
+    },
+    {
+        "Id": "gs3_chaos_bird_survivor",
+        "Name": "Chaos-Bird Survivor",
+        "BookNumber": 3,
+        "Category": "Combat",
+        "Description": "Survive the Chaos-bird attacks.",
+    },
+    {
+        "Id": "gs3_paradox_bargain",
+        "Name": "Paradox Bargain",
+        "BookNumber": 3,
+        "Category": "Story",
+        "Description": "Strike the strange bargain that points toward Tanith.",
+    },
+    {
+        "Id": "gs3_tanith_rescued",
+        "Name": "Tanith Remembered",
+        "BookNumber": 3,
+        "Category": "Story",
+        "Description": "Break through Tanith's enchantment.",
+    },
+    {
+        "Id": "gs3_shadow_brother",
+        "Name": "Shadow Brother",
+        "BookNumber": 3,
+        "Category": "Story",
+        "Description": "Confront the Jahksa, Grey Star's dark double.",
+    },
+    {
+        "Id": "gs3_final_truth",
+        "Name": "Final Truth",
+        "BookNumber": 3,
+        "Category": "Journey",
+        "Description": "Face the last Jahksa combat at the Moonstone.",
+    },
+    {
+        "Id": "gs3_moonstone_claimed",
+        "Name": "Moonstone Claimed",
+        "BookNumber": 3,
+        "Category": "Journey",
+        "Description": "Claim the Moonstone.",
+    },
 ]
 
 
@@ -537,10 +698,13 @@ def default_state() -> dict[str, Any]:
             "Modifier": 0,
             "ActiveWeapon": "",
             "UseStaff": True,
+            "ForceUnarmed": False,
             "StaffWillpower": 1,
             "CanEvade": False,
             "EvadeAfterRounds": 0,
             "VictoryRoute": None,
+            "DefeatRoute": None,
+            "DefeatEnduranceMinimum": None,
             "EvadeRoute": None,
             "RoundLimit": 0,
             "SurvivalRoute": None,
@@ -1343,6 +1507,52 @@ class GrayStarAssistant:
             return self.has_any_section(2, 85, 206, 255, 262)
         if achievement_id == "gs2_shadow_gate":
             return self.book_completed(2) and 310 in sections
+        if achievement_id == "gs3_complete":
+            return self.book_completed(3)
+        if achievement_id == "gs3_long_road":
+            return max(len(sections), self.summary_metric_for_book(3, "UniqueSectionsVisited")) >= 100
+        if achievement_id == "gs3_first_blood":
+            return victory_count >= 1
+        if achievement_id == "gs3_against_the_odds":
+            return any(int(entry.get("CombatRatio") or 0) <= 0 for entry in victories)
+        if achievement_id == "gs3_seasoned_fighter":
+            return int(rounds_fought) >= 15
+        if achievement_id == "gs3_daemonak_slayer":
+            return any("daemonak" in str(entry.get("EnemyName") or "").lower() for entry in victories) or self.has_sections(3, 17, 250)
+        if achievement_id == "gs3_ethetron_pilot":
+            return 116 in sections or "gyronome" in items
+        if achievement_id == "gs3_singing_city":
+            return self.has_any_section(3, 45, 238, 241, 259, 305, 344)
+        if achievement_id == "gs3_crystal_tower":
+            return self.has_any_section(3, 200, 240)
+        if achievement_id == "gs3_keybearer":
+            return any("key" in item for item in items) or self.has_any_section(3, 125, 150, 197, 240, 242, 287)
+        if achievement_id == "gs3_serpent_solution":
+            return 240 in sections
+        if achievement_id == "gs3_senara_brewer":
+            return 177 in sections or any("senara" in item for item in items)
+        if achievement_id == "gs3_guardians_song":
+            return 182 in sections
+        if achievement_id == "gs3_weapons_taken":
+            return 191 in sections
+        if achievement_id == "gs3_weapons_returned":
+            return 191 in sections and self.has_any_section(3, 107, 182)
+        if achievement_id == "gs3_ethetron_stash":
+            return 344 in sections
+        if achievement_id == "gs3_ethetron_recovery":
+            return self.has_sections(3, 344, 278)
+        if achievement_id == "gs3_chaos_bird_survivor":
+            return any("chaos-bird" in str(entry.get("EnemyName") or "").lower() for entry in victories) or self.has_any_section(3, 64, 78, 108, 188, 290, 304)
+        if achievement_id == "gs3_paradox_bargain":
+            return self.has_any_section(3, 67, 314)
+        if achievement_id == "gs3_tanith_rescued":
+            return 276 in sections
+        if achievement_id == "gs3_shadow_brother":
+            return self.has_any_section(3, 291, 243)
+        if achievement_id == "gs3_final_truth":
+            return 243 in sections
+        if achievement_id == "gs3_moonstone_claimed":
+            return self.book_completed(3) and 350 in sections
         return False
 
     def unlock_achievement(self, definition: dict[str, Any]) -> dict[str, Any]:
@@ -1812,7 +2022,18 @@ class GrayStarAssistant:
             if not isinstance(modifier, dict):
                 continue
             applies = self.evaluate_flow_condition(modifier.get("condition"))
-            value = int(modifier.get("value") or 0) if applies else 0
+            if applies and modifier.get("valueFrom"):
+                value_from = str(modifier.get("valueFrom") or "").lower()
+                if value_from in {"end", "endurance"}:
+                    value = int(self.character["EnduranceCurrent"])
+                elif value_from in {"wp", "willpower"}:
+                    value = int(self.character["WillpowerCurrent"])
+                elif value_from in {"cs", "combat_skill", "combat skill"}:
+                    value = int(self.character["CombatSkillCurrent"])
+                else:
+                    value = 0
+            else:
+                value = int(modifier.get("value") or 0) if applies else 0
             total += value
             modifiers.append(
                 {
@@ -1990,6 +2211,51 @@ class GrayStarAssistant:
         restored.append(f"{len(stored_backpack)} Backpack Item(s)")
         return "gear restored: " + "; ".join(restored)
 
+    def store_unavailable_weapons(self) -> str:
+        stored = self.automation["Stored"]
+        current_weapons = as_list(self.inventory.get("Weapons"))
+        stored_weapons = as_list(stored.get("confiscatedWeapons"))
+        for item in current_weapons:
+            if item not in stored_weapons:
+                stored_weapons.append(item)
+        stored["confiscatedWeapons"] = stored_weapons
+        self.inventory["Weapons"] = []
+        if any(str(item).lower() == "wizard's staff" for item in stored_weapons):
+            self.automation_flags["staffAvailable"] = False
+        return f"weapons stored: {format_list(stored_weapons)}"
+
+    def restore_unavailable_weapons(self) -> str:
+        stored = self.automation["Stored"]
+        stored_weapons = as_list(stored.pop("confiscatedWeapons", []))
+        current_weapons = as_list(self.inventory.get("Weapons"))
+        for item in stored_weapons:
+            if item not in current_weapons:
+                current_weapons.append(item)
+        self.inventory["Weapons"] = current_weapons
+        self.automation_flags["staffAvailable"] = True
+        return f"weapons restored: {format_list(stored_weapons)}"
+
+    def store_unavailable_backpack_items(self) -> str:
+        stored = self.automation["Stored"]
+        current_backpack = as_list(self.inventory.get("BackpackItems"))
+        stored_backpack = as_list(stored.get("stashedBackpackItems"))
+        if current_backpack:
+            stored_backpack.extend(current_backpack)
+        stored["stashedBackpackItems"] = stored_backpack
+        self.inventory["BackpackItems"] = []
+        self.automation_flags["backpackAvailable"] = False
+        self.automation_flags["backpackItemsAvailable"] = False
+        return f"backpack stashed: {len(stored_backpack)} Backpack Item(s)"
+
+    def restore_unavailable_backpack_items(self) -> str:
+        stored = self.automation["Stored"]
+        stored_backpack = as_list(stored.pop("stashedBackpackItems", []))
+        current_backpack = as_list(self.inventory.get("BackpackItems"))
+        self.inventory["BackpackItems"] = stored_backpack + current_backpack
+        self.automation_flags["backpackAvailable"] = True
+        self.automation_flags["backpackItemsAvailable"] = True
+        return f"backpack restored: {len(stored_backpack)} Backpack Item(s)"
+
     def discard_backpack(self) -> str:
         discarded = as_list(self.inventory.get("BackpackItems"))
         self.inventory["BackpackItems"] = []
@@ -2039,6 +2305,10 @@ class GrayStarAssistant:
         return None
 
     def combat_active_weapon(self) -> str:
+        if bool(self.combat.get("ForceUnarmed")):
+            self.combat["ActiveWeapon"] = ""
+            self.combat["UseStaff"] = False
+            return ""
         active = str(self.combat.get("ActiveWeapon") or "").strip()
         if active in self.available_combat_weapons():
             return active
@@ -2053,6 +2323,7 @@ class GrayStarAssistant:
         if resolved is None:
             print(f"Combat weapon not available: {weapon}")
             return False
+        self.combat["ForceUnarmed"] = False
         self.combat["ActiveWeapon"] = resolved
         self.combat["UseStaff"] = bool(
             resolved == "Wizard's Staff" and self.has_available_staff() and int(self.character["WillpowerCurrent"]) > 0
@@ -2201,6 +2472,16 @@ class GrayStarAssistant:
             if available:
                 return self.restore_unavailable_gear()
             return self.store_unavailable_gear()
+        if action_type == "weapons":
+            available = bool(action.get("available"))
+            if available:
+                return self.restore_unavailable_weapons()
+            return self.store_unavailable_weapons()
+        if action_type == "backpack_stash":
+            available = bool(action.get("available"))
+            if available:
+                return self.restore_unavailable_backpack_items()
+            return self.store_unavailable_backpack_items()
         if action_type == "backpack":
             if bool(action.get("available", True)):
                 return self.set_backpack_available(True)
@@ -2252,6 +2533,12 @@ class GrayStarAssistant:
 
     def consumable_item_effect(self, item: str) -> dict[str, Any] | None:
         text = str(item).lower()
+        if "senara potion" in text:
+            return {"stat": "wp", "delta": 5, "label": "Senara Potion"}
+        if "senara bud" in text:
+            return {"stat": "wp", "delta": 1, "label": "Senara Bud"}
+        if "potion of healing" in text or "healing potion" in text:
+            return {"stat": "end", "delta": 4, "label": "Potion of Healing"}
         if "rendalim" in text:
             return {"stat": "end", "delta": 6, "label": "Potion of Rendalim's Elixir"}
         if "laumspur" in text:
@@ -2287,6 +2574,8 @@ class GrayStarAssistant:
 
         if effect["stat"] == "end":
             message = self.change_endurance(int(effect["delta"]))
+        elif effect["stat"] == "wp":
+            message = self.change_willpower(int(effect["delta"]), allow_negative=False)
         else:
             message = "unknown effect"
         self.autosave()
@@ -3383,9 +3672,12 @@ class GrayStarAssistant:
             {
                 "Modifier": int(preset.get("modifier") or 0),
                 "UseStaff": bool(preset.get("useStaff", self.combat.get("UseStaff"))),
+                "ForceUnarmed": bool(preset.get("forceUnarmed", False)),
                 "CanEvade": bool(preset.get("canEvade", False)),
                 "EvadeAfterRounds": max(0, int(preset.get("evadeAfterRounds") or 0)),
                 "VictoryRoute": preset.get("victoryRoute"),
+                "DefeatRoute": preset.get("defeatRoute"),
+                "DefeatEnduranceMinimum": preset.get("defeatEnduranceMinimum"),
                 "EvadeRoute": preset.get("evadeRoute"),
                 "RoundLimit": max(0, int(preset.get("roundLimit") or 0)),
                 "SurvivalRoute": preset.get("survivalRoute"),
@@ -3406,6 +3698,9 @@ class GrayStarAssistant:
             }
         )
         if fixed_cs is not None:
+            self.combat["UseStaff"] = False
+        if self.combat.get("ForceUnarmed"):
+            self.combat["ActiveWeapon"] = ""
             self.combat["UseStaff"] = False
         for message in messages:
             print(message)
@@ -3455,6 +3750,16 @@ class GrayStarAssistant:
             enemy_name = str(self.combat.get("EnemyName") or "the enemy")
             self.archive_current_combat("Defeat")
             self.combat["Active"] = False
+            defeat_route = self.combat.get("DefeatRoute")
+            if defeat_route:
+                minimum = self.combat.get("DefeatEnduranceMinimum")
+                if minimum is not None:
+                    self.character["EnduranceCurrent"] = max(
+                        int(self.character["EnduranceCurrent"]), int(minimum)
+                    )
+                print(f"Defeat route: section {defeat_route}.")
+                self.set_section(int(defeat_route))
+                return True
             self.register_death("combat", f"Defeated by {enemy_name}.")
             self.autosave()
             return True
@@ -3533,10 +3838,13 @@ class GrayStarAssistant:
                 "Modifier": 0,
                 "ActiveWeapon": active_weapon,
                 "UseStaff": use_staff,
+                "ForceUnarmed": False,
                 "StaffWillpower": 1,
                 "CanEvade": False,
                 "EvadeAfterRounds": 0,
                 "VictoryRoute": None,
+                "DefeatRoute": None,
+                "DefeatEnduranceMinimum": None,
                 "EvadeRoute": None,
                 "RoundLimit": 0,
                 "SurvivalRoute": None,

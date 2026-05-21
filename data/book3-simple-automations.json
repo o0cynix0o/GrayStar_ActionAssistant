@@ -1,0 +1,1126 @@
+{
+  "3": {
+    "7": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "28": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "40": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "53": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "63": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "71": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "80": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "81": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "83": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "104": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "109": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "126": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "129": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "164": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "165": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "168": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "189": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "203": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "233": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "269": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "270": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "271": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "272": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "286": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "292": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "308": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "328": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "349": {
+      "summary": "terminal death or failure",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "death"
+        }
+      ]
+    },
+    "3": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "5": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "9": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "13": {
+      "summary": "lose 2 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "15": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "21": {
+      "summary": "lose 3 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -3,
+          "allowNegative": true
+        }
+      ]
+    },
+    "24": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "25": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "31": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "34": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "36": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "39": {
+      "summary": "lose 1 WP and 1 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        },
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "41": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "46": {
+      "summary": "regain 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": 1
+        }
+      ]
+    },
+    "49": {
+      "summary": "lose 3 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -3,
+          "allowNegative": true
+        }
+      ]
+    },
+    "54": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "55": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "60": {
+      "summary": "lose 2 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "64": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "73": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "74": {
+      "summary": "lose 2 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "78": {
+      "summary": "lose 1 WP for Elementalism",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "96": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "101": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "102": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "103": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "111": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "112": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "116": {
+      "summary": "gain the Gyronome",
+      "actions": [
+        {
+          "type": "add_item",
+          "container": "special",
+          "name": "Gyronome"
+        }
+      ]
+    },
+    "120": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "138": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "146": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "147": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "148": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "149": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "152": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "155": {
+      "summary": "lose 2 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "161": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "169": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "173": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "182": {
+      "summary": "weapons returned by the Elessin",
+      "actions": [
+        {
+          "type": "weapons",
+          "available": true
+        }
+      ]
+    },
+    "191": {
+      "summary": "weapons confiscated by the Elessin",
+      "actions": [
+        {
+          "type": "weapons",
+          "available": false
+        }
+      ]
+    },
+    "192": {
+      "summary": "halve current END, rounded up",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "mode": "half_loss_floor"
+        }
+      ]
+    },
+    "193": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "207": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "212": {
+      "summary": "lose 2 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -2
+        }
+      ]
+    },
+    "213": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "216": {
+      "summary": "restore 2 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": 2
+        }
+      ]
+    },
+    "219": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "220": {
+      "summary": "lose 3 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -3,
+          "allowNegative": true
+        }
+      ]
+    },
+    "224": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "236": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "237": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "248": {
+      "summary": "lose 3 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -3,
+          "allowNegative": true
+        }
+      ]
+    },
+    "252": {
+      "summary": "lose 8 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -8
+        }
+      ]
+    },
+    "253": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "261": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "268": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "276": {
+      "summary": "lose 1 WP and 1 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        },
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -1
+        }
+      ]
+    },
+    "278": {
+      "summary": "recover Backpack left in the Ethetron",
+      "actions": [
+        {
+          "type": "backpack_stash",
+          "available": true
+        }
+      ]
+    },
+    "284": {
+      "summary": "lose 6 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -6
+        }
+      ]
+    },
+    "288": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "293": {
+      "summary": "restore 4 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": 4
+        }
+      ]
+    },
+    "294": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "296": {
+      "summary": "lose 6 END before fighting the wolf",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -6
+        }
+      ]
+    },
+    "299": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "301": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "313": {
+      "summary": "lose 1 WP and 6 END",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        },
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": -6
+        }
+      ]
+    },
+    "317": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "324": {
+      "summary": "restore 2 END and 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": 2
+        },
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": 1
+        }
+      ]
+    },
+    "326": {
+      "summary": "lose 3 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -3,
+          "allowNegative": true
+        }
+      ]
+    },
+    "334": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "337": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "338": {
+      "summary": "restore 4 END and 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "end",
+          "delta": 4
+        },
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": 2
+        }
+      ]
+    },
+    "339": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "340": {
+      "summary": "lose 2 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -2,
+          "allowNegative": true
+        }
+      ]
+    },
+    "344": {
+      "summary": "leave Backpack and Backpack Items in the Ethetron",
+      "actions": [
+        {
+          "type": "backpack_stash",
+          "available": false
+        }
+      ]
+    },
+    "347": {
+      "summary": "lose 1 WP",
+      "actions": [
+        {
+          "type": "stat",
+          "stat": "wp",
+          "delta": -1,
+          "allowNegative": true
+        }
+      ]
+    },
+    "350": {
+      "summary": "successful Book 3 ending",
+      "actions": [
+        {
+          "type": "ending",
+          "ending": "success",
+          "completeBook": 3
+        }
+      ]
+    }
+  }
+}

@@ -47,4 +47,6 @@ No. The `saves` folder is ignored by git. Your character state stays local.
 
 ## What Is Done For Book 3 And Book 4?
 
-The local book reader has the book assets. The assistant support data, achievements, and playtest ladder still need to be built through the full book workflow.
+Books 1, 2, and 3 have assistant rules, achievements, strategy guides, and green dry-run playtest reports.
+
+Book 4 is available in the local reader, but still needs the full book workflow before it has the same level of assistant help.

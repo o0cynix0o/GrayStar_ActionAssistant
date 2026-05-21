@@ -40,8 +40,9 @@ Current app support is strongest for:
 
 - **Book 1: Grey Star the Wizard**
 - **Book 2: The Forbidden City**
+- **Book 3: Beyond the Nightmare Gate**
 
-Books 3 and 4 are present as local reader assets, but their assistant support data, achievements, and audit work are not at the Book 1 and Book 2 level yet.
+Book 4 is present as a local reader asset, but its assistant rules, achievements, and playtest work still need the full book workflow.
 
 ## Project Rule
 

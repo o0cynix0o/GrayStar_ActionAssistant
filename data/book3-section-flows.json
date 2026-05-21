@@ -1,0 +1,1113 @@
+{
+  "3": {
+    "4": {
+      "roll": {
+        "summary": "Carry the statue down the palace steps",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 19,
+            "route": 65,
+            "label": "Too exhausted to continue"
+          },
+          {
+            "test": "range",
+            "min": 20,
+            "max": 999,
+            "route": 59,
+            "label": "Keep control of the statue"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Current END",
+            "valueFrom": "end"
+          }
+        ]
+      }
+    },
+    "6": {
+      "roll": {
+        "summary": "Long-range Staff attack against the Elessin",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 14,
+            "route": 93,
+            "label": "Attack fails"
+          },
+          {
+            "test": "range",
+            "min": 15,
+            "max": 999,
+            "route": 248,
+            "label": "Attack succeeds"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Current CS",
+            "valueFrom": "cs"
+          }
+        ]
+      }
+    },
+    "19": {
+      "roll": {
+        "summary": "Land the Ethetron after crossing the Gate",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 3,
+            "route": 13,
+            "label": "Hard landing"
+          },
+          {
+            "test": "range",
+            "min": 4,
+            "max": 11,
+            "route": 77,
+            "label": "Regain control"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Talisman of the Shianti",
+            "value": 2,
+            "condition": {
+              "type": "item",
+              "name": "Talisman",
+              "match": "contains",
+              "containers": [
+                "special"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "22": {
+      "roll": {
+        "summary": "Carry the statue through the palace",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 19,
+            "route": 65,
+            "label": "Too exhausted to continue"
+          },
+          {
+            "test": "range",
+            "min": 20,
+            "max": 999,
+            "route": 59,
+            "label": "Keep moving"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Current END",
+            "valueFrom": "end"
+          }
+        ]
+      }
+    },
+    "44": {
+      "roll": {
+        "summary": "Carry the statue down the long steps",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 19,
+            "route": 65,
+            "label": "Too exhausted to continue"
+          },
+          {
+            "test": "range",
+            "min": 20,
+            "max": 999,
+            "route": 59,
+            "label": "Reach the foot of the steps"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Current END",
+            "valueFrom": "end"
+          }
+        ]
+      }
+    },
+    "78": {
+      "roll": {
+        "summary": "Elementalism in the Chaos-bird attack",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 8,
+            "route": 83,
+            "label": "Crash fatally"
+          },
+          {
+            "test": "range",
+            "min": 9,
+            "max": 999,
+            "route": 304,
+            "label": "Survive the crash"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Current WP",
+            "valueFrom": "wp"
+          }
+        ]
+      }
+    },
+    "121": {
+      "roll": {
+        "summary": "Sneak behind the palace guard",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 5,
+            "route": 139,
+            "label": "Sneak close"
+          },
+          {
+            "test": "range",
+            "min": 6,
+            "max": 9,
+            "route": 145,
+            "label": "Caught by the guard"
+          }
+        ],
+        "modifiers": []
+      }
+    },
+    "172": {
+      "roll": {
+        "summary": "Haul Tanith up the Crystal Tower",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 5,
+            "route": 63,
+            "label": "Tanith falls"
+          },
+          {
+            "test": "range",
+            "min": 6,
+            "max": 11,
+            "route": 91,
+            "label": "Tanith reaches the ledge"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Silver Charm of Jnana the Wise",
+            "value": 1,
+            "condition": {
+              "type": "item",
+              "name": "Silver Charm of Jnana the Wise",
+              "match": "exact",
+              "containers": [
+                "special"
+              ]
+            }
+          },
+          {
+            "label": "Talisman of the Shianti",
+            "value": 1,
+            "condition": {
+              "type": "item",
+              "name": "Talisman",
+              "match": "contains",
+              "containers": [
+                "special"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "174": {
+      "roll": {
+        "summary": "Resist the Realm of Paradox without Enchantment",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 19,
+            "route": 104,
+            "label": "Mind overwhelmed"
+          },
+          {
+            "test": "range",
+            "min": 20,
+            "max": 999,
+            "route": 86,
+            "label": "Hold steady"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Current WP",
+            "valueFrom": "wp"
+          }
+        ]
+      }
+    },
+    "217": {
+      "roll": {
+        "summary": "Climb the Crystal Tower",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 5,
+            "route": 292,
+            "label": "Fall from the tower"
+          },
+          {
+            "test": "range",
+            "min": 6,
+            "max": 11,
+            "route": 246,
+            "label": "Reach the ledge"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Silver Charm of Jnana the Wise",
+            "value": 1,
+            "condition": {
+              "type": "item",
+              "name": "Silver Charm of Jnana the Wise",
+              "match": "exact",
+              "containers": [
+                "special"
+              ]
+            }
+          },
+          {
+            "label": "Talisman of the Shianti",
+            "value": 1,
+            "condition": {
+              "type": "item",
+              "name": "Talisman",
+              "match": "contains",
+              "containers": [
+                "special"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "235": {
+      "roll": {
+        "summary": "Wolf Key ambush",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 4,
+            "route": 178,
+            "label": "Strike the wolf first"
+          },
+          {
+            "test": "range",
+            "min": 5,
+            "max": 9,
+            "route": 296,
+            "label": "Wolf knocks you down"
+          }
+        ],
+        "modifiers": []
+      }
+    },
+    "246": {
+      "roll": {
+        "summary": "Bring Tanith up after the first climb",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 4,
+            "route": 126,
+            "label": "Tanith falls"
+          },
+          {
+            "test": "range",
+            "min": 5,
+            "max": 11,
+            "route": 172,
+            "label": "Tanith reaches you"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Silver Charm of Jnana the Wise",
+            "value": 1,
+            "condition": {
+              "type": "item",
+              "name": "Silver Charm of Jnana the Wise",
+              "match": "exact",
+              "containers": [
+                "special"
+              ]
+            }
+          },
+          {
+            "label": "Talisman of the Shianti",
+            "value": 1,
+            "condition": {
+              "type": "item",
+              "name": "Talisman",
+              "match": "contains",
+              "containers": [
+                "special"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "290": {
+      "roll": {
+        "summary": "Chaos-bird corpse collision",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": -999,
+            "max": 8,
+            "route": 83,
+            "label": "Crash fatally"
+          },
+          {
+            "test": "range",
+            "min": 9,
+            "max": 999,
+            "route": 304,
+            "label": "Survive the crash"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Current WP",
+            "valueFrom": "wp"
+          }
+        ]
+      }
+    },
+    "310": {
+      "roll": {
+        "summary": "Land the Ethetron after the white-light Gate",
+        "outcomes": [
+          {
+            "test": "range",
+            "min": 0,
+            "max": 3,
+            "route": 13,
+            "label": "Hard landing"
+          },
+          {
+            "test": "range",
+            "min": 4,
+            "max": 11,
+            "route": 77,
+            "label": "Regain control"
+          }
+        ],
+        "modifiers": [
+          {
+            "label": "Talisman of the Shianti",
+            "value": 2,
+            "condition": {
+              "type": "item",
+              "name": "Talisman",
+              "match": "contains",
+              "containers": [
+                "special"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "17": {
+      "combat": [
+        {
+          "id": "17-daemonak",
+          "label": "Daemonak",
+          "enemy": {
+            "name": "Daemonak",
+            "cs": 21,
+            "endurance": 28
+          },
+          "victoryRoute": 250
+        }
+      ]
+    },
+    "57": {
+      "combat": [
+        {
+          "id": "57-elessi-leader",
+          "label": "Elessi Leader: unarmed/no Dagger",
+          "enemy": {
+            "name": "Elessi Leader",
+            "cs": 12,
+            "endurance": 25
+          },
+          "forceUnarmed": true,
+          "canEvade": true,
+          "evadeAfterRounds": 3,
+          "evadeRoute": 99,
+          "victoryRoute": 107
+        },
+        {
+          "id": "57-elessi-leader-dagger",
+          "label": "Elessi Leader: Jewelled Dagger reduces penalty",
+          "enemy": {
+            "name": "Elessi Leader",
+            "cs": 12,
+            "endurance": 25
+          },
+          "forceUnarmed": true,
+          "modifier": 2,
+          "canEvade": true,
+          "evadeAfterRounds": 3,
+          "evadeRoute": 99,
+          "victoryRoute": 107
+        }
+      ]
+    },
+    "64": {
+      "combat": [
+        {
+          "id": "64-chaos-bird",
+          "label": "Chaos-bird",
+          "enemy": {
+            "name": "Chaos-bird",
+            "cs": 20,
+            "endurance": 24
+          },
+          "victoryRoute": 133
+        }
+      ]
+    },
+    "87": {
+      "combat": [
+        {
+          "id": "87-giant-eagle",
+          "label": "Giant Eagle: survive 3 rounds",
+          "enemy": {
+            "name": "Giant Eagle",
+            "cs": 30,
+            "endurance": 30
+          },
+          "roundLimit": 3,
+          "survivalRoute": 150,
+          "victoryRoute": 150
+        }
+      ]
+    },
+    "97": {
+      "combat": [
+        {
+          "id": "97-tower-door",
+          "label": "Tower Door: ignore Gray Star END loss",
+          "enemy": {
+            "name": "Tower Door",
+            "cs": 30,
+            "endurance": 45
+          },
+          "ignorePlayerLossRounds": 999,
+          "canEvade": true,
+          "evadeRoute": 61,
+          "victoryRoute": 124
+        }
+      ]
+    },
+    "108": {
+      "combat": [
+        {
+          "id": "108-chaos-bird",
+          "label": "Chaos-bird",
+          "enemy": {
+            "name": "Chaos-bird",
+            "cs": 20,
+            "endurance": 25
+          },
+          "victoryRoute": 133
+        }
+      ]
+    },
+    "123": {
+      "combat": [
+        {
+          "id": "123-jahksa",
+          "label": "Jahksa: survive 3 rounds",
+          "enemy": {
+            "name": "Jahksa",
+            "cs": 30,
+            "endurance": 30
+          },
+          "roundLimit": 3,
+          "survivalRoute": 117,
+          "victoryRoute": 117
+        }
+      ]
+    },
+    "137": {
+      "combat": [
+        {
+          "id": "137-wounded-eagle",
+          "label": "Wounded Eagle",
+          "enemy": {
+            "name": "Wounded Eagle",
+            "cs": 30,
+            "endurance": 25
+          },
+          "victoryRoute": 186
+        }
+      ]
+    },
+    "178": {
+      "combat": [
+        {
+          "id": "178-wounded-wolf",
+          "label": "Wounded Wolf",
+          "enemy": {
+            "name": "Wounded Wolf",
+            "cs": 20,
+            "endurance": 20
+          },
+          "victoryRoute": 106
+        }
+      ]
+    },
+    "188": {
+      "combat": [
+        {
+          "id": "188-chaos-birds",
+          "label": "Chaos-birds",
+          "enemy": {
+            "name": "Chaos-birds",
+            "cs": 26,
+            "endurance": 30
+          },
+          "victoryRoute": 205
+        },
+        {
+          "id": "188-chaos-birds-tanith",
+          "label": "Chaos-birds with Tanith armed (+2 CS)",
+          "enemy": {
+            "name": "Chaos-birds",
+            "cs": 26,
+            "endurance": 30
+          },
+          "modifier": 2,
+          "victoryRoute": 205
+        }
+      ]
+    },
+    "194": {
+      "combat": [
+        {
+          "id": "194-creature-of-the-mists",
+          "label": "Creature of the Mists: survive 2 rounds",
+          "enemy": {
+            "name": "Creature of the Mists",
+            "cs": 21,
+            "endurance": 25
+          },
+          "roundLimit": 2,
+          "survivalRoute": 51,
+          "victoryRoute": 51
+        }
+      ]
+    },
+    "243": {
+      "combat": [
+        {
+          "id": "243-jahksa-final",
+          "label": "Final Jahksa: defeat leads to the Moonstone",
+          "enemy": {
+            "name": "Jahksa",
+            "cs": 30,
+            "endurance": 35
+          },
+          "canEvade": true,
+          "evadeRoute": 218,
+          "victoryRoute": 286,
+          "defeatRoute": 350,
+          "defeatEnduranceMinimum": 1
+        }
+      ]
+    },
+    "296": {
+      "combat": [
+        {
+          "id": "296-giant-wolf",
+          "label": "Giant Wolf: win within 3 rounds",
+          "enemy": {
+            "name": "Giant Wolf",
+            "cs": 20,
+            "endurance": 26
+          },
+          "roundLimit": 3,
+          "roundExceededRoute": 287,
+          "winWithinRounds": 3,
+          "winWithinRoute": 106,
+          "tooLateRoute": 287
+        }
+      ]
+    },
+    "322": {
+      "combat": [
+        {
+          "id": "322-elessi-leader",
+          "label": "Elessi Leader: no Staff/no Dagger",
+          "enemy": {
+            "name": "Elessi Leader",
+            "cs": 12,
+            "endurance": 25
+          },
+          "forceUnarmed": true,
+          "canEvade": true,
+          "evadeAfterRounds": 3,
+          "evadeRoute": 99,
+          "victoryRoute": 107
+        },
+        {
+          "id": "322-elessi-leader-dagger",
+          "label": "Elessi Leader: Jewelled Dagger reduces penalty",
+          "enemy": {
+            "name": "Elessi Leader",
+            "cs": 12,
+            "endurance": 25
+          },
+          "forceUnarmed": true,
+          "modifier": 2,
+          "canEvade": true,
+          "evadeAfterRounds": 3,
+          "evadeRoute": 99,
+          "victoryRoute": 107
+        }
+      ]
+    },
+    "113": {
+      "wpCost": {
+        "cost": 2,
+        "label": "Form a Sorcery shield against the Jahksa"
+      }
+    },
+    "162": {
+      "wpCost": {
+        "cost": 2,
+        "label": "Form a Sorcery shield against the Jahksa"
+      }
+    },
+    "176": {
+      "wpCost": {
+        "cost": 2,
+        "label": "Form a Sorcery shield against the Jahksa"
+      }
+    },
+    "319": {
+      "wpCost": {
+        "cost": 1,
+        "label": "Heat the Ezeran Acid mixture without a Tinderbox"
+      },
+      "loot": [
+        {
+          "id": "ezeran-acid-vial",
+          "label": "Mix Ezeran Acid into an Empty Vial",
+          "actions": [
+            {
+              "type": "remove_item",
+              "name": "Ezeran Salts",
+              "match": "contains"
+            },
+            {
+              "type": "remove_item",
+              "name": "Sulphur",
+              "match": "contains"
+            },
+            {
+              "type": "remove_item",
+              "name": "Saltpetre",
+              "match": "contains"
+            },
+            {
+              "type": "remove_item",
+              "name": "Empty Vial",
+              "containers": [
+                "herb",
+                "backpack"
+              ]
+            },
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Ezeran Acid"
+            }
+          ]
+        },
+        {
+          "id": "ezeran-acid-lock",
+          "label": "Use Ezeran Acid on the lock now",
+          "actions": [
+            {
+              "type": "remove_item",
+              "name": "Ezeran Salts",
+              "match": "contains"
+            },
+            {
+              "type": "remove_item",
+              "name": "Sulphur",
+              "match": "contains"
+            },
+            {
+              "type": "remove_item",
+              "name": "Saltpetre",
+              "match": "contains"
+            }
+          ]
+        }
+      ]
+    },
+    "133": {
+      "status": [
+        {
+          "key": "tanithArmedAgainstChaosBirds",
+          "label": "Tanith armed against Chaos-birds"
+        }
+      ]
+    },
+    "116": {
+      "loot": [
+        {
+          "id": "short-sword",
+          "label": "Short Sword",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "weapon",
+              "name": "Short Sword"
+            }
+          ]
+        },
+        {
+          "id": "strong-rope",
+          "label": "Length of Strong Rope",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Length of Strong Rope"
+            }
+          ]
+        },
+        {
+          "id": "potion-healing",
+          "label": "Potion of Healing (+4 END)",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Potion of Healing (+4 END)"
+            }
+          ]
+        },
+        {
+          "id": "backpack",
+          "label": "Backpack",
+          "actions": [
+            {
+              "type": "backpack",
+              "available": true
+            }
+          ]
+        },
+        {
+          "id": "spear",
+          "label": "Spear",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "weapon",
+              "name": "Spear"
+            }
+          ]
+        }
+      ]
+    },
+    "125": {
+      "loot": [
+        {
+          "id": "bunch-of-keys",
+          "label": "Bunch of Keys",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Bunch of Keys"
+            }
+          ]
+        }
+      ]
+    },
+    "150": {
+      "loot": [
+        {
+          "id": "eagle-key",
+          "label": "Eagle Key",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Eagle Key"
+            }
+          ]
+        }
+      ]
+    },
+    "197": {
+      "loot": [
+        {
+          "id": "dragon-key",
+          "label": "Dragon Key",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Dragon Key"
+            }
+          ]
+        }
+      ]
+    },
+    "242": {
+      "loot": [
+        {
+          "id": "dragon-key",
+          "label": "Dragon Key",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Dragon Key"
+            }
+          ]
+        }
+      ]
+    },
+    "287": {
+      "loot": [
+        {
+          "id": "wolf-key",
+          "label": "Wolf Key",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Wolf Key"
+            }
+          ]
+        }
+      ]
+    },
+    "177": {
+      "loot": [
+        {
+          "id": "senara-bud-1",
+          "label": "Senara Bud",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "herb_or_backpack",
+              "name": "Senara Bud (+1 WP)"
+            }
+          ]
+        },
+        {
+          "id": "senara-buds-5",
+          "label": "5 Senara Buds",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "herb_or_backpack",
+              "name": "Senara Bud (+1 WP)"
+            },
+            {
+              "type": "add_item",
+              "container": "herb_or_backpack",
+              "name": "Senara Bud (+1 WP)"
+            },
+            {
+              "type": "add_item",
+              "container": "herb_or_backpack",
+              "name": "Senara Bud (+1 WP)"
+            },
+            {
+              "type": "add_item",
+              "container": "herb_or_backpack",
+              "name": "Senara Bud (+1 WP)"
+            },
+            {
+              "type": "add_item",
+              "container": "herb_or_backpack",
+              "name": "Senara Bud (+1 WP)"
+            }
+          ]
+        },
+        {
+          "id": "senara-potion",
+          "label": "Mix Senara Potion (+5 WP)",
+          "actions": [
+            {
+              "type": "remove_item",
+              "name": "Empty Vial",
+              "containers": [
+                "herb",
+                "backpack"
+              ]
+            },
+            {
+              "type": "add_item",
+              "container": "herb_or_backpack",
+              "name": "Senara Potion (+5 WP)"
+            }
+          ]
+        }
+      ]
+    },
+    "240": {
+      "loot": [
+        {
+          "id": "keys-to-crystal-tower",
+          "label": "Keys to the Crystal Tower (Backpack Item)",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Keys to the Crystal Tower"
+            }
+          ]
+        },
+        {
+          "id": "tanith-carries-keys",
+          "label": "Tanith carries the remaining Keys",
+          "actions": [
+            {
+              "type": "flag",
+              "key": "tanithCarriesCrystalKeys",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    "305": {
+      "loot": [
+        {
+          "id": "elessin-pipes",
+          "label": "3 Elessin Pipes",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Elessin Pipe"
+            },
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Elessin Pipe"
+            },
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Elessin Pipe"
+            }
+          ]
+        },
+        {
+          "id": "emerald-medallion-special",
+          "label": "Emerald Medallion worn as Special Item",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Emerald Medallion"
+            }
+          ]
+        },
+        {
+          "id": "emerald-medallions-backpack",
+          "label": "Extra Emerald Medallion (Backpack)",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Emerald Medallion"
+            }
+          ]
+        },
+        {
+          "id": "elessin-parchment",
+          "label": "Parchment covered with Elessin script",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Parchment covered with Elessin script"
+            }
+          ]
+        },
+        {
+          "id": "coins",
+          "label": "Silver, Gold, and Copper Coins",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Silver Coin"
+            },
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Gold Coin"
+            },
+            {
+              "type": "add_item",
+              "container": "special",
+              "name": "Copper Coins"
+            }
+          ]
+        },
+        {
+          "id": "glass-rod",
+          "label": "Glass Rod",
+          "actions": [
+            {
+              "type": "add_item",
+              "container": "backpack",
+              "name": "Glass Rod"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

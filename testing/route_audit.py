@@ -27,11 +27,15 @@ NO_INCOMING_NOTES = {
     1: {
         110: "Hidden correct riddle solution for section 264; the local source has no visible section link into it.",
         342: "Footnote says no choice leads here and calls it an oversight. Earlier dry-run smoke used this section manually, so that smoke route needs review.",
+    },
+    3: {
+        190: "Footnote says no choice leads here and calls it an oversight. Section 144 is only reached from this unreachable section, so both should stay documented as source irregularities.",
     }
 }
 
 ROUTE_STATUS = {
     1: "machine route-graph baseline plus first named route-family pass. Endpoint classifications and full dry-run branch coverage still need review.",
+    3: "machine route-graph baseline plus named route-family pass. Sections 144 and 190 are source irregularities called out by the local footnotes.",
 }
 
 BOOK_ROUTE_FAMILIES = {
@@ -142,6 +146,85 @@ BOOK_ROUTE_FAMILIES = {
             "Hidden-route note for 110; unreachable-section marker for 342.",
         ],
     ],
+    3: [
+        [
+            "Opening: Neverness To Crystal Tower",
+            "1, 122, 211, 167, 302",
+            "The first push across the cloud plain and toward the Crystal Tower.",
+            "Both opening choices can still reach the Moonstone. Use this family to make sure the Book 3 start remains playable from either branch.",
+            "Opening route links, early Willpower costs, Crystal Tower approach choices.",
+        ],
+        [
+            "Crystal Tower Key Route",
+            "56, 10, 150, 197, 240, 242, 252, 287",
+            "The five animal keys and the riddle that points to the Serpent Key.",
+            "Wrong keys are dangerous but useful replay territory. The Serpent Key opens the tower, while the other keys create story, combat, and item branches.",
+            "`gs3_keybearer`, `gs3_serpent_solution`; key loot buttons, poison damage, animal-key combat and route checks.",
+        ],
+        [
+            "Ethetron And Singing City Route",
+            "116, 135, 140, 19, 45, 238, 241, 259",
+            "The flying-machine route into the realm of the Elessin.",
+            "This family covers the Gyronome, Ethetron item choices, landing rolls, and the first real arrival in the Singing City.",
+            "`gs3_ethetron_pilot`, `gs3_singing_city`; roll helpers, loot picker, Gyronome item.",
+        ],
+        [
+            "Elessin Judgment And Gear Trouble",
+            "191, 107, 182, 344, 278",
+            "Weapon confiscation, weapon return, Backpack stashing, and Backpack recovery.",
+            "Book 3 separates weapon-only confiscation from Backpack stashing, so route tests need to verify the two states do not overwrite each other.",
+            "`gs3_weapons_taken`, `gs3_weapons_returned`, `gs3_ethetron_stash`, `gs3_ethetron_recovery`; weapon and Backpack state automation.",
+        ],
+        [
+            "Screaming God / Guardian Route",
+            "4, 22, 44, 55, 115, 182",
+            "The route around the statue of the Screaming God and the Guardian's warning.",
+            "This is a major story branch and a good replay target. It also creates END-based roll checks while carrying the statue.",
+            "`gs3_guardians_song`; END roll helpers, Guardian route notes.",
+        ],
+        [
+            "Chaos-Bird Route",
+            "64, 78, 108, 133, 188, 290, 304",
+            "The Ethetron attack by Chaos-birds.",
+            "This family tests flying combat, Elementalism cost, a WP-based crash roll, and the optional Tanith weapon aid.",
+            "`gs3_chaos_bird_survivor`; combat presets, roll helpers, status flag.",
+        ],
+        [
+            "Paradox And Tanith Rescue",
+            "12, 67, 207, 213, 253, 276, 288, 314",
+            "The strange bargain route and the effort to free Tanith from enchantment.",
+            "This is the emotional center of the book. It is also a steady Willpower drain, so it needs careful automation and achievement backfill.",
+            "`gs3_paradox_bargain`, `gs3_tanith_rescued`; chained WP costs and route achievements.",
+        ],
+        [
+            "Vale And Healing Route",
+            "216, 177, 293, 324, 338",
+            "The gentler recovery stretch in the valley.",
+            "This family is the best place to verify healing, Senara buds, Senara potions, and rest bonuses.",
+            "`gs3_senara_brewer`; healing automations and consumable item use.",
+        ],
+        [
+            "Jahksa / Shadow Brother Route",
+            "291, 123, 131, 249, 148, 300, 243, 350",
+            "Grey Star's dark double and the final Moonstone fight.",
+            "The final combat is unusual: losing the fight can lead to the successful ending. This family needs a dedicated combat test.",
+            "`gs3_shadow_brother`, `gs3_final_truth`, `gs3_moonstone_claimed`; defeat-route combat and completion screen.",
+        ],
+        [
+            "Failure / Death Endpoint Families",
+            "7, 28, 40, 53, 63, 71, 80, 81, 83, 104, 109, 126, 129, 164, 165, 168, 189, 203, 233, 269, 270, 271, 272, 286, 292, 308, 328, 349",
+            "Terminal failure leaves detected in the Book 3 graph.",
+            "These are the endpoints the death screen and rewind/repeat flow should handle.",
+            "Death/failure automation and route endpoint coverage.",
+        ],
+        [
+            "Source Irregularities",
+            "144, 190",
+            "Sections called out by the local footnotes as unreachable by normal choices.",
+            "Section 190 has no incoming source link, and section 144 is only reached through 190. Keep them documented, but do not treat them as legal route coverage.",
+            "Route-audit notes only.",
+        ],
+    ],
 }
 
 BOOK_ROUTE_TESTING_NOTES = {
@@ -149,6 +232,11 @@ BOOK_ROUTE_TESTING_NOTES = {
         "The named families above should drive playtest scripts: each family needs at least one success-capable dry run and, where practical, one failure/alternate run.",
         "The old Book 1 success-route smoke is useful for mechanics, but it is not a source-link proof because it used manual jumps through sections such as 342. Rebuild that smoke from this route-family table before using it as route evidence.",
         "Branches in this book are merge-heavy. A route family can share most of its later path with another family, so coverage should track sections, state changes, achievements, and endpoint behavior rather than only one complete route string.",
+    ],
+    3: [
+        "Both opening branches can reach section 350, but the path merges often. Use route-family coverage plus mechanic coverage rather than trying to name every possible full path.",
+        "Sections 144 and 190 are source irregularities from the local footnotes and should not be counted as missed legal player routes.",
+        "The final combat at section 243 needs special testing because combat defeat routes to the successful ending at section 350.",
     ],
 }
 
@@ -221,8 +309,17 @@ def death_or_failure_text(text: str) -> bool:
         "your life and your quest end",
         "your life and adventure end",
         "your life and adventure ends",
+        "your life and your adventure end",
+        "your life and your adventure ends",
         "your adventure ends",
         "your quest ends",
+        "your quest and your life end",
+        "your quest and your life are now over",
+        "your life and quest end",
+        "your quest and your adventure end",
+        "your life and your quest are now over",
+        "your life and your quest are over",
+        "your quest has failed and your adventure is over",
         "your quest is over",
         "you have failed",
         "you are dead",

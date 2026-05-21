@@ -8,6 +8,7 @@ The strategy guides are meant to feel like friendly player guides. Use them when
 
 - [Book 1 Strategy Guide](Book-1-Strategy-Guide)
 - [Book 2 Strategy Guide](Book-2-Strategy-Guide)
+- [Book 3 Strategy Guide](Book-3-Strategy-Guide)
 
 ## What To Expect
 
