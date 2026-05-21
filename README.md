@@ -4,7 +4,7 @@ Grey Star Action Assistant is a local browser-based play aid for the four *Grey 
 
 The app is built to run locally from your machine. It does not require a hosted account or cloud save service.
 
-Current public release: **v1.1.1**
+Current public release: **v1.1.2**
 
 ## Book Files Are Not Included
 
@@ -156,7 +156,7 @@ Useful starting points:
 - `docs/INSTALL_PROJECT_AON_BOOKS.md`
 - `docs/BOOK_AUDIT_WORKFLOW.md`
 - `docs/BOOK_SOURCE_MAP.md`
-- `docs/RELEASE_NOTES_V1.1.1.md`
+- `docs/RELEASE_NOTES_V1.1.2.md`
 
 Wiki source pages live in `docs/wiki/` and are mirrored to the GitHub wiki. Player-facing pages include:
 
