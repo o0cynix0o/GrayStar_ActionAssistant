@@ -1,18 +1,29 @@
 # Game Modes
 
-Grey Star currently uses one standard rules mode.
+Grey Star has three play modes. They all use the same character, save files, achievements, and book position, so you can switch styles without starting over.
 
-The app does not yet have the Lone Wolf-style difficulty modes, challenge pools, or permadeath modes. That is intentional for now. The first goal is faithful book support for the Grey Star rules and section mechanics.
+Open the Assistant menu with the small white dot in the upper-right of the assistant panel, then choose **Auto**, **Manual**, or **CLI**. The current mode is always shown in the top bar.
 
-## Current Mode
+## Auto Mode
 
-The current mode is:
+Auto Mode is the recommended default.
 
-- local save
-- autosave enabled
-- book-rule-first section support
-- death recovery through Rewind or Repeat
-- achievements preserved across repeat-book runs
+- section effects can be applied with the **Apply Effects** button
+- section-aware rolls and loot helpers are available
+- combat presets can start tracked fights
+- meals, potions, inventory, saves, death recovery, and achievements all stay active
+
+## Manual Mode
+
+Manual Mode keeps the sheet and bookkeeping, but turns off the section automation helpers.
+
+Use this when you want the book to feel closer to the paper-table experience. You can still adjust END and WP, add or drop inventory, use potions, save, load, and track achievements. The app will not apply audited section math, roll routing, section loot, section Willpower costs, combat presets, or auto-resolve combat for you.
+
+## CLI Mode
+
+CLI Mode replaces the normal assistant body with the terminal assistant. It runs through the same local save data as the web GUI, so you can play a section in the terminal and then switch back to Auto or Manual mode.
+
+When you enter CLI Mode, the app saves first. When you leave CLI Mode, the web assistant reloads the latest save from disk.
 
 ## What Counts As A Rule
 

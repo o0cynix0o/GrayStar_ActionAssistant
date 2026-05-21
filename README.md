@@ -18,19 +18,21 @@ On Windows, this convenience wrapper also works:
 
 The main reader opens the book on the left and a web GUI assistant on the right. Clicking book section links updates the assistant state, and using the section controls updates the book frame.
 
-The assistant has button-driven screens for Sheet, Inventory, Magicks, Sections, Combat, Saves, and Notes. The older CLI assistant is still available by running `greystar.py` directly.
+The assistant has button-driven screens for Sheet, Inventory, Magicks, Sections, Combat, Saves, and Notes. The Assistant menu also offers three play modes: Auto, Manual, and CLI. CLI mode embeds the terminal assistant inside the web page while using the same save files.
 
 Default ports:
 
 - Library: `http://localhost:8797`
 - Web app/API: `http://localhost:8797`
+- Embedded CLI bridge: `ws://localhost:8798`
 
 ## Files
 
 - `greystar.py`: Python Grey Star rules assistant
+- `greystar.ps1`: PowerShell entry point for the terminal assistant
 - `app_server.py`: Python HTTP server for the web app and JSON API
-- `ws_server.py`: legacy Python WebSocket terminal bridge
-- `launch_greystar.py`: Python launcher for the web app server
+- `ws_server.py`: Python WebSocket terminal bridge for embedded CLI mode
+- `launch_greystar.py`: Python launcher for the web app and CLI bridge
 - `books/gs`: copied Grey Star books
 - `saves`: runtime-created character saves; ignored by git so local play state stays private
 - `data/ui-preferences.json`: runtime-created UI layout preferences; ignored by git
@@ -69,7 +71,7 @@ This is an unofficial local play aid. The bundled book HTML files are Project Ao
 python -m pip install -r .\requirements.txt
 ```
 
-`pywinpty` is only needed for the legacy browser terminal bridge. The assistant itself can also be run directly:
+`pywinpty` is only needed for the embedded browser terminal bridge on Windows. The assistant itself can also be run directly:
 
 ```powershell
 python .\greystar.py

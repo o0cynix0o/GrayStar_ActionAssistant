@@ -37,7 +37,7 @@ def start_process(args: list[str], env: dict[str, str] | None = None) -> subproc
 def main() -> int:
     parser = argparse.ArgumentParser(description="Launch the Grey Star web assistant.")
     parser.add_argument("--http-port", type=int, default=8797)
-    parser.add_argument("--ws-port", type=int, default=8798, help="Reserved for the legacy terminal bridge.")
+    parser.add_argument("--ws-port", type=int, default=8798, help="Port for the embedded CLI terminal bridge.")
     parser.add_argument("--no-browser", action="store_true")
     args = parser.parse_args()
 
@@ -45,6 +45,8 @@ def main() -> int:
     env = os.environ.copy()
     env["GREYSTAR_HTTP_PORT"] = str(args.http_port)
     env["GRAYSTAR_HTTP_PORT"] = str(args.http_port)
+    env["GREYSTAR_WS_PORT"] = str(args.ws_port)
+    env["GRAYSTAR_WS_PORT"] = str(args.ws_port)
 
     print("")
     print("  =========================================")
@@ -56,10 +58,14 @@ def main() -> int:
         [sys.executable, str(ROOT / "app_server.py"), "--port", str(args.http_port)],
         env=env,
     )
+    ws_proc = start_process(
+        [sys.executable, str(ROOT / "ws_server.py")],
+        env=env,
+    )
 
     time.sleep(1.2)
     failed = False
-    for name, proc in (("Web app", app_proc),):
+    for name, proc in (("Web app", app_proc), ("CLI bridge", ws_proc)):
         if proc.poll() is not None:
             failed = True
             print(f"  ERROR: {name} server failed to start.")
@@ -68,13 +74,14 @@ def main() -> int:
                 print(output.rstrip())
 
     if failed:
-        for proc in (app_proc,):
+        for proc in (app_proc, ws_proc):
             if proc.poll() is None:
                 proc.terminate()
         return 1
 
     print(f"  Library:   {url}")
     print(f"  Web App:   {url}/assistant.html")
+    print(f"  CLI WS:    ws://localhost:{args.ws_port}")
     print("")
     if not args.no_browser:
         webbrowser.open(url)
@@ -86,11 +93,11 @@ def main() -> int:
     except (EOFError, KeyboardInterrupt):
         print("")
     finally:
-        for proc in (app_proc,):
+        for proc in (app_proc, ws_proc):
             if proc.poll() is None:
                 proc.terminate()
         time.sleep(0.5)
-        for proc in (app_proc,):
+        for proc in (app_proc, ws_proc):
             if proc.poll() is None:
                 proc.kill()
     print("  Servers stopped. Goodbye.")

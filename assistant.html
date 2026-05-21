@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Grey Star - Web Assistant</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     body {
@@ -28,6 +29,10 @@
     button:hover { border-color: #d1b865; background: #26301b; }
     button.active { background: #f2d27a; color: #171b12; border-color: #f2d27a; }
     button.danger { color: #ffb4a8; border-color: #7e4038; }
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
     input, select {
       min-height: 30px;
       border: 1px solid #6d5f35;
@@ -61,6 +66,18 @@
     .status-line {
       color: #b8ad87;
       font-size: 0.78rem;
+      white-space: nowrap;
+    }
+    .mode-indicator {
+      min-height: 24px;
+      padding: 0.22rem 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #4e4528;
+      border-radius: 999px;
+      background: #10130e;
+      color: #f2d27a;
+      font-size: 0.72rem;
       white-space: nowrap;
     }
     .workspace {
@@ -347,6 +364,15 @@
       color: #b8ad87;
       font-size: 0.72rem;
       line-height: 1.25;
+    }
+    .mode-note {
+      padding: 0.45rem 0.55rem;
+      border: 1px dashed #6d5f35;
+      border-radius: 5px;
+      background: #12160f;
+      color: #d8d0b8;
+      font-size: 0.76rem;
+      line-height: 1.3;
     }
     .quick-drop-list {
       max-height: 82px;
@@ -767,6 +793,42 @@
       overflow-wrap: anywhere;
       font-size: 0.95rem;
     }
+    .cli-terminal-panel {
+      height: 100%;
+      min-height: 420px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 0.55rem;
+    }
+    .cli-terminal-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+    }
+    .cli-terminal-toolbar .mode-note {
+      flex: 1 1 260px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
+    .cli-terminal-status {
+      color: #aeb091;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+    #cliTerminalContainer {
+      min-height: 360px;
+      height: 100%;
+      padding: 0.45rem;
+      border: 1px solid #4e4528;
+      border-radius: 6px;
+      background: #050704;
+      overflow: hidden;
+    }
+    #cliTerminalContainer .xterm {
+      height: 100%;
+    }
     @media (max-width: 980px) {
       body { height: auto; overflow: auto; }
       .workspace { height: auto; min-height: calc(100vh - 50px); display: flex; flex-direction: column; }
@@ -791,6 +853,7 @@
     <a href="/" target="_top">Home</a>
     <h1>Grey Star</h1>
     <div class="spacer"></div>
+    <div class="mode-indicator" id="modeIndicator">Auto Mode</div>
     <div class="status-line" id="serverStatus">Loading...</div>
   </header>
 
@@ -820,6 +883,8 @@
     </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
   <script>
     const books = [
       { number: 1, title: 'Grey Star the Wizard', folder: '01gstw', sections: 350 },
@@ -850,12 +915,20 @@
     const toastStack = document.getElementById('toastStack');
     const message = document.getElementById('message');
     const appMenu = document.getElementById('appMenu');
+    const modeIndicator = document.getElementById('modeIndicator');
     let app = null;
     let activeView = 'sheet';
     let activeBook = 1;
     let activeSection = null;
     let draggedWidget = '';
     let activeCardMenu = '';
+    const playModeKey = 'greystar.mode';
+    const playModes = ['auto', 'manual', 'cli'];
+    let playMode = normalizePlayMode(localStorage.getItem(playModeKey));
+    let cliTerminal = null;
+    let cliFitAddon = null;
+    let cliSocket = null;
+    let cliResizeHandler = null;
     const topLayoutKey = 'greystar.top.layout.v1';
     const topSizeKey = 'greystar.top.sizes.v1';
     const sheetLayoutKey = 'greystar.sheet.layout.v1';
@@ -903,6 +976,39 @@
     function currentDeath() { return app.death || app.state.Automation?.DeathState || { Active: false }; }
     function currentBookComplete() { return app.bookComplete || { Active: false }; }
     function currentAchievements() { return app.achievements || app.state.Achievements || {}; }
+
+    function normalizePlayMode(mode) {
+      return playModes.includes(mode) ? mode : 'auto';
+    }
+
+    function playModeLabel(mode = playMode) {
+      const labels = { auto: 'Auto Mode', manual: 'Manual Mode', cli: 'CLI Mode' };
+      return labels[normalizePlayMode(mode)];
+    }
+
+    function isManualMode() { return playMode === 'manual'; }
+    function isCliMode() { return playMode === 'cli'; }
+
+    function setModeIndicator() {
+      if (modeIndicator) modeIndicator.textContent = playModeLabel();
+    }
+
+    function manualAutomationMessage(kind = 'automation') {
+      message.textContent = `Manual mode: ${kind} is disabled. Use the sheet controls to update the character yourself.`;
+    }
+
+    function manualDisabledAttributes(kind = 'automation') {
+      return isManualMode()
+        ? 'disabled aria-disabled="true"'
+        : '';
+    }
+
+    function modeActionButton(attrs, label, kind = 'automation') {
+      const title = isManualMode()
+        ? `title="Manual mode: ${escapeHtml(kind)} is disabled. Use the sheet controls to update state yourself."`
+        : '';
+      return `<button type="button" ${attrs} ${manualDisabledAttributes(kind)} ${title}>${label}</button>`;
+    }
 
     function bookUrl(bookNumber, section) {
       const book = bookByNumber(bookNumber);
@@ -992,7 +1098,12 @@
     }
 
     function render() {
+      setModeIndicator();
       renderStatus();
+      if (isCliMode()) {
+        renderCliPanel();
+        return;
+      }
       renderQuickPanel();
       renderTabs();
       if (currentDeath().Active) {
@@ -1032,6 +1143,152 @@
       ].map(([label, value, className]) => `<div class="stat-card ${className}"><span>${label}</span><strong>${escapeHtml(value)}</strong></div>`).join('');
     }
 
+    function renderCliPanel() {
+      stopCliTerminal();
+      quickPanel.innerHTML = '';
+      tabs.innerHTML = '';
+      view.classList.remove('view-card-grid');
+      view.innerHTML = `
+        <div class="panel cli-terminal-panel">
+          <div class="cli-terminal-toolbar">
+            <div class="mode-note">CLI mode runs the terminal assistant against the same save data. Switch back to Auto or Manual mode from the menu when you want the web controls again.</div>
+            <span class="cli-terminal-status" id="cliTerminalStatus">Connecting...</span>
+            <button type="button" data-cli-reconnect>Reconnect</button>
+            <button type="button" data-mode-set="auto">Auto Mode</button>
+            <button type="button" data-mode-set="manual">Manual Mode</button>
+          </div>
+          <div id="cliTerminalContainer" aria-label="Grey Star terminal"></div>
+        </div>
+      `;
+      window.requestAnimationFrame(startCliTerminal);
+    }
+
+    function cliWsUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const savedPort = localStorage.getItem('greystar.wsPort') || localStorage.getItem('graystar.wsPort') || '';
+      const port = params.get('wsPort') || savedPort || '8798';
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const host = window.location.hostname || 'localhost';
+      return `${protocol}//${host}:${port}`;
+    }
+
+    function sendCliResize() {
+      if (!cliSocket || cliSocket.readyState !== WebSocket.OPEN || !cliTerminal) return;
+      cliSocket.send(`\x00${JSON.stringify({ type: 'resize', rows: cliTerminal.rows, cols: cliTerminal.cols })}`);
+    }
+
+    function updateCliStatus(textValue) {
+      const status = document.getElementById('cliTerminalStatus');
+      if (status) status.textContent = textValue;
+    }
+
+    function startCliTerminal() {
+      const container = document.getElementById('cliTerminalContainer');
+      if (!container || !isCliMode()) return;
+      if (!window.Terminal) {
+        container.innerHTML = '<div class="mode-note">Terminal assets did not load. Check your internet connection, then use Reconnect or switch back to Auto mode.</div>';
+        updateCliStatus('Terminal unavailable');
+        return;
+      }
+      container.innerHTML = '';
+
+      cliTerminal = new Terminal({
+        cursorBlink: true,
+        convertEol: true,
+        fontFamily: 'Consolas, "Cascadia Mono", "Courier New", monospace',
+        fontSize: 14,
+        theme: {
+          background: '#050704',
+          foreground: '#efe8d0',
+          cursor: '#f2d27a',
+          selectionBackground: '#594a2a',
+          black: '#050704',
+          red: '#ff8f80',
+          green: '#a9d18e',
+          yellow: '#f2d27a',
+          blue: '#93b7ff',
+          magenta: '#d8a8ff',
+          cyan: '#8bd3dd',
+          white: '#efe8d0'
+        }
+      });
+      if (window.FitAddon?.FitAddon) {
+        cliFitAddon = new FitAddon.FitAddon();
+        cliTerminal.loadAddon(cliFitAddon);
+      }
+      cliTerminal.open(container);
+      cliFitAddon?.fit();
+      cliTerminal.writeln('Connecting to Grey Star CLI...');
+
+      const wsUrl = cliWsUrl();
+      cliSocket = new WebSocket(wsUrl);
+      cliSocket.addEventListener('open', () => {
+        updateCliStatus('Connected');
+        cliTerminal.focus();
+        cliFitAddon?.fit();
+        sendCliResize();
+      });
+      cliSocket.addEventListener('message', (event) => {
+        cliTerminal.write(typeof event.data === 'string' ? event.data : String(event.data));
+      });
+      cliSocket.addEventListener('close', () => {
+        updateCliStatus('Disconnected');
+        cliTerminal?.writeln('\r\n[CLI disconnected]');
+      });
+      cliSocket.addEventListener('error', () => {
+        updateCliStatus('Connection error');
+        cliTerminal?.writeln('\r\n[Could not connect to the CLI bridge. Make sure the launcher started the WebSocket server.]');
+      });
+      cliTerminal.onData((data) => {
+        if (cliSocket?.readyState === WebSocket.OPEN) cliSocket.send(data);
+      });
+      cliResizeHandler = () => {
+        cliFitAddon?.fit();
+        sendCliResize();
+      };
+      window.addEventListener('resize', cliResizeHandler);
+    }
+
+    function stopCliTerminal(dispose = true) {
+      if (cliResizeHandler) {
+        window.removeEventListener('resize', cliResizeHandler);
+        cliResizeHandler = null;
+      }
+      if (cliSocket) {
+        try { cliSocket.close(); } catch {}
+        cliSocket = null;
+      }
+      if (dispose && cliTerminal) {
+        try { cliTerminal.dispose(); } catch {}
+      }
+      cliTerminal = null;
+      cliFitAddon = null;
+    }
+
+    async function setPlayMode(mode) {
+      const nextMode = normalizePlayMode(mode);
+      const previousMode = playMode;
+      if (nextMode === previousMode) {
+        closeMenus();
+        return;
+      }
+      if (nextMode === 'cli' && app) {
+        await action({ action: 'save', path: '' });
+      }
+      if (previousMode === 'cli' && nextMode !== 'cli') {
+        stopCliTerminal();
+      }
+      playMode = nextMode;
+      localStorage.setItem(playModeKey, playMode);
+      closeMenus();
+      setModeIndicator();
+      if (previousMode === 'cli' && nextMode !== 'cli') {
+        await action({ action: 'reload_last_save' });
+        return;
+      }
+      render();
+    }
+
     function renderQuickPanel() {
       const inv = currentInventory();
       const automation = app.state.Automation || {};
@@ -1045,10 +1302,11 @@
       quickPanel.innerHTML = `
         <div class="quick-column quick-card">
           <div class="quick-title">Section</div>
-          <button type="button" data-automation-apply title="Apply the audited effect for the current section, such as stat changes, gear loss, meals, or book-completion flags.">Apply Effects</button>
-          <button type="button" data-roll title="Roll a random number from 0 to 9. If this section has a special roll rule, the assistant applies it.">${rollLabel}</button>
+          <button type="button" data-automation-apply ${manualDisabledAttributes('section effects')} title="${isManualMode() ? 'Manual mode: section effects are disabled.' : 'Apply the audited effect for the current section, such as stat changes, gear loss, meals, or book-completion flags.'}">Apply Effects</button>
+          <button type="button" data-roll ${manualDisabledAttributes('roll helper')} title="${isManualMode() ? 'Manual mode: roll helpers are disabled.' : 'Roll a random number from 0 to 9. If this section has a special roll rule, the assistant applies it.'}">${rollLabel}</button>
           ${successEnding ? '<button type="button" data-complete-book>Finalize Book</button>' : ''}
           <div class="quick-note">${ending ? `Ending marked: ${ending.Type}` : `Book ${currentCharacter().BookNumber}, section ${app.state.CurrentSection}`}</div>
+          ${isManualMode() ? '<div class="mode-note">Manual mode is tracking your sheet only. Apply section math, loot, and combat setup by hand.</div>' : ''}
           ${staffUnavailable || backpackUnavailable ? `<div class="quick-note">Stored gear is being held until the book returns it.</div>` : ''}
         </div>
         <div class="quick-column quick-card">
@@ -1534,6 +1792,12 @@
       const hidden = hiddenCardEntries();
       appMenu.innerHTML = `
         <div class="menu-heading">Assistant</div>
+        <div class="menu-heading">Mode</div>
+        <div class="menu-row three">
+          <button type="button" class="${playMode === 'auto' ? 'active' : ''}" data-mode-set="auto">Auto</button>
+          <button type="button" class="${playMode === 'manual' ? 'active' : ''}" data-mode-set="manual">Manual</button>
+          <button type="button" class="${playMode === 'cli' ? 'active' : ''}" data-mode-set="cli">CLI</button>
+        </div>
         <button type="button" data-save-current>Save Game</button>
         <button type="button" data-export-save>Export Current Save</button>
         <button type="button" data-backup-saves>Backup Saves</button>
@@ -1698,10 +1962,11 @@
       const rollLabel = flow.Entry?.roll ? 'Section Roll' : 'Roll 0-9';
       return `
         <div class="controls">
-          <button type="button" data-automation-apply>Apply Effects</button>
-          <button type="button" data-roll>${rollLabel}</button>
+          <button type="button" data-automation-apply ${manualDisabledAttributes('section effects')} title="${isManualMode() ? 'Manual mode: section effects are disabled.' : 'Apply audited section effects.'}">Apply Effects</button>
+          <button type="button" data-roll ${manualDisabledAttributes('roll helper')} title="${isManualMode() ? 'Manual mode: roll helpers are disabled.' : 'Roll a random number from 0 to 9.'}">${rollLabel}</button>
         </div>
         <div class="quick-note">${ending ? `Ending marked: ${escapeHtml(ending.Type)}` : `Book ${escapeHtml(currentCharacter().BookNumber)}, section ${escapeHtml(app.state.CurrentSection)}`}</div>
+        ${isManualMode() ? '<div class="mode-note">Manual mode is tracking your sheet only. Apply section math, loot, and combat setup by hand.</div>' : ''}
         ${staffUnavailable || backpackUnavailable ? `<div class="quick-note">Stored gear is being held until the book returns it.</div>` : ''}
       `;
     }
@@ -1886,7 +2151,7 @@
         <div class="item-row">
           <small>${automation.Applied ? 'Applied' : 'Ready'}</small>
           <span class="wrap">${escapeHtml(automation.Summary)}</span>
-          ${automation.Applied ? '' : '<button type="button" data-automation-apply>Apply</button>'}
+          ${automation.Applied ? '' : modeActionButton('data-automation-apply', 'Apply', 'section effects')}
         </div>
         ${messages.map((line) => `
           <div class="item-row">
@@ -1902,7 +2167,7 @@
         <div class="item-row">
           <small>Loot</small>
           <span class="wrap">${escapeHtml(text(loot.label || loot.id, 'Option'))}</span>
-          <button type="button" data-flow-loot="${escapeHtml(text(loot.id))}">Apply</button>
+          ${modeActionButton(`data-flow-loot="${escapeHtml(text(loot.id))}"`, 'Apply', 'section loot')}
         </div>
       `).join('');
     }
@@ -1912,7 +2177,7 @@
         <div class="item-row">
           <small>CS ${escapeHtml(text(combat.enemy?.cs || combat.enemies?.[0]?.cs, '?'))}</small>
           <span class="wrap">${escapeHtml(text(combat.label || combat.enemy?.name || combat.enemies?.[0]?.name, 'Section combat'))}</span>
-          <button type="button" data-section-combat-start="${escapeHtml(text(combat.id))}">Start</button>
+          ${modeActionButton(`data-section-combat-start="${escapeHtml(text(combat.id))}"`, 'Start', 'combat presets')}
         </div>
       `).join('');
     }
@@ -1938,8 +2203,8 @@
         <div class="item-row">
           <small>${escapeHtml(text(wp.cost, '0'))} WP</small>
           <span class="wrap">${escapeHtml(text(wp.label, 'Section Willpower cost'))}</span>
-          <button type="button" data-wp-cost="${escapeHtml(wp.cost)}:negative">Spend WP</button>
-          <button type="button" data-wp-cost="${escapeHtml(wp.cost)}:endurance_for_missing">Use END</button>
+          ${modeActionButton(`data-wp-cost="${escapeHtml(wp.cost)}:negative"`, 'Spend WP', 'section costs')}
+          ${modeActionButton(`data-wp-cost="${escapeHtml(wp.cost)}:endurance_for_missing"`, 'Use END', 'section costs')}
         </div>
       `).join('');
     }
@@ -1950,7 +2215,7 @@
       return `
         <div class="controls" style="margin-bottom:.35rem">
           <input id="manualRoll" type="number" min="0" max="9" placeholder="Optional roll">
-          <button type="button" data-roll>Roll</button>
+          ${modeActionButton('data-roll', 'Roll', 'roll helper')}
         </div>
         ${entry.roll ? `<p class="muted">${escapeHtml(text(entry.roll.summary, 'Section-aware roll'))}</p>` : ''}
         ${lastRoll ? `
@@ -2178,14 +2443,14 @@
         <div class="item-row">
           <small>CS ${escapeHtml(text(combat.enemy?.cs || combat.enemies?.[0]?.cs, '?'))}</small>
           <span>${escapeHtml(text(combat.label || combat.enemy?.name || combat.enemies?.[0]?.name, 'Section combat'))}</span>
-          <button type="button" data-section-combat-start="${escapeHtml(text(combat.id))}">Start</button>
+          ${modeActionButton(`data-section-combat-start="${escapeHtml(text(combat.id))}"`, 'Start', 'combat presets')}
         </div>
       `).join('');
       const lootRows = arr(entry.loot).map((loot) => `
         <div class="item-row">
           <small>Loot</small>
           <span>${escapeHtml(text(loot.label || loot.id, 'Option'))}</span>
-          <button type="button" data-flow-loot="${escapeHtml(text(loot.id))}">Apply</button>
+          ${modeActionButton(`data-flow-loot="${escapeHtml(text(loot.id))}"`, 'Apply', 'section loot')}
         </div>
       `).join('');
       const statusRows = arr(entry.status).map((status) => {
@@ -2205,8 +2470,8 @@
           <div class="item-row">
             <small>${escapeHtml(text(wp.cost, '0'))} WP</small>
             <span>${escapeHtml(text(wp.label, 'Section Willpower cost'))}</span>
-            <button type="button" data-wp-cost="${escapeHtml(wp.cost)}:negative">Spend WP</button>
-            <button type="button" data-wp-cost="${escapeHtml(wp.cost)}:endurance_for_missing">Use END</button>
+            ${modeActionButton(`data-wp-cost="${escapeHtml(wp.cost)}:negative"`, 'Spend WP', 'section costs')}
+            ${modeActionButton(`data-wp-cost="${escapeHtml(wp.cost)}:endurance_for_missing"`, 'Use END', 'section costs')}
           </div>
         </div>
       ` : '';
@@ -2217,7 +2482,7 @@
           ${automationRows}
           <div class="controls">
             <input id="manualRoll" type="number" min="0" max="9" placeholder="Optional roll">
-            <button type="button" data-roll>Roll</button>
+            ${modeActionButton('data-roll', 'Roll', 'roll helper')}
           </div>
           ${entry.roll ? `<p class="muted">${escapeHtml(text(entry.roll.summary, 'Section-aware roll'))}</p>` : '<p class="muted">Generic random digit unless this section has a special random rule.</p>'}
           ${rollRows}
@@ -2263,7 +2528,7 @@
               <input name="wp" type="number" min="1" placeholder="WP spend">
               <input name="roll" type="number" min="0" max="9" placeholder="Roll">
               <button type="submit">Resolve Round</button>
-              <button type="button" data-combat-auto>Auto Resolve</button>
+              <button type="button" data-combat-auto ${manualDisabledAttributes('combat auto-resolve')} title="${isManualMode() ? 'Manual mode: auto-resolve is disabled.' : 'Resolve the fight automatically using the current combat setup.'}">Auto Resolve</button>
               <button type="button" data-combat-evade ${combat.CanEvade ? '' : 'disabled'}>Evade</button>
               <button type="button" class="danger" data-combat-stop>Stop</button>
             </form>
@@ -2677,6 +2942,15 @@
         resetAllCardLayouts();
         return;
       }
+      if (button.dataset.modeSet) {
+        await setPlayMode(button.dataset.modeSet);
+        return;
+      }
+      if (button.dataset.cliReconnect !== undefined) {
+        stopCliTerminal();
+        startCliTerminal();
+        return;
+      }
       if (button.dataset.settingsView !== undefined) {
         activeView = 'settings';
         closeMenus();
@@ -2748,6 +3022,30 @@
       if (button.dataset.widgetSize) {
         const [scope, id] = button.dataset.widgetSize.split(':');
         cycleWidgetSize(scope, id);
+        return;
+      }
+      if (isManualMode() && button.dataset.automationApply !== undefined) {
+        manualAutomationMessage('section effects');
+        return;
+      }
+      if (isManualMode() && button.dataset.roll !== undefined) {
+        manualAutomationMessage('roll helpers');
+        return;
+      }
+      if (isManualMode() && button.dataset.sectionCombatStart !== undefined) {
+        manualAutomationMessage('combat presets');
+        return;
+      }
+      if (isManualMode() && button.dataset.flowLoot) {
+        manualAutomationMessage('section loot');
+        return;
+      }
+      if (isManualMode() && button.dataset.wpCost) {
+        manualAutomationMessage('section costs');
+        return;
+      }
+      if (isManualMode() && button.dataset.combatAuto !== undefined) {
+        manualAutomationMessage('combat auto-resolve');
         return;
       }
       if (button.dataset.deathRecovery) await action({ action: 'death_recovery', mode: button.dataset.deathRecovery });

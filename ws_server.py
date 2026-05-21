@@ -11,6 +11,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import shutil
 import subprocess
 import sys
 import threading
@@ -32,6 +33,7 @@ if os.name != "nt":
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 ASSISTANT_SCRIPT = SCRIPT_DIR / "greystar.py"
+POWERSHELL_SCRIPT = SCRIPT_DIR / "greystar.ps1"
 WS_HOST = "localhost"
 WS_PORT = int(os.environ.get("GREYSTAR_WS_PORT", os.environ.get("GRAYSTAR_WS_PORT", "8798")))
 INIT_COLS = 120
@@ -48,6 +50,13 @@ def build_command() -> list[str]:
                 load_args = ["--load", save_path]
     except Exception:
         pass
+    if os.name == "nt" and POWERSHELL_SCRIPT.exists():
+        powershell = shutil.which("pwsh") or shutil.which("powershell")
+        if powershell:
+            ps_args = [powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(POWERSHELL_SCRIPT)]
+            if load_args:
+                ps_args += ["-Load", load_args[1]]
+            return ps_args
     return [sys.executable, "-u", str(ASSISTANT_SCRIPT)] + load_args
 
 

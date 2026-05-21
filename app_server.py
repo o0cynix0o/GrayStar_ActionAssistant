@@ -353,6 +353,9 @@ def handle_action(payload: dict) -> str:
         return capture_output(lambda: ASSISTANT.save_game(str(payload.get("path") or "")))
     if action == "load":
         return capture_output(lambda: ASSISTANT.load_game(str(payload.get("path") or "")))
+    if action == "reload_last_save":
+        load_last_save()
+        return "Reloaded the latest save from disk."
     if action == "import_save":
         return import_save_payload(payload)
     if action == "complete_book":

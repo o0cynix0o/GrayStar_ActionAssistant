@@ -42,6 +42,14 @@ http://localhost:8797/assistant.html
 6. Click book section links normally. The assistant follows your current section.
 7. Use the assistant panels when the book calls for inventory changes, stat changes, rolls, combat, notes, or saves.
 
+## Choose A Play Mode
+
+Use the small white dot in the upper-right of the assistant panel to switch modes.
+
+- **Auto** is the normal helper mode with section effects, roll helpers, loot helpers, combat presets, and achievements.
+- **Manual** keeps the sheet and saves, but turns off the audited section helpers so you can handle the book math yourself.
+- **CLI** opens the terminal assistant inside the web page and uses the same save data.
+
 ## Important Browser Note
 
 Use the local server URL. Opening `assistant.html` directly as a file can make the book open but leave the assistant disconnected.
