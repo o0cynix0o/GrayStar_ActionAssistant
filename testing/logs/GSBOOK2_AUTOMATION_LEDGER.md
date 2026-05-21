@@ -2,7 +2,7 @@
 
 Book: The Forbidden City
 
-Status: implemented for high-confidence Book 2 mechanical effects in `data/book2-simple-automations.json` and `data/book2-section-flows.json`. Karmo Potion timing remains manual by rule discretion.
+Status: implemented for high-confidence Book 2 mechanical effects in `data/book2-simple-automations.json` and `data/book2-section-flows.json`. Karmo Potion now has guided item-use controls; the player still chooses whether to apply the side-effect END loss before or after finishing the potion because the Project Aon footnote leaves that timing to player discretion.
 
 ## Simple Automation
 

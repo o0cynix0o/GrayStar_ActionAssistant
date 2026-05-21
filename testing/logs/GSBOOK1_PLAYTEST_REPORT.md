@@ -1,6 +1,6 @@
 # GS Book 1 Playtest Report
 
-Generated: 2026-05-21T15:07:59
+Generated: 2026-05-21T15:22:36
 
 Scope: dry-run route, automation, combat, gear restore, and completion checks. The script uses in-memory saves and does not touch the live campaign pointer.
 

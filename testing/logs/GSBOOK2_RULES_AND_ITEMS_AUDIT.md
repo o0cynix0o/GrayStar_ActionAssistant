@@ -13,7 +13,7 @@ Book: The Forbidden City
 
 ## Manual / Watch Items
 
-- Karmo Potion timing remains manual because section 45 explicitly gives the player discretion about when to apply the random END penalty.
+- Karmo Potion use is guided: the Use button doubles current END/WP and returns an Empty Vial; the Karmo quick controls apply the side-effect roll and finish the potion after combat. The side-effect timing remains player-controlled because section 45 explicitly gives the player discretion about when to apply the random END penalty.
 - The Kazim duel and several END/WP threshold decisions remain route checks because the book page already presents the destinations and the assistant shows current values.
 - Azawood bundles are represented as individual Azawood Leaf items; bundle-count wording should be handled manually if the player imports a bundled item from notes.
 

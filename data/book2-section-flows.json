@@ -360,7 +360,7 @@
     },
     "45": {
       "roll": {
-        "summary": "Karmo potion side-effect roll; manually lose END equal to the raw roll after using it",
+        "summary": "Karmo potion side-effect roll; use the Karmo controls to apply END loss equal to the raw roll when you choose",
         "outcomes": [
           {
             "test": "range",

@@ -16,7 +16,7 @@ Generated: 2026-05-20T14:56:37
 - Beginning Book 2 from Book 1 adds 10 Willpower and one additional Lesser Magick; this was already supported by the complete-book continue flow.
 - Willpower may rise above the starting value, and Book 2 footnotes confirm Willpower can fall below zero in forced or special cases.
 - Equipment rule retained: no Staff in combat is -6 Combat Skill; no weapon is -8 Combat Skill.
-- Karmo Potion support is intentionally partial: the app can record the potion and roll the side-effect, but the player must apply the timing choice manually because the book leaves penalty timing to player discretion.
+- Karmo Potion support is guided but player-timed: the app records the potion, the Use button doubles current END/WP and returns an Empty Vial, the section 45 roll can be applied as a Karmo side effect, and Finish Karmo halves current END/WP after combat. The player chooses whether to apply the side-effect END loss before or after finishing Karmo because the Project Aon footnote leaves that timing to player discretion.
 - Route-only choices remain on the book page. The assistant Choices panel is reserved for mechanical choices: entry effects, loot, WP costs, combat presets, status, and rolls.
 
 ## Structural Counts

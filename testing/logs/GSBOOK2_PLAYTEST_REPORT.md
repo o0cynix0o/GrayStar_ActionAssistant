@@ -1,8 +1,8 @@
 # GS Book 2 Playtest Report
 
-Generated: 2026-05-21T15:08:04
+Generated: 2026-05-21T15:27:23
 
-Passed: 19
+Passed: 20
 Warnings: 0
 Failures: 0
 
@@ -24,6 +24,7 @@ Failures: 0
 - Section 99 ignores Grey Star END loss in round 1.
 - Section 297 discards Backpack contents and marks Backpack unavailable.
 - Capture and release store and restore Staff/Backpack gear.
+- Karmo Potion use doubles END/WP, applies the side-effect roll, returns a vial, and halves after combat.
 - Success-route smoke completes Book 2.
 - Achievement sync/backfill unlocked expected Book 2 route set (13 new in smoke).
 - Repeat Book 2 resets to section 1 and preserves achievements.

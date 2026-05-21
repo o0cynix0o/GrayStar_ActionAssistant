@@ -275,6 +275,31 @@ def run_mechanic_edge_checks(result: Result) -> None:
     staff_restored = "Wizard's Staff" in local.inventory["Weapons"]
     result.check(staff_missing and staff_restored, "Capture and release store and restore Staff/Backpack gear.", "Gear store/restore failed.")
 
+    local = prime(45, end=20, wp=30)
+    capture(lambda: local.apply_flow_loot("karmo-potion"))
+    capture(lambda: local.use_item("herb", "Karmo Potion"))
+    doubled = (
+        int(local.character["EnduranceCurrent"]) == 40
+        and int(local.character["WillpowerCurrent"]) == 60
+        and bool(local.automation_flags.get("karmoPotionActive"))
+        and bool(local.automation_flags.get("karmoSideEffectPending"))
+        and local.has_item("Empty Vial", ["herb", "backpack"])
+    )
+    capture(lambda: local.roll_current_section(4))
+    capture(lambda: local.apply_karmo_side_effect())
+    capture(lambda: local.finish_karmo_potion())
+    resolved = (
+        int(local.character["EnduranceCurrent"]) == 18
+        and int(local.character["WillpowerCurrent"]) == 30
+        and not bool(local.automation_flags.get("karmoPotionActive"))
+        and not bool(local.automation_flags.get("karmoSideEffectPending"))
+    )
+    result.check(
+        doubled and resolved,
+        "Karmo Potion use doubles END/WP, applies the side-effect roll, returns a vial, and halves after combat.",
+        "Karmo Potion use/finish flow failed.",
+    )
+
 
 def run_completion_and_achievements(result: Result) -> None:
     local = prime()

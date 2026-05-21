@@ -32,7 +32,7 @@ Book: The Forbidden City
 |---:|---|---|
 | 5 | Swim the lake under fire | 0-7 -> 236; 8-12 -> 74 |
 | 32 | Foraging result | 0-3 -> 106; 4-6 -> 217; 7-9 -> 173 |
-| 45 | Karmo potion side-effect roll; manually lose END equal to the raw roll after using it | 0-9 -> 71 |
+| 45 | Karmo potion side-effect roll; Karmo controls can apply END loss equal to the raw roll when the player chooses | 0-9 -> 71 |
 | 89 | Crossing the mud flats | 0-4 -> 110; 5-11 -> 100 |
 | 146 | Enchantment against the Shadakine line | 0-5 -> 42; 6-12 -> 289 |
 | 153 | Only roll here if current END is 9 or lower | 0-5 -> 27; 6-9 -> 33 |
@@ -42,6 +42,6 @@ Book: The Forbidden City
 
 ## Manual Or Special Notes
 
-- Section 45 Karmo Potion: the app records the potion and roll result, but the player must apply END/WP doubling, post-combat halving, and the timing of the random side-effect penalty manually.
+- Section 45 Karmo Potion: the app records the potion, doubles END/WP from the item Use button, applies the side-effect roll when the player chooses, and finishes the potion by halving END/WP after combat. The timing of the random side-effect penalty remains player-controlled because the section footnote allows either order.
 - Section 49/141 Kazim duel: the book asks for a calculation using current END + WP against 40; the route links remain on the page and current stats are visible in the assistant.
 - Section 153/164/219/286 conditional branches are stat-check route choices; navigation remains on the book page.

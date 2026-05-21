@@ -845,6 +845,9 @@ def default_automation() -> dict[str, Any]:
             "litTorch": False,
             "sorceryShieldActiveFor149": False,
             "evocationAttempted": False,
+            "karmoPotionActive": False,
+            "karmoSideEffectPending": False,
+            "karmoSideEffectApplied": False,
         },
         "Stored": {},
         "LastRoll": None,
@@ -3105,6 +3108,8 @@ class GreyStarAssistant:
             return {"stat": "wp", "delta": 5, "label": "Senara Potion"}
         if "senara bud" in text:
             return {"stat": "wp", "delta": 1, "label": "Senara Bud"}
+        if "karmo potion" in text:
+            return {"stat": "karmo", "label": "Karmo Potion", "addEmptyVial": True}
         if "potion of healing" in text or "healing potion" in text:
             return {"stat": "end", "delta": 4, "label": "Potion of Healing"}
         if "rendalim" in text:
@@ -3160,6 +3165,10 @@ class GreyStarAssistant:
             print(f"No configured use action for: {resolved_item}")
             return
 
+        if effect["stat"] == "karmo" and bool(self.automation_flags.get("karmoPotionActive")):
+            print("Karmo Potion is already active. Finish the current Karmo effect before using another.")
+            return
+
         items = as_list(self.inventory[key])
         items.pop(index)
         self.inventory[key] = items
@@ -3178,10 +3187,65 @@ class GreyStarAssistant:
             if effect.get("addEmptyVial"):
                 self.add_flexible_storage_item("Empty Vial")
             message = f"{key_name}={effect.get('value', True)}"
+        elif effect["stat"] == "karmo":
+            before_end = int(self.character["EnduranceCurrent"])
+            before_wp = int(self.character["WillpowerCurrent"])
+            self.character["EnduranceCurrent"] = max(0, before_end * 2)
+            self.character["WillpowerCurrent"] = before_wp * 2
+            self.automation_flags["karmoPotionActive"] = True
+            self.automation_flags["karmoSideEffectPending"] = True
+            self.automation_flags["karmoSideEffectApplied"] = False
+            self.automation["Stored"]["karmoPotionUse"] = {
+                "EnduranceBefore": before_end,
+                "WillpowerBefore": before_wp,
+                "UsedAtBook": int(self.character["BookNumber"]),
+                "UsedAtSection": int(self.state["CurrentSection"]),
+            }
+            if effect.get("addEmptyVial"):
+                self.add_flexible_storage_item("Empty Vial")
+            message = (
+                f"END {before_end}->{self.character['EnduranceCurrent']}; "
+                f"WP {before_wp}->{self.character['WillpowerCurrent']}; "
+                "apply the section 45 side-effect roll before or after finishing Karmo"
+            )
         else:
             message = "unknown effect"
         self.autosave()
         print(f"Used {effect['label']}: {message}")
+
+    def apply_karmo_side_effect(self, raw_roll: int | None = None) -> None:
+        if not bool(self.automation_flags.get("karmoSideEffectPending")):
+            print("No pending Karmo side effect.")
+            return
+        if raw_roll is None:
+            last_roll = self.automation.get("LastRoll")
+            if not isinstance(last_roll, dict) or int(last_roll.get("BookNumber") or 0) != 2 or int(last_roll.get("Section") or 0) != 45:
+                print("Roll section 45 first, then apply the Karmo side effect.")
+                return
+            raw_roll = int(last_roll.get("Raw") or 0)
+        raw_roll = max(0, min(9, int(raw_roll)))
+        message = self.change_endurance(-raw_roll)
+        self.automation_flags["karmoSideEffectPending"] = False
+        self.automation_flags["karmoSideEffectApplied"] = True
+        self.automation["Stored"]["karmoSideEffectRoll"] = raw_roll
+        self.autosave()
+        print(f"Karmo side effect: roll {raw_roll}; {message}")
+
+    def finish_karmo_potion(self) -> None:
+        if not bool(self.automation_flags.get("karmoPotionActive")):
+            print("Karmo Potion is not active.")
+            return
+        before_end = int(self.character["EnduranceCurrent"])
+        before_wp = int(self.character["WillpowerCurrent"])
+        self.character["EnduranceCurrent"] = max(0, before_end // 2)
+        self.character["WillpowerCurrent"] = before_wp // 2
+        self.automation_flags["karmoPotionActive"] = False
+        self.autosave()
+        print(
+            "Karmo finished: "
+            f"END {before_end}->{self.character['EnduranceCurrent']}; "
+            f"WP {before_wp}->{self.character['WillpowerCurrent']}"
+        )
 
     def use_item_command(self, tokens: list[str]) -> None:
         if len(tokens) < 2:

@@ -360,6 +360,12 @@ def handle_action(payload: dict) -> str:
         return capture_output(lambda: ASSISTANT.drop_item(["drop", str(payload.get("type") or ""), str(payload.get("item") or "")]))
     if action == "use_item":
         return capture_output(lambda: ASSISTANT.use_item(str(payload.get("type") or ""), str(payload.get("item") or "")))
+    if action == "karmo_side_effect":
+        raw = payload.get("raw")
+        raw_roll = int(raw) if str(raw or "").strip() else None
+        return capture_output(lambda: ASSISTANT.apply_karmo_side_effect(raw_roll))
+    if action == "karmo_finish":
+        return capture_output(lambda: ASSISTANT.finish_karmo_potion())
     if action == "death_recovery":
         return capture_output(lambda: ASSISTANT.restore_death_checkpoint(str(payload.get("mode") or "repeat")))
     if action == "meal":

@@ -1323,6 +1323,7 @@
           <button type="button" data-automation-apply ${manualDisabledAttributes('section effects')} title="${isManualMode() ? 'Manual mode: section effects are disabled.' : 'Apply the audited effect for the current section, such as stat changes, gear loss, meals, or book-completion flags.'}">Apply Effects</button>
           <button type="button" data-roll ${manualDisabledAttributes('roll helper')} title="${isManualMode() ? 'Manual mode: roll helpers are disabled.' : 'Roll a random number from 0 to 9. If this section has a special roll rule, the assistant applies it.'}">${rollLabel}</button>
           ${successEnding ? '<button type="button" data-complete-book>Finalize Book</button>' : ''}
+          ${karmoControls(flags)}
           <div class="quick-note">${ending ? `Ending marked: ${ending.Type}` : `Book ${currentCharacter().BookNumber}, section ${app.state.CurrentSection}`}</div>
           ${missingBookFiles ? '<div class="mode-note">Book HTML files are not installed. Open the Install Project Aon Books page from Home.</div>' : ''}
           ${isManualMode() ? '<div class="mode-note">Manual mode is tracking your sheet only. Apply section math, loot, and combat setup by hand.</div>' : ''}
@@ -2823,9 +2824,21 @@
     }
     function arr(value) { return Array.isArray(value) ? value : (value ? [value] : []); }
     function list(value) { const values = arr(value); return values.length ? values.join(', ') : 'None'; }
-    function canUseItem(item) {
+    function itemUseHelp(item) {
       const name = text(item).toLowerCase();
-      return name.includes('laumspur') || name.includes('rendalim');
+      if (name.includes('karmo potion')) return 'Drink before combat: doubles current END and WP. Use the Karmo controls to apply the side-effect roll and finish the potion after combat.';
+      if (name.includes('senara potion')) return 'Use: restore 5 Willpower.';
+      if (name.includes('senara bud')) return 'Use: restore 1 Willpower.';
+      if (name.includes('potion of healing') || name.includes('healing potion')) return 'Use: restore 4 Endurance.';
+      if (name.includes('rendalim')) return 'Use: restore 6 Endurance.';
+      if (name.includes('potion of invulnerability')) return 'Use: mark invulnerability protection active and return an Empty Vial.';
+      if (name.includes('potion of alether')) return 'Use: add 2 Combat Skill.';
+      if (name.includes('tarama seed')) return 'Use: mark a Tarama Seed as ready for a no-Willpower spell or Staff use.';
+      if (name.includes('laumspur')) return 'Use: restore the Endurance amount recorded by this Laumspur item.';
+      return '';
+    }
+    function canUseItem(item) {
+      return Boolean(itemUseHelp(item));
     }
     function canEatItem(item) {
       return text(item).trim().toLowerCase() === 'meal';
@@ -2845,9 +2858,10 @@
     function itemActionButtons(type, item) {
       const encoded = encodeURIComponent(item);
       const toggle = itemFlagToggle(item);
+      const useHelp = itemUseHelp(item);
       return [
         canEatItem(item) ? '<button data-meal="eat">Eat</button>' : '',
-        canUseItem(item) ? `<button data-use-item="${type}:${encoded}">Use</button>` : '',
+        useHelp ? `<button data-use-item="${type}:${encoded}" title="${escapeHtml(useHelp)}">Use</button>` : '',
         toggle ? `<button data-status-flag="${toggle.key}:${toggle.value}">${toggle.label}</button>` : ''
       ].join('');
     }
@@ -2871,6 +2885,21 @@
         `<div class="item-row"><small>${label}</small><span>${escapeHtml(item)}</span>${itemActionButtons(type, item)}<button class="danger" data-drop="${type}:${encodeURIComponent(item)}">Drop</button></div>`
       )));
       return rows.join('') || '<div class="item-row"><span>Inventory empty.</span></div>';
+    }
+    function karmoControls(flags) {
+      const active = flags.karmoPotionActive === true;
+      const pending = flags.karmoSideEffectPending === true;
+      if (!active && !pending) return '';
+      const lastRoll = app.state.Automation?.LastRoll || {};
+      const hasKarmoRoll = Number(lastRoll.BookNumber) === 2 && Number(lastRoll.Section) === 45 && Number.isInteger(Number(lastRoll.Raw));
+      const sideLabel = hasKarmoRoll ? `Apply Karmo Side Effect (-${Number(lastRoll.Raw)} END)` : 'Apply Karmo Side Effect';
+      return `
+        <div class="controls" style="margin-top:.35rem">
+          ${pending ? `<button type="button" data-karmo-side-effect title="Apply the section 45 side-effect END loss. You may do this before or after finishing the potion, as the Project Aon footnote leaves that timing to the player.">${escapeHtml(sideLabel)}</button>` : ''}
+          ${active ? '<button type="button" data-karmo-finish title="After the Karmo-assisted combat, halve current END and WP, rounded down.">Finish Karmo</button>' : ''}
+        </div>
+        <div class="quick-note">Karmo Potion: doubled END/WP is ${active ? 'active' : 'finished'}${pending ? '; side-effect still pending' : ''}.</div>
+      `;
     }
     function storedEquipment() {
       const stored = app.state.Automation?.Stored || {};
@@ -3104,6 +3133,8 @@
         const [type, item] = button.dataset.useItem.split(':');
         await action({ action: 'use_item', type, item: decodeURIComponent(item) });
       }
+      if (button.dataset.karmoSideEffect !== undefined) await action({ action: 'karmo_side_effect' });
+      if (button.dataset.karmoFinish !== undefined) await action({ action: 'karmo_finish' });
       if (button.dataset.meal) await action({ action: 'meal', missed: button.dataset.meal === 'missed' });
       if (button.dataset.power) {
         const [mode, name] = button.dataset.power.split(':');
