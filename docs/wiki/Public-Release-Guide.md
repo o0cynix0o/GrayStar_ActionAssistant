@@ -16,6 +16,24 @@ Then open:
 http://localhost:8797/assistant.html
 ```
 
+## Install The Books
+
+The release ZIP does not include Project Aon book files.
+
+Download the standard Grey Star HTML ZIPs from Project Aon for personal use, then extract them into `books\gs`.
+
+Use the local guide page:
+
+```text
+http://localhost:8797/install-books.html
+```
+
+Or read:
+
+```text
+docs\INSTALL_PROJECT_AON_BOOKS.md
+```
+
 ## Keep Your Progress Safe
 
 The app autosaves during play. You can also use the **Saves** tab for three useful release-ready tools:
@@ -38,8 +56,8 @@ For maintainers:
 .\tools\Make-Release.ps1
 ```
 
-The release ZIP appears in `dist/`. It contains the app and docs, not personal saves.
+The release ZIP appears in `dist/`. It contains the app and docs, not personal saves and not Project Aon book files.
 
 ## Credits Note
 
-The included book pages are Project Aon editions and keep their original copyright notices and Project Aon links in the HTML. The assistant is an unofficial local companion for playing those books.
+Project Aon provides the Grey Star Internet Editions from its own site. This assistant is an unofficial local companion for playing those books after the user has downloaded them for personal use.

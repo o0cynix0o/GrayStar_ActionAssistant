@@ -922,6 +922,7 @@
     let activeSection = null;
     let draggedWidget = '';
     let activeCardMenu = '';
+    let bookFiles = { Installed: true, Books: [] };
     const playModeKey = 'greystar.mode';
     const playModes = ['auto', 'manual', 'cli'];
     let playMode = normalizePlayMode(localStorage.getItem(playModeKey));
@@ -1012,10 +1013,22 @@
 
     function bookUrl(bookNumber, section) {
       const book = bookByNumber(bookNumber);
+      if (!hasInstalledBookFiles(book.number)) {
+        return `install-books.html?book=${book.number}`;
+      }
       if (Number.isInteger(section) && section >= 1 && section <= book.sections) {
         return `books/gs/${book.folder}/sect${section}.htm`;
       }
       return `books/gs/${book.folder}/title.htm`;
+    }
+
+    function hasInstalledBookFiles(bookNumber) {
+      const entry = arr(bookFiles?.Books).find((item) => Number(item.BookNumber) === Number(bookNumber));
+      return entry ? entry.Installed === true : true;
+    }
+
+    function currentBookFilesInstalled() {
+      return hasInstalledBookFiles(currentCharacter().BookNumber);
     }
 
     function loadBook(bookNumber, section = null) {
@@ -1045,9 +1058,13 @@
     }
 
     async function fetchState() {
-      const response = await fetch('/api/state', { cache: 'no-store' });
+      const [response, bookResponse] = await Promise.all([
+        fetch('/api/state', { cache: 'no-store' }),
+        fetch('/api/book-files', { cache: 'no-store' }).catch(() => null)
+      ]);
       if (!response.ok) throw new Error('Could not load state');
       app = await response.json();
+      if (bookResponse?.ok) bookFiles = await bookResponse.json();
       syncUiPreferences(app.uiPreferences);
       serverStatus.textContent = 'Connected';
       syncBookToState();
@@ -1299,6 +1316,7 @@
       const flow = currentFlow();
       const rollLabel = flow.Entry?.roll ? 'Section Roll' : 'Roll 0-9';
       const successEnding = ending && String(ending.Type || '').toLowerCase() === 'success';
+      const missingBookFiles = !currentBookFilesInstalled();
       quickPanel.innerHTML = `
         <div class="quick-column quick-card">
           <div class="quick-title">Section</div>
@@ -1306,6 +1324,7 @@
           <button type="button" data-roll ${manualDisabledAttributes('roll helper')} title="${isManualMode() ? 'Manual mode: roll helpers are disabled.' : 'Roll a random number from 0 to 9. If this section has a special roll rule, the assistant applies it.'}">${rollLabel}</button>
           ${successEnding ? '<button type="button" data-complete-book>Finalize Book</button>' : ''}
           <div class="quick-note">${ending ? `Ending marked: ${ending.Type}` : `Book ${currentCharacter().BookNumber}, section ${app.state.CurrentSection}`}</div>
+          ${missingBookFiles ? '<div class="mode-note">Book HTML files are not installed. Open the Install Project Aon Books page from Home.</div>' : ''}
           ${isManualMode() ? '<div class="mode-note">Manual mode is tracking your sheet only. Apply section math, loot, and combat setup by hand.</div>' : ''}
           ${staffUnavailable || backpackUnavailable ? `<div class="quick-note">Stored gear is being held until the book returns it.</div>` : ''}
         </div>
@@ -1960,12 +1979,14 @@
       const staffUnavailable = flags.staffAvailable === false;
       const flow = currentFlow();
       const rollLabel = flow.Entry?.roll ? 'Section Roll' : 'Roll 0-9';
+      const missingBookFiles = !currentBookFilesInstalled();
       return `
         <div class="controls">
           <button type="button" data-automation-apply ${manualDisabledAttributes('section effects')} title="${isManualMode() ? 'Manual mode: section effects are disabled.' : 'Apply audited section effects.'}">Apply Effects</button>
           <button type="button" data-roll ${manualDisabledAttributes('roll helper')} title="${isManualMode() ? 'Manual mode: roll helpers are disabled.' : 'Roll a random number from 0 to 9.'}">${rollLabel}</button>
         </div>
         <div class="quick-note">${ending ? `Ending marked: ${escapeHtml(ending.Type)}` : `Book ${escapeHtml(currentCharacter().BookNumber)}, section ${escapeHtml(app.state.CurrentSection)}`}</div>
+        ${missingBookFiles ? '<div class="mode-note">Book HTML files are not installed. Open the Install Project Aon Books page from Home.</div>' : ''}
         ${isManualMode() ? '<div class="mode-note">Manual mode is tracking your sheet only. Apply section math, loot, and combat setup by hand.</div>' : ''}
         ${staffUnavailable || backpackUnavailable ? `<div class="quick-note">Stored gear is being held until the book returns it.</div>` : ''}
       `;

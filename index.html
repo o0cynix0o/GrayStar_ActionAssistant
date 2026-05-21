@@ -19,8 +19,8 @@
       display: grid;
       align-content: end;
       background:
-        linear-gradient(90deg, rgba(18,21,15,0.96) 0%, rgba(18,21,15,0.72) 52%, rgba(18,21,15,0.22) 100%),
-        url("books/gs/01gstw/title.png") center right / min(760px, 88vw) auto no-repeat,
+        radial-gradient(circle at 84% 28%, rgba(98, 78, 142, 0.34), transparent 34%),
+        linear-gradient(90deg, rgba(18,21,15,0.98) 0%, rgba(18,21,15,0.76) 58%, rgba(18,21,15,0.42) 100%),
         #12150f;
       border-bottom: 1px solid #7b6a3b;
     }
@@ -80,6 +80,13 @@
       font-family: Arial, sans-serif;
       font-size: 0.84rem;
     }
+    .book small {
+      display: block;
+      margin-bottom: 10px;
+      color: #a9a088;
+      font: 0.78rem Arial, sans-serif;
+      text-transform: uppercase;
+    }
     .panel {
       border: 1px solid #5d5130;
       border-radius: 6px;
@@ -133,6 +140,8 @@
       <a href="assistant.html">Open Reader</a>
       <button id="currentBtn" type="button">Open Current Section</button>
       <a href="library.html">Simple Book List</a>
+      <a href="install-books.html">Install Project Aon Books</a>
+      <p class="muted">Book files are not included in the release package. Download the standard Grey Star HTML ZIPs from Project Aon and extract them into <code>books\gs</code>.</p>
     </aside>
   </main>
 
@@ -150,9 +159,9 @@
       a.className = 'book';
       a.href = `assistant.html?book=${book.number}`;
       a.innerHTML = `
-        <img src="books/gs/${book.folder}/title.png" alt="">
+        <small>Book ${book.number}</small>
         <strong>${book.number}. ${book.title}</strong>
-        <span>${book.sections} numbered sections</span>
+        <span>${book.sections} numbered sections. Requires local Project Aon book files.</span>
       `;
       booksEl.appendChild(a);
     });

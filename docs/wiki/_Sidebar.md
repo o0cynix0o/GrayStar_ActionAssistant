@@ -2,6 +2,7 @@
 
 - [Home](Home)
 - [Getting Started](Getting-Started)
+- [Installing Project Aon Books](Installing-Project-Aon-Books)
 - [Command Reference](Command-Reference)
 - [Game Modes](Game-Modes)
 - [Combat Guide](Combat-Guide)

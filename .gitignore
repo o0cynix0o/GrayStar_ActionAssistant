@@ -9,6 +9,10 @@ current-position.json
 data/last-save.txt
 data/ui-preferences.json
 
+# Project Aon book files are downloaded by each user for personal use.
+# They are intentionally excluded from git and release packages.
+/books/gs/
+
 testing/__pycache__/
 testing/tmp/
 testing/tmp2/

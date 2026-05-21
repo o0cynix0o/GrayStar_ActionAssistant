@@ -20,6 +20,11 @@ if (-not $Version) {
     $Version = (git -C $Root rev-parse --short HEAD).Trim()
 }
 
+$trackedBookFiles = @(git -C $Root ls-files "books/gs")
+if ($trackedBookFiles.Count -gt 0) {
+    throw "Project Aon book files are tracked under books/gs. Remove them from git before packaging."
+}
+
 $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $zipName = "GreyStar_ActionAssistant-$Version-$stamp.zip"
 $zipPath = Join-Path $OutputDir $zipName

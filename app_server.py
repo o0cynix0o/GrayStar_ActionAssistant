@@ -198,6 +198,30 @@ def state_payload(message: str = "", achievement_unlocks: list[dict] | None = No
     }
 
 
+def book_files_payload() -> dict:
+    books = []
+    for number, meta in sorted(greystar.BOOKS.items()):
+        folder = str(meta.get("Folder") or "")
+        root = ROOT / "books" / "gs" / folder
+        title_file = root / "title.htm"
+        first_section = root / "sect1.htm"
+        books.append(
+            {
+                "BookNumber": number,
+                "Title": meta.get("Title"),
+                "Folder": folder,
+                "Installed": title_file.exists() and first_section.exists(),
+                "ExpectedTitleFile": str(title_file),
+                "ExpectedFirstSection": str(first_section),
+            }
+        )
+    return {
+        "Installed": all(book["Installed"] for book in books),
+        "Books": books,
+        "InstallGuide": "/install-books.html",
+    }
+
+
 def apply_new_game(payload: dict) -> str:
     name = str(payload.get("name") or "Grey Star").strip() or "Grey Star"
     book_number = int(payload.get("bookNumber") or 1)
@@ -465,6 +489,9 @@ class GreyStarHandler(BaseHTTPRequestHandler):
         if parsed.path == "/api/ui-preferences":
             with STATE_LOCK:
                 self.send_json(load_ui_preferences())
+            return
+        if parsed.path == "/api/book-files":
+            self.send_json(book_files_payload())
             return
         if parsed.path == "/api/export-save":
             with STATE_LOCK:

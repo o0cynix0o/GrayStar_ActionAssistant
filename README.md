@@ -1,15 +1,34 @@
 # Grey Star Action Assistant
 
-Grey Star Action Assistant is a local browser-based play aid for the four *Grey Star* gamebooks. It pairs the Project Aon book text with a companion assistant that handles character bookkeeping, section support, combat tracking, saves, achievements, and strategy-guide material.
+Grey Star Action Assistant is a local browser-based play aid for the four *Grey Star* gamebooks. It pairs locally installed Project Aon book files with a companion assistant that handles character bookkeeping, section support, combat tracking, saves, achievements, and strategy-guide material.
 
 The app is built to run locally from your machine. It does not require a hosted account or cloud save service.
 
-Current public release: **v1.1.0**
+Current public release: **v1.1.1**
+
+## Book Files Are Not Included
+
+This project does **not** redistribute the Grey Star book HTML files. Project Aon provides the Internet Editions for personal use from its own site, and their license does not allow this release package to include or redistribute the books.
+
+After downloading the app, download the standard Grey Star HTML ZIPs directly from Project Aon and extract them into `books\gs`.
+
+Full walkthrough:
+
+- `docs/INSTALL_PROJECT_AON_BOOKS.md`
+- local app page: `http://localhost:8797/install-books.html`
+
+Project Aon links:
+
+- License: https://www.projectaon.org/en/Main/License
+- Grey Star the Wizard: https://www.projectaon.org/en/Main/GreyStarTheWizard
+- The Forbidden City: https://www.projectaon.org/en/Main/TheForbiddenCity
+- Beyond the Nightmare Gate: https://www.projectaon.org/en/Main/BeyondTheNightmareGate
+- War of the Wizards: https://www.projectaon.org/en/Main/WarOfTheWizards
 
 ## What It Includes
 
 - Complete support for Books 1-4.
-- Split view with the book reader on the left and the assistant on the right.
+- Split view with the book reader on the left and the assistant on the right, once the Project Aon book files are installed locally.
 - Character sheet with Endurance, Willpower, Combat Skill, Nobles, Magicks, and completed books.
 - Inventory tracking for Weapons, Backpack Items, Special Items, Herb Pouch items, and stored/confiscated gear.
 - Audited section helpers for book effects, rolls, loot, Willpower costs, gear loss/return, and book completion.
@@ -47,6 +66,12 @@ http://localhost:8797/assistant.html
 ```
 
 Use the `localhost` page. Opening `assistant.html` directly from the file system can make the book pane load while leaving the assistant disconnected.
+
+If this is a fresh release install, open the book install guide first:
+
+```text
+http://localhost:8797/install-books.html
+```
 
 ## Play Modes
 
@@ -93,9 +118,10 @@ Project docs live in `docs/`.
 Useful starting points:
 
 - `docs/PUBLIC_RELEASE_CHECKLIST.md`
+- `docs/INSTALL_PROJECT_AON_BOOKS.md`
 - `docs/BOOK_AUDIT_WORKFLOW.md`
 - `docs/BOOK_SOURCE_MAP.md`
-- `docs/RELEASE_NOTES_V1.1.0.md`
+- `docs/RELEASE_NOTES_V1.1.1.md`
 
 Wiki source pages live in `docs/wiki/` and are mirrored to the GitHub wiki. Player-facing pages include:
 
@@ -142,11 +168,11 @@ The ZIP is written to `dist/`. Runtime saves, UI preferences, and other local fi
 - `ws_server.py`: WebSocket bridge for embedded CLI mode.
 - `launch_greystar.py`: Python launcher for the web app and CLI bridge.
 - `Launch-GreyStar.ps1`: Windows convenience launcher.
-- `books/gs/`: bundled Project Aon Grey Star book HTML.
+- `books/`: local book install folder. Project Aon book files go under `books/gs/` but are ignored by git and not included in release ZIPs.
 - `data/crt.json`: Combat Results Table.
 - `testing/`: route, automation, combat, campaign, and achievement checks.
 - `tools/Make-Release.ps1`: release ZIP builder.
 
 ## Notice
 
-This is an unofficial local play aid. The bundled book HTML files are Project Aon editions and retain their original copyright notices and links inside the book pages. See `NOTICE.md`.
+This is an unofficial local play aid. It does not redistribute the Grey Star books. Users download the Project Aon Internet Editions directly from Project Aon for personal use. See `NOTICE.md`.

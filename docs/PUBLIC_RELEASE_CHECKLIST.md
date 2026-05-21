@@ -17,7 +17,8 @@ Use this before tagging or uploading a public build.
    .\Launch-GreyStar.ps1
    ```
 
-4. Open `http://localhost:8797/assistant.html`.
+4. Install the Project Aon book files by following `docs/INSTALL_PROJECT_AON_BOOKS.md`.
+5. Open `http://localhost:8797/assistant.html`.
 
 ## Smoke Test
 
@@ -54,3 +55,11 @@ Create the release ZIP:
 ```
 
 The package is written to `dist/`. Runtime files such as saves, current position, UI preferences, and the local wiki checkout are not included.
+
+Confirm the package does not include Project Aon book files:
+
+```powershell
+git ls-files books/gs
+```
+
+Expected result: no output.

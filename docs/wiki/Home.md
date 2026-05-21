@@ -4,6 +4,8 @@ Welcome to the project wiki for **Grey Star Action Assistant**.
 
 This wiki is the player-facing companion to the main repository. It explains how to use the local web assistant while playing the **World of Lone Wolf / Grey Star** gamebooks.
 
+The app does not include the Project Aon book files. Download the books directly from Project Aon for personal use, then follow [Installing Project Aon Books](Installing-Project-Aon-Books).
+
 ## What This Project Is
 
 Grey Star Action Assistant is a local Python web app that acts like a digital Action Chart and play aid. It keeps the book visible on the left and the assistant on the right.
@@ -25,6 +27,7 @@ It is designed to support the books, not replace them.
 ## Quick Nav
 
 - [Getting Started](Getting-Started)
+- [Installing Project Aon Books](Installing-Project-Aon-Books)
 - [Command Reference](Command-Reference)
 - [Combat Guide](Combat-Guide)
 - [Inventory and Item Rules](Inventory-and-Item-Rules)

@@ -40,10 +40,7 @@
       gap: 12px;
     }
     .book {
-      display: grid;
-      grid-template-columns: 160px 1fr;
-      gap: 16px;
-      align-items: center;
+      display: block;
       border: 1px solid #5d5130;
       border-radius: 6px;
       padding: 14px;
@@ -52,15 +49,16 @@
       background: #1a1d14;
     }
     .book:hover { border-color: #d1b865; }
-    .book img {
-      width: 100%;
-      max-height: 72px;
-      object-fit: contain;
-      object-position: left center;
-    }
     .book strong {
       color: #f2d27a;
       font-size: 1.1rem;
+    }
+    .book small {
+      display: block;
+      margin-bottom: 6px;
+      color: #a9a088;
+      font: 0.76rem Arial, sans-serif;
+      text-transform: uppercase;
     }
     .book span {
       display: block;
@@ -82,23 +80,25 @@
       <div>
         <a href="index.html">Home</a>
         <a href="assistant.html">Assistant</a>
+        <a href="install-books.html">Install Books</a>
       </div>
     </div>
+    <p>Book files are not included in the release package. Download the standard Grey Star HTML ZIPs from Project Aon and extract them into <code>books\gs</code>.</p>
     <section class="list">
       <a class="book" href="assistant.html?book=1">
-        <img src="books/gs/01gstw/title.png" alt="">
+        <small>Book 1</small>
         <div><strong>1. Grey Star the Wizard</strong><span>350 sections</span></div>
       </a>
       <a class="book" href="assistant.html?book=2">
-        <img src="books/gs/02tfc/title.png" alt="">
+        <small>Book 2</small>
         <div><strong>2. The Forbidden City</strong><span>310 sections</span></div>
       </a>
       <a class="book" href="assistant.html?book=3">
-        <img src="books/gs/03btng/title.png" alt="">
+        <small>Book 3</small>
         <div><strong>3. Beyond the Nightmare Gate</strong><span>350 sections</span></div>
       </a>
       <a class="book" href="assistant.html?book=4">
-        <img src="books/gs/04wotw/title.png" alt="">
+        <small>Book 4</small>
         <div><strong>4. War of the Wizards</strong><span>360 sections</span></div>
       </a>
     </section>

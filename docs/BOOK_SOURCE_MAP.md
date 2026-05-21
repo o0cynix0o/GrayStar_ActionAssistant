@@ -2,15 +2,17 @@
 
 This doc is the quick map for the local Grey Star book corpus used by audits and route work.
 
+The Project Aon book files are not part of the public repository or release ZIP. Each developer/player must download the standard HTML editions directly from Project Aon for personal use. See `docs/INSTALL_PROJECT_AON_BOOKS.md`.
+
 ## Source Priority
 
 Preferred source order:
 
-1. local corpus under `books/gs/`
+1. locally installed corpus under `books/gs/`
 2. local rules and support pages in the same book folder
 3. Project Aon plus errata as fallback or cross-check
 
-The local corpus is the audit baseline. Do not copy large book passages into audit reports.
+The local corpus is the audit baseline for development and testing. Do not copy large book passages into audit reports.
 
 ## Local Corpus Layout
 
@@ -96,7 +98,7 @@ Expected section range:
 
 ## Repo Hygiene
 
-- `books/` is local reference material
+- `books/gs/` is local reference material, ignored by git, and not packaged for release
 - audit docs should reference source files and sections instead of copying text
 - workflow docs belong in `docs/`
 - local reports belong in `testing/logs/`

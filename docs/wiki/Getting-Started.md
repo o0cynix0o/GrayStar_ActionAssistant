@@ -32,6 +32,24 @@ Then open:
 http://localhost:8797/assistant.html
 ```
 
+## Install The Books
+
+The release ZIP does not include Project Aon book files.
+
+Download the standard Grey Star HTML ZIPs from Project Aon for personal use and extract them into `books\gs`.
+
+The local guide page has links and PowerShell examples:
+
+```text
+http://localhost:8797/install-books.html
+```
+
+The repo guide is:
+
+```text
+docs\INSTALL_PROJECT_AON_BOOKS.md
+```
+
 ## Basic Play Flow
 
 1. Start the local server.
