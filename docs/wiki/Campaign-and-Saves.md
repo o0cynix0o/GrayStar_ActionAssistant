@@ -12,9 +12,27 @@ By default, local saves live in:
 
 The `saves` folder is ignored by git so your personal play state does not get pushed to GitHub.
 
+UI layout preferences live in:
+
+```text
+./data/ui-preferences.json
+```
+
+That file is also local. It stores card sizes, card order, and closed-card choices.
+
 ## Autosave
 
 Autosave is always part of the normal workflow. The app saves after important state changes so section progress, inventory, combat state, and achievements are not lost.
+
+## Export, Import, And Backup
+
+The **Saves** tab has three tools for moving or protecting progress:
+
+- **Export Current Save** downloads one JSON save for the current character.
+- **Import Selected Save** reads an exported JSON save and copies it into this installation.
+- **Backup All Saves** downloads a ZIP containing all local saves and UI preferences.
+
+Use Backup All Saves before moving the app folder, making a release test copy, or trying a risky replay route.
 
 ## Book Completion
 

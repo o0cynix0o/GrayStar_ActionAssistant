@@ -15,5 +15,7 @@ testing/tmp2/
 testing/dry-run-saves/
 testing/use-item/
 
+dist/
+
 # Local checkout used to publish the GitHub wiki.
 /wiki/

@@ -30,6 +30,7 @@ It is designed to support the books, not replace them.
 - [Inventory and Item Rules](Inventory-and-Item-Rules)
 - [Stats and Achievements](Stats-and-Achievements)
 - [Campaign and Saves](Campaign-and-Saves)
+- [Public Release Guide](Public-Release-Guide)
 - [Book Support Matrix](Book-Support-Matrix)
 - [Strategy Guide](Strategy-Guide)
 - [FAQ](FAQ)
@@ -44,6 +45,8 @@ Current app support is strongest for:
 - **Book 4: War of the Wizards**
 
 All four Grey Star books now have assistant rules, achievements, strategy guides, and green dry-run playtest reports.
+
+The app is ready for public release packaging. For download, backup, import, and layout notes, see the [Public Release Guide](Public-Release-Guide).
 
 ## Project Rule
 

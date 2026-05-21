@@ -61,3 +61,11 @@ opening assistant.html directly from the file system
 ## Autosave
 
 The app autosaves state during normal play. This is intentional. It prevents the most frustrating failure mode: reaching a later section and discovering your sheet, inventory, or combat state is old.
+
+## Moving Saves
+
+Use the **Saves** tab if you need to move or protect your campaign:
+
+- **Export Current Save** downloads the current character.
+- **Backup All Saves** downloads every local save in one ZIP.
+- **Import Selected Save** loads an exported save JSON into this installation.

@@ -11,6 +11,8 @@ import mimetypes
 import os
 import sys
 import threading
+import zipfile
+from datetime import datetime
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -124,6 +126,49 @@ def save_ui_preferences(payload: dict) -> dict:
     return data
 
 
+def export_save_bytes() -> tuple[str, bytes]:
+    ASSISTANT.sync_achievements(save=False)
+    ASSISTANT.write_current_position()
+    name = greystar.safe_file_name(
+        f"{ASSISTANT.character.get('Name') or 'Grey Star'}-book{ASSISTANT.character.get('BookNumber') or 1}"
+    )
+    return f"{name}.json", json.dumps(ASSISTANT.state, indent=2).encode("utf-8")
+
+
+def backup_saves_bytes() -> tuple[str, bytes]:
+    ASSISTANT.save_game(quiet=True)
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        for path in sorted(ASSISTANT.save_dir.glob("*.json")):
+            archive.write(path, f"saves/{path.name}")
+        if UI_PREFERENCES_FILE.exists():
+            archive.write(UI_PREFERENCES_FILE, "data/ui-preferences.json")
+    return f"GreyStar-saves-{stamp}.zip", buffer.getvalue()
+
+
+def import_save_payload(payload: dict) -> str:
+    raw = str(payload.get("raw") or "").strip()
+    if not raw:
+        raise ValueError("No save data supplied.")
+    data = json.loads(raw)
+    if not isinstance(data, dict):
+        raise ValueError("Save import must be a JSON object.")
+    imported = greystar.normalize_state(data)
+    ASSISTANT.state = imported
+    ASSISTANT.settings["SavePath"] = ""
+    ASSISTANT.record_section_visit()
+    ASSISTANT.ensure_current_section_checkpoint()
+    ASSISTANT.sync_achievements(save=False)
+    ASSISTANT.write_current_position()
+    if truthy(payload.get("save", True)):
+        ASSISTANT.save_game(quiet=True)
+    return (
+        f"Imported save for {ASSISTANT.character.get('Name') or 'Grey Star'}, "
+        f"Book {ASSISTANT.character.get('BookNumber')}, section {ASSISTANT.state.get('CurrentSection')}."
+    )
+
+
 def state_payload(message: str = "", achievement_unlocks: list[dict] | None = None) -> dict:
     new_unlocks = ASSISTANT.sync_achievements(save=False)
     if new_unlocks:
@@ -143,6 +188,11 @@ def state_payload(message: str = "", achievement_unlocks: list[dict] | None = No
         "achievementUnlocks": achievement_unlocks or [],
         "saves": public_save_entries(),
         "uiPreferences": load_ui_preferences(),
+        "paths": {
+            "SaveDir": str(ASSISTANT.save_dir),
+            "DataDir": str(ASSISTANT.data_dir),
+            "UiPreferences": str(UI_PREFERENCES_FILE),
+        },
         "message": message,
         "lastOutput": LAST_OUTPUT,
     }
@@ -303,6 +353,8 @@ def handle_action(payload: dict) -> str:
         return capture_output(lambda: ASSISTANT.save_game(str(payload.get("path") or "")))
     if action == "load":
         return capture_output(lambda: ASSISTANT.load_game(str(payload.get("path") or "")))
+    if action == "import_save":
+        return import_save_payload(payload)
     if action == "complete_book":
         def complete() -> None:
             summary = ASSISTANT.ensure_book_completed(save=True)
@@ -389,6 +441,14 @@ class GreyStarHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def send_download(self, filename: str, data: bytes, content_type: str) -> None:
+        self.send_response(HTTPStatus.OK)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Disposition", f'attachment; filename="{filename}"')
+        self.send_header("Content-Length", str(len(data)))
+        self.end_headers()
+        self.wfile.write(data)
+
     def do_GET(self) -> None:  # noqa: N802
         parsed = urlparse(self.path)
         if parsed.path == "/api/state":
@@ -402,6 +462,16 @@ class GreyStarHandler(BaseHTTPRequestHandler):
         if parsed.path == "/api/ui-preferences":
             with STATE_LOCK:
                 self.send_json(load_ui_preferences())
+            return
+        if parsed.path == "/api/export-save":
+            with STATE_LOCK:
+                filename, data = export_save_bytes()
+                self.send_download(filename, data, "application/json; charset=utf-8")
+            return
+        if parsed.path == "/api/backup-saves":
+            with STATE_LOCK:
+                filename, data = backup_saves_bytes()
+                self.send_download(filename, data, "application/zip")
             return
         self.serve_static(parsed.path)
 

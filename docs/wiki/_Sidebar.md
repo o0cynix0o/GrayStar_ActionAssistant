@@ -8,6 +8,7 @@
 - [Inventory and Item Rules](Inventory-and-Item-Rules)
 - [Stats and Achievements](Stats-and-Achievements)
 - [Campaign and Saves](Campaign-and-Saves)
+- [Public Release Guide](Public-Release-Guide)
 - [Book Support Matrix](Book-Support-Matrix)
 - [Strategy Guide](Strategy-Guide)
   - [Full Campaign Story Run](Full-Campaign-Story-Run)

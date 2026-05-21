@@ -1045,8 +1045,8 @@
       quickPanel.innerHTML = `
         <div class="quick-column quick-card">
           <div class="quick-title">Section</div>
-          <button type="button" data-automation-apply>Apply Effects</button>
-          <button type="button" data-roll>${rollLabel}</button>
+          <button type="button" data-automation-apply title="Apply the audited effect for the current section, such as stat changes, gear loss, meals, or book-completion flags.">Apply Effects</button>
+          <button type="button" data-roll title="Roll a random number from 0 to 9. If this section has a special roll rule, the assistant applies it.">${rollLabel}</button>
           ${successEnding ? '<button type="button" data-complete-book>Finalize Book</button>' : ''}
           <div class="quick-note">${ending ? `Ending marked: ${ending.Type}` : `Book ${currentCharacter().BookNumber}, section ${app.state.CurrentSection}`}</div>
           ${staffUnavailable || backpackUnavailable ? `<div class="quick-note">Stored gear is being held until the book returns it.</div>` : ''}
@@ -1535,6 +1535,8 @@
       appMenu.innerHTML = `
         <div class="menu-heading">Assistant</div>
         <button type="button" data-save-current>Save Game</button>
+        <button type="button" data-export-save>Export Current Save</button>
+        <button type="button" data-backup-saves>Backup Saves</button>
         <button type="button" data-autosave>Autosave: On</button>
         <button type="button" data-settings-view>Settings</button>
         <button type="button" class="danger" data-shutdown-app>Shut Down App</button>
@@ -2270,14 +2272,14 @@
               <label class="field">Enemy<input name="name" value="Enemy"></label>
               <label class="field">CS<input name="cs" type="number" value="10"></label>
               <label class="field">END<input name="endurance" type="number" value="10"></label>
-              <label class="field">CS Modifier<input name="modifier" type="number" value="0"></label>
+              <label class="field" title="Optional temporary Combat Skill modifier for this fight only. Use this when the section gives a combat bonus or penalty.">CS Modifier<input name="modifier" type="number" value="0" title="Temporary CS modifier for this fight."></label>
               <label class="field">Active Weapon<select name="activeWeapon">${combatWeaponOptions(combat)}</select></label>
-              <label class="field">Staff Magic<select name="useStaff"><option value="true">On</option><option value="false">Off</option></select></label>
+              <label class="field" title="Use Wizard's Staff magic when the Staff is the active weapon. Staff magic spends Willpower during combat.">Staff Magic<select name="useStaff" title="Turn Staff magic on only when the Staff is the active weapon and the fight allows normal Staff use."><option value="true">On</option><option value="false">Off</option></select></label>
               <label class="field" title="Default Willpower spent with the Wizard's Staff each combat round. The round form can override it.">Default Staff WP Spend<input name="staffWillpower" type="number" min="1" value="1" title="Minimum 1 when using the Wizard's Staff. Enemy END loss is multiplied by this value."></label>
-              <label class="field">Evade After Rounds<input name="evadeAfterRounds" type="number" min="0" value="0"></label>
+              <label class="field" title="Optional. If the book says you can evade only after a certain number of rounds, put that number here.">Evade After Rounds<input name="evadeAfterRounds" type="number" min="0" value="0" title="Minimum combat rounds before the Evade button should be used."></label>
               <label class="field" title="Optional. Use this when the book says where to turn after winning this fight. The assistant can offer that section after victory.">Victory Section<input name="victoryRoute" type="number" min="1" placeholder="Optional" title="Section number to use after winning, if the book gives one."></label>
               <label class="field" title="Optional. Use this when the book gives a section for evading the fight. The assistant can use this target when you press Evade.">Evade Section<input name="evadeRoute" type="number" min="1" placeholder="Optional" title="Section number to use after evading, if the book gives one."></label>
-              <label class="field"><span>Can Evade</span><select name="canEvade"><option value="">No</option><option value="true">Yes</option></select></label>
+              <label class="field" title="Set this to Yes only when the section explicitly allows evasion."><span>Can Evade</span><select name="canEvade" title="Controls whether the Evade button is available for this fight."><option value="">No</option><option value="true">Yes</option></select></label>
               <button type="submit">Start Combat</button>
             </form>
           `}
@@ -2376,6 +2378,18 @@
           <form id="saveForm" class="controls"><input name="path" placeholder="Optional save name/path"><button type="submit">Save Now</button><button type="button" data-autosave>Autosave On</button></form>
         </div>
         <div class="panel">
+          <h2>Save Tools</h2>
+          <div class="controls">
+            <button type="button" data-export-save title="Download the current character save as a JSON file.">Export Current Save</button>
+            <button type="button" data-backup-saves title="Download a ZIP containing all local save files and UI layout preferences.">Backup All Saves</button>
+          </div>
+          <div class="controls" style="margin-top:.55rem">
+            <input id="importSaveInput" type="file" accept=".json,application/json" title="Choose a Grey Star save JSON file to import.">
+            <button type="button" data-import-save title="Load the selected save into this app and create a local copy.">Import Selected Save</button>
+          </div>
+          <p class="muted">Export makes one portable save. Backup creates a ZIP of every local save. Import reads a save JSON and copies it into this installation.</p>
+        </div>
+        <div class="panel">
           <h2>Load</h2>
           ${app.saves.map((save, index) => `<div class="item-row"><small>${index + 1}</small><span>${save.Name} - Book ${save.BookNumber}, Sec ${save.Section}</span><button data-load="${index + 1}">Load</button></div>`).join('') || '<div class="item-row"><span>No saves yet.</span></div>'}
         </div>
@@ -2384,6 +2398,7 @@
 
     function renderSettings() {
       const settings = app.state.Settings || {};
+      const paths = app.paths || {};
       const currentScope = cardScopeForView(activeView === 'settings' ? 'sheet' : activeView);
       view.innerHTML = `
         <div class="panel">
@@ -2391,12 +2406,16 @@
           <div class="grid">
             ${field('Autosave', 'On')}
             ${field('Save Path', escapeHtml(text(settings.SavePath, 'Not saved yet')))}
+            ${field('Save Folder', escapeHtml(text(paths.SaveDir, 'Unknown')))}
+            ${field('UI Preferences', escapeHtml(text(paths.UiPreferences, 'Unknown')))}
             ${field('Current View Layout', escapeHtml(currentScope))}
             ${field('Branding', 'Grey Star')}
           </div>
           <div class="controls" style="margin-top:.65rem">
             <button type="button" data-view="sheet">Back to Sheet</button>
             <button type="button" data-save-current>Save Game</button>
+            <button type="button" data-export-save>Export Current Save</button>
+            <button type="button" data-backup-saves>Backup Saves</button>
             <button type="button" data-card-reset-scope="${escapeHtml(currentScope)}">Reset Current Layout</button>
             <button type="button" data-card-reset-all>Reset All Card Layouts</button>
           </div>
@@ -2667,6 +2686,26 @@
       if (button.dataset.saveCurrent !== undefined) {
         closeMenus();
         await action({ action: 'save', path: '' });
+        return;
+      }
+      if (button.dataset.exportSave !== undefined) {
+        closeMenus();
+        window.open('/api/export-save', '_blank');
+        return;
+      }
+      if (button.dataset.backupSaves !== undefined) {
+        closeMenus();
+        window.open('/api/backup-saves', '_blank');
+        return;
+      }
+      if (button.dataset.importSave !== undefined) {
+        const file = document.getElementById('importSaveInput')?.files?.[0];
+        if (!file) {
+          message.textContent = 'Choose a save JSON file first.';
+          return;
+        }
+        const raw = await file.text();
+        await action({ action: 'import_save', raw, save: true });
         return;
       }
       if (button.dataset.shutdownApp !== undefined) {
