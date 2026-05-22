@@ -1,6 +1,6 @@
 # GS Book 2 Playtest Report
 
-Generated: 2026-05-21T15:57:08
+Generated: 2026-05-22T08:01:14
 
 Passed: 20
 Warnings: 0

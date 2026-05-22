@@ -4,7 +4,7 @@ Grey Star Action Assistant is a local browser-based play aid for the four *Grey 
 
 The app is built to run locally from your machine. It does not require a hosted account or cloud save service.
 
-Current public release: **v1.1.2**
+Current public release: **v1.1.3**
 
 ## Book Files Are Not Included
 
@@ -67,6 +67,7 @@ Expand-Archive "$env:USERPROFILE\Downloads\04wotw.zip" -DestinationPath .\books\
 - Character sheet with Endurance, Willpower, Combat Skill, Nobles, Magicks, and completed books.
 - Inventory tracking for Weapons, Backpack Items, Special Items, Herb Pouch items, and stored/confiscated gear.
 - Audited section helpers for book effects, rolls, loot, Willpower costs, gear loss/return, and book completion.
+- Expandable notification receipts that explain what the last automation, item use, combat round, death recovery, achievement, loot choice, or book completion changed.
 - Grey Star combat tracking with Staff use, modifiers, evasion, death handling, repeat/rewind recovery, and combat history.
 - Achievements with unlock notifications and replay support.
 - Save export, save import, and full save backup.
@@ -156,7 +157,7 @@ Useful starting points:
 - `docs/INSTALL_PROJECT_AON_BOOKS.md`
 - `docs/BOOK_AUDIT_WORKFLOW.md`
 - `docs/BOOK_SOURCE_MAP.md`
-- `docs/RELEASE_NOTES_V1.1.2.md`
+- `docs/RELEASE_NOTES_V1.1.3.md`
 
 Wiki source pages live in `docs/wiki/` and are mirrored to the GitHub wiki. Player-facing pages include:
 

@@ -60,6 +60,8 @@ docs\INSTALL_PROJECT_AON_BOOKS.md
 6. Click book section links normally. The assistant follows your current section.
 7. Use the assistant panels when the book calls for inventory changes, stat changes, rolls, combat, notes, or saves.
 
+The bottom notification bar shows the latest assistant receipt. Click it when you want the longer explanation of what changed, why it changed, and which button or rule caused it.
+
 ## Choose A Play Mode
 
 Use the small white dot in the upper-right of the assistant panel to switch modes.

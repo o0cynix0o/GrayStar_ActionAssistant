@@ -19,6 +19,7 @@ It helps with:
 - random number rolls from 0 to 9
 - combat setup and combat round handling
 - section effects and guided section support
+- expandable receipts for automation, item use, combat, death recovery, achievements, loot, and book completion
 - death, rewind, book completion, repeat-book flow, and saves
 - achievements and achievement notifications
 

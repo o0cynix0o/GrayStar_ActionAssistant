@@ -96,6 +96,29 @@ Examples:
 
 The assistant does not automatically apply every section effect the moment you land on a page because some effects depend on your choice, timing, or inventory. Read the section, then press the button when that effect is the one you are taking.
 
+## What Is The Bottom Notification Bar?
+
+The bottom bar is a receipt drawer for the last important thing the assistant did.
+
+Collapsed, it gives you the quick version:
+
+```text
+Automation - Applied -3 END
+```
+
+Click it and it opens the longer receipt:
+
+```text
+Where: Book 2, section 129
+Why: This section has an audited Endurance loss.
+Endurance: 25/28 -> 22/28
+How: You pressed Apply Effects. The assistant used the section audit, updated the sheet, and saved the game.
+```
+
+The receipt drawer is used for section automation, item use, Karmo controls, loot choices, combat rounds, death recovery, book completion, achievements, rolls, and normal assistant notices.
+
+It is there so the app does not feel like a mystery box. You can see what changed, why the assistant changed it, and how it was applied.
+
 ## What Is `Section Roll`?
 
 Grey Star uses random numbers from **0 to 9**, like the Random Number Table in the books.

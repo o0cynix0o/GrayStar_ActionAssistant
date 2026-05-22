@@ -814,6 +814,60 @@
       background: #171b12;
       font-size: 0.82rem;
     }
+    .message.event-receipt {
+      cursor: pointer;
+      outline: none;
+    }
+    .message.event-receipt:hover,
+    .message.event-receipt:focus-visible {
+      background: #202617;
+    }
+    .receipt-summary {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      min-height: 18px;
+    }
+    .receipt-summary span:first-child {
+      min-width: 0;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .receipt-toggle {
+      width: 0;
+      height: 0;
+      border-left: 5px solid #ffffff;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      flex: 0 0 auto;
+    }
+    .message.expanded .receipt-toggle {
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #ffffff;
+      border-bottom: 0;
+    }
+    .receipt-detail {
+      margin-top: 0.55rem;
+      padding-top: 0.55rem;
+      display: grid;
+      gap: 0.38rem;
+      border-top: 1px solid #4e4528;
+    }
+    .receipt-detail-row {
+      display: grid;
+      grid-template-columns: minmax(84px, 0.28fr) minmax(0, 1fr);
+      gap: 0.55rem;
+    }
+    .receipt-detail-row strong {
+      color: #f2d27a;
+      font-weight: 700;
+    }
+    .receipt-detail-row span {
+      overflow-wrap: anywhere;
+    }
     .toast-stack {
       display: grid;
       gap: 0.35rem;
@@ -973,6 +1027,8 @@
     let draggedWidget = '';
     let activeCardMenu = '';
     let bookFiles = { Installed: true, Books: [] };
+    let currentReceipt = { summary: 'Ready.', details: [] };
+    let receiptExpanded = false;
     const playModeKey = 'greystar.mode';
     const playModes = ['auto', 'manual', 'cli'];
     let playMode = normalizePlayMode(localStorage.getItem(playModeKey));
@@ -1046,7 +1102,15 @@
     }
 
     function manualAutomationMessage(kind = 'automation') {
-      message.textContent = `Manual mode: ${kind} is disabled. Use the sheet controls to update the character yourself.`;
+      setReceipt({
+        summary: `Manual Mode - ${kind} disabled`,
+        title: 'Manual Mode',
+        details: [
+          receiptDetail('Mode', 'Manual Mode'),
+          receiptDetail('Why', `${kind} are disabled so you can handle the book math yourself.`),
+          receiptDetail('How', 'Use the sheet, inventory, and stat controls to update Grey Star manually.')
+        ]
+      });
     }
 
     function manualDisabledAttributes(kind = 'automation') {
@@ -1060,6 +1124,440 @@
         ? `title="Manual mode: ${escapeHtml(kind)} is disabled. Use the sheet controls to update state yourself."`
         : '';
       return `<button type="button" ${attrs} ${manualDisabledAttributes(kind)} ${title}>${label}</button>`;
+    }
+
+    function cloneAppSnapshot(value) {
+      try {
+        return value ? JSON.parse(JSON.stringify(value)) : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function receiptDetail(label, value) {
+      const clean = text(value).trim();
+      return clean ? { label, value: clean } : null;
+    }
+
+    function setReceipt(receipt) {
+      currentReceipt = receipt || { summary: 'Ready.', details: [] };
+      receiptExpanded = false;
+      renderReceipt();
+    }
+
+    function renderReceipt() {
+      const details = arr(currentReceipt?.details).filter(Boolean);
+      const expandable = details.length > 0;
+      const summary = text(currentReceipt?.summary, 'Ready.');
+      message.className = `message${expandable ? ' event-receipt' : ''}${receiptExpanded ? ' expanded' : ''}`;
+      message.setAttribute('role', expandable ? 'button' : 'status');
+      message.setAttribute('aria-live', 'polite');
+      if (expandable) {
+        message.tabIndex = 0;
+        message.setAttribute('aria-expanded', receiptExpanded ? 'true' : 'false');
+      } else {
+        message.removeAttribute('tabindex');
+        message.removeAttribute('aria-expanded');
+      }
+      message.innerHTML = `
+        <div class="receipt-summary">
+          <span>${escapeHtml(summary)}</span>
+          ${expandable ? '<i class="receipt-toggle" aria-hidden="true"></i>' : ''}
+        </div>
+        ${expandable && receiptExpanded ? `
+          <div class="receipt-detail">
+            ${details.map((item) => `
+              <div class="receipt-detail-row">
+                <strong>${escapeHtml(item.label || 'Detail')}</strong>
+                <span>${escapeHtml(item.value || '')}</span>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+      `;
+    }
+
+    function toggleReceipt() {
+      if (!arr(currentReceipt?.details).filter(Boolean).length) return;
+      receiptExpanded = !receiptExpanded;
+      renderReceipt();
+    }
+
+    function messageLines(value) {
+      return text(value)
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean);
+    }
+
+    function stateFrom(snapshot) { return snapshot?.state || {}; }
+    function characterFrom(snapshot) { return stateFrom(snapshot).Character || {}; }
+    function inventoryFrom(snapshot) { return stateFrom(snapshot).Inventory || {}; }
+    function automationFrom(snapshot) { return stateFrom(snapshot).Automation || {}; }
+    function combatFrom(snapshot) { return stateFrom(snapshot).Combat || {}; }
+
+    function locationLabel(snapshot) {
+      const state = stateFrom(snapshot);
+      const character = characterFrom(snapshot);
+      const bookNumber = Number(character.BookNumber || state.CurrentBookNumber || 1);
+      const section = Number(state.CurrentSection || character.Section || 1);
+      const book = bookByNumber(bookNumber);
+      return `Book ${bookNumber}, section ${section}${book?.title ? ` (${book.title})` : ''}`;
+    }
+
+    function asNumber(value) {
+      const number = Number(value);
+      return Number.isFinite(number) ? number : 0;
+    }
+
+    function signedValue(delta) {
+      return `${delta > 0 ? '+' : ''}${delta}`;
+    }
+
+    function statValue(character, inventory, key) {
+      if (key === 'END') return asNumber(character.EnduranceCurrent);
+      if (key === 'END Max') return asNumber(character.EnduranceMax);
+      if (key === 'WP') return asNumber(character.WillpowerCurrent);
+      if (key === 'CS') return asNumber(character.CombatSkillCurrent);
+      if (key === 'Nobles') return asNumber(inventory.Nobles);
+      return 0;
+    }
+
+    function itemCounts(items) {
+      const counts = new Map();
+      arr(items).forEach((item) => {
+        const label = text(item).trim();
+        if (!label) return;
+        counts.set(label, (counts.get(label) || 0) + 1);
+      });
+      return counts;
+    }
+
+    function inventoryDiffs(beforeItems, afterItems) {
+      const beforeCounts = itemCounts(beforeItems);
+      const afterCounts = itemCounts(afterItems);
+      const names = new Set([...beforeCounts.keys(), ...afterCounts.keys()]);
+      const added = [];
+      const removed = [];
+      names.forEach((name) => {
+        const diff = (afterCounts.get(name) || 0) - (beforeCounts.get(name) || 0);
+        if (diff > 0) added.push(`${name}${diff > 1 ? ` x${diff}` : ''}`);
+        if (diff < 0) removed.push(`${name}${diff < -1 ? ` x${Math.abs(diff)}` : ''}`);
+      });
+      return { added, removed };
+    }
+
+    function friendlyFlagName(key) {
+      const labels = {
+        karmoPotionActive: 'Karmo Potion active',
+        karmoSideEffectPending: 'Karmo side effect pending',
+        karmoSideEffectApplied: 'Karmo side effect applied',
+        yabariOintmentApplied: 'Yabari Ointment protection',
+        invulnerabilityActive: 'Invulnerability protection',
+        taramaSeedReady: 'Tarama Seed ready',
+        staffAvailable: 'Wizard\'s Staff available',
+        backpackAvailable: 'Backpack available',
+        backpackItemsAvailable: 'Backpack items available'
+      };
+      return labels[key] || key;
+    }
+
+    function stateChangeDetails(beforeSnapshot, afterSnapshot) {
+      const beforeCharacter = characterFrom(beforeSnapshot);
+      const afterCharacter = characterFrom(afterSnapshot);
+      const beforeInventory = inventoryFrom(beforeSnapshot);
+      const afterInventory = inventoryFrom(afterSnapshot);
+      const beforeFlags = automationFrom(beforeSnapshot).Flags || {};
+      const afterFlags = automationFrom(afterSnapshot).Flags || {};
+      const details = [];
+      let short = '';
+      let itemShort = '';
+
+      [
+        ['END', 'Endurance'],
+        ['WP', 'Willpower'],
+        ['CS', 'Combat Skill'],
+        ['Nobles', 'Nobles']
+      ].forEach(([key, label]) => {
+        const before = statValue(beforeCharacter, beforeInventory, key);
+        const after = statValue(afterCharacter, afterInventory, key);
+        if (before === after) return;
+        const delta = after - before;
+        if (!short) short = `Applied ${signedValue(delta)} ${key}`;
+        const suffix = key === 'END'
+          ? `/${asNumber(beforeCharacter.EnduranceMax)} -> ${after}/${asNumber(afterCharacter.EnduranceMax)}`
+          : ` -> ${after}`;
+        details.push(receiptDetail(label, key === 'END' ? `${before}${suffix}` : `${before}${suffix}`));
+      });
+
+      if (asNumber(beforeCharacter.EnduranceMax) !== asNumber(afterCharacter.EnduranceMax) && asNumber(beforeCharacter.EnduranceCurrent) === asNumber(afterCharacter.EnduranceCurrent)) {
+        details.push(receiptDetail('Endurance Max', `${asNumber(beforeCharacter.EnduranceMax)} -> ${asNumber(afterCharacter.EnduranceMax)}`));
+        if (!short) short = 'Updated END maximum';
+      }
+
+      [
+        ['Weapons', 'Weapons'],
+        ['BackpackItems', 'Backpack'],
+        ['HerbPouchItems', 'Herb Pouch'],
+        ['SpecialItems', 'Special Items']
+      ].forEach(([key, label]) => {
+        const diff = inventoryDiffs(beforeInventory[key], afterInventory[key]);
+        if (diff.added.length) {
+          const value = diff.added.join(', ');
+          details.push(receiptDetail(label, `Added ${value}`));
+          if (!itemShort) itemShort = `Added ${value}`;
+        }
+        if (diff.removed.length) {
+          const value = diff.removed.join(', ');
+          details.push(receiptDetail(label, `Removed ${value}`));
+          if (!itemShort) itemShort = `Removed ${value}`;
+        }
+      });
+      if (!short && itemShort) short = itemShort;
+
+      const flagKeys = new Set([...Object.keys(beforeFlags || {}), ...Object.keys(afterFlags || {})]);
+      flagKeys.forEach((key) => {
+        if (beforeFlags?.[key] === afterFlags?.[key]) return;
+        const before = beforeFlags?.[key] === true ? 'on' : (beforeFlags?.[key] === false ? 'off' : text(beforeFlags?.[key], 'unset'));
+        const after = afterFlags?.[key] === true ? 'on' : (afterFlags?.[key] === false ? 'off' : text(afterFlags?.[key], 'unset'));
+        details.push(receiptDetail('Flag', `${friendlyFlagName(key)}: ${before} -> ${after}`));
+        if (!short) short = `${friendlyFlagName(key)} ${after}`;
+      });
+
+      const beforeState = stateFrom(beforeSnapshot);
+      const afterState = stateFrom(afterSnapshot);
+      const beforeBook = asNumber(beforeCharacter.BookNumber || beforeState.CurrentBookNumber || 1);
+      const afterBook = asNumber(afterCharacter.BookNumber || afterState.CurrentBookNumber || 1);
+      const beforeSection = asNumber(beforeState.CurrentSection || 1);
+      const afterSection = asNumber(afterState.CurrentSection || 1);
+      if (beforeBook !== afterBook || beforeSection !== afterSection) {
+        details.push(receiptDetail('Position', `Book ${beforeBook}, section ${beforeSection} -> Book ${afterBook}, section ${afterSection}`));
+      }
+
+      return { short, itemShort, details: details.filter(Boolean) };
+    }
+
+    function achievementDetails(snapshot) {
+      const unlocks = arr(snapshot?.achievementUnlocks);
+      if (!unlocks.length) return [];
+      const achievements = snapshot?.achievements || {};
+      const rows = [
+        receiptDetail('Unlocked', unlocks.map((entry) => text(entry.Name, 'Achievement')).join(', '))
+      ];
+      if (achievements.UnlockedCount !== undefined && achievements.TotalCount !== undefined) {
+        rows.push(receiptDetail('Progress', `${achievements.UnlockedCount}/${achievements.TotalCount}`));
+      }
+      return rows.filter(Boolean);
+    }
+
+    function assistantOutputDetail(snapshot) {
+      const lines = messageLines(snapshot?.message);
+      return lines.length ? receiptDetail('Assistant', lines.join(' | ')) : null;
+    }
+
+    function flowLootLabel(snapshot, id) {
+      const entry = snapshot?.sectionFlow?.Entry || {};
+      const option = arr(entry.loot).find((item) => text(item?.id) === text(id));
+      return text(option?.label || id, 'Loot');
+    }
+
+    function lastNewCombatRound(beforeSnapshot, afterSnapshot) {
+      const beforeLog = arr(combatFrom(beforeSnapshot).Log);
+      const afterLog = arr(combatFrom(afterSnapshot).Log);
+      return afterLog.length > beforeLog.length ? afterLog[afterLog.length - 1] : null;
+    }
+
+    function combatReceipt(payload, beforeSnapshot, afterSnapshot, changes) {
+      const actionName = text(payload.action);
+      const combat = combatFrom(afterSnapshot);
+      const beforeCombat = combatFrom(beforeSnapshot);
+      const enemy = text(combat.EnemyName || beforeCombat.EnemyName, 'Enemy');
+      const details = [
+        receiptDetail('Enemy', enemy),
+        receiptDetail('Weapon', text(combat.ActiveWeapon || beforeCombat.ActiveWeapon || 'Unarmed')),
+        ...changes.details
+      ];
+      const round = lastNewCombatRound(beforeSnapshot, afterSnapshot);
+      if (round) {
+        details.unshift(receiptDetail('Round', String(round.Round || combat.RoundCount || '?')));
+        details.push(receiptDetail('Roll', `${text(round.Roll, '?')} at ratio ${text(round.Ratio, '?')}`));
+        details.push(receiptDetail('Result', `Grey Star -${text(round.PlayerLoss ?? round.GreyStarLoss, '0')} END; ${enemy} -${text(round.EnemyLoss, '0')} END${asNumber(round.StaffWillpower) ? `; ${round.StaffWillpower} WP spent` : ''}`));
+        details.push(receiptDetail('Current', `Grey Star END ${text(round.FinalPlayerEnd ?? round.PlayerEnd ?? combat.PlayerEnduranceCurrent, '?')}/${text(combat.PlayerEnduranceMax, '?')}; WP ${text(round.FinalWillpower ?? characterFrom(afterSnapshot).WillpowerCurrent, '?')}; ${enemy} END ${text(round.EnemyEnd ?? combat.EnemyEnduranceCurrent, '?')}/${text(combat.EnemyEnduranceMax, '?')}`));
+        details.push(receiptDetail('Why', 'The Combat Results Table used the current combat ratio and roll.'));
+        return {
+          summary: actionName === 'combat_evade' ? `Combat - Evade round resolved` : `Combat - Round ${text(round.Round || combat.RoundCount, '?')} resolved`,
+          title: 'Combat Receipt',
+          details: details.filter(Boolean)
+        };
+      }
+      if (actionName === 'combat_start' || actionName === 'section_combat_start') {
+        details.push(receiptDetail('Stats', `Grey Star CS ${text(combat.PlayerCombatSkill, '?')} vs ${enemy} CS ${text(combat.EnemyCombatSkillEffective ?? combat.EnemyCombatSkill, '?')}; enemy END ${text(combat.EnemyEnduranceCurrent, '?')}/${text(combat.EnemyEnduranceMax, '?')}`));
+        details.push(receiptDetail('How', actionName === 'section_combat_start' ? 'Started from this section\'s audited combat preset.' : 'Started from the Combat tab form.'));
+        return { summary: `Combat - Started ${enemy}`, title: 'Combat Started', details: details.filter(Boolean) };
+      }
+      if (actionName === 'combat_auto') {
+        const rounds = arr(combat.Log).length - arr(beforeCombat.Log).length;
+        details.push(receiptDetail('Rounds', rounds > 0 ? `${rounds} round${rounds === 1 ? '' : 's'} resolved` : 'No new round was resolved'));
+        details.push(receiptDetail('Current', `Grey Star END ${text(combat.PlayerEnduranceCurrent, '?')}/${text(combat.PlayerEnduranceMax, '?')}; ${enemy} END ${text(combat.EnemyEnduranceCurrent, '?')}/${text(combat.EnemyEnduranceMax, '?')}`));
+        return { summary: `Combat - Auto resolved ${Math.max(0, rounds)} round${rounds === 1 ? '' : 's'}`, title: 'Combat Auto Resolve', details: details.filter(Boolean) };
+      }
+      if (actionName === 'combat_stop') {
+        return { summary: `Combat - Stopped ${enemy}`, title: 'Combat Stopped', details: details.filter(Boolean) };
+      }
+      return null;
+    }
+
+    function buildActionReceipt(payload, beforeSnapshot, afterSnapshot) {
+      const actionName = text(payload?.action);
+      const changes = stateChangeDetails(beforeSnapshot, afterSnapshot);
+      const output = assistantOutputDetail(afterSnapshot);
+      const achievements = achievementDetails(afterSnapshot);
+      const base = [
+        receiptDetail('Where', locationLabel(afterSnapshot)),
+        ...changes.details,
+        output,
+        ...achievements
+      ].filter(Boolean);
+
+      if (actionName === 'apply_automation') {
+        const automation = afterSnapshot?.sectionFlow?.Automation || {};
+        const noAutomation = /No simple automation/i.test(text(afterSnapshot?.message));
+        const summary = noAutomation ? 'No section automation' : (changes.short || 'Applied section effects');
+        return {
+          summary: `Automation - ${summary}`,
+          title: 'Section Automation',
+          details: [
+            receiptDetail('Where', locationLabel(afterSnapshot)),
+            receiptDetail('Why', noAutomation ? 'No audited simple automation is recorded for this section.' : text(automation.Summary, 'This section has audited automation.')),
+            ...changes.details,
+            receiptDetail('Audit Result', arr(automation.Messages).join('; ')),
+            receiptDetail('How', noAutomation ? 'You pressed Apply Effects, but there was nothing automated to apply.' : 'You pressed Apply Effects. The assistant used the section audit, updated the sheet, and saved the game.'),
+            output,
+            ...achievements
+          ].filter(Boolean)
+        };
+      }
+
+      if (['use_item', 'karmo_side_effect', 'karmo_finish', 'meal'].includes(actionName)) {
+        const item = actionName === 'use_item' ? text(payload.item, 'Item') : (actionName === 'meal' ? (payload.missed ? 'Missed Meal' : 'Meal') : 'Karmo Potion');
+        const why = actionName === 'use_item' ? itemUseHelp(item) : (actionName === 'meal' ? 'Meals and missed meals are tracked from the Backpack.' : 'Karmo has special Book 2 timing and side-effect rules.');
+        return {
+          summary: `Item - ${actionName === 'meal' ? text(changes.short || (payload.missed ? 'Missed meal applied' : 'Meal eaten')) : `Used ${item}`}`,
+          title: 'Item Receipt',
+          details: [
+            receiptDetail('Item', item),
+            receiptDetail('Where', locationLabel(afterSnapshot)),
+            ...changes.details,
+            receiptDetail('Why', why),
+            receiptDetail('How', actionName === 'use_item' ? 'You clicked Use beside the item. The assistant applied the configured item effect and saved.' : 'The assistant applied the selected item or meal rule and saved.'),
+            output,
+            ...achievements
+          ].filter(Boolean)
+        };
+      }
+
+      if (actionName === 'flow_loot') {
+        const label = flowLootLabel(beforeSnapshot, payload.id);
+        return {
+          summary: `Loot - ${changes.itemShort || changes.short || `Applied ${label}`}`,
+          title: 'Loot Receipt',
+          details: [
+            receiptDetail('Loot', label),
+            receiptDetail('Where', locationLabel(afterSnapshot)),
+            ...changes.details,
+            receiptDetail('Why', 'This section offers an audited loot or item choice.'),
+            receiptDetail('How', 'You clicked the loot Apply button. The assistant updated inventory or flags and saved.'),
+            output,
+            ...achievements
+          ].filter(Boolean)
+        };
+      }
+
+      if (['combat_start', 'section_combat_start', 'combat_round', 'combat_auto', 'combat_evade', 'combat_stop'].includes(actionName)) {
+        const receipt = combatReceipt(payload, beforeSnapshot, afterSnapshot, changes);
+        if (receipt) {
+          receipt.details = [...receipt.details, output, ...achievements].filter(Boolean);
+          return receipt;
+        }
+      }
+
+      if (actionName === 'death_recovery') {
+        const mode = text(payload.mode, 'repeat').toLowerCase();
+        const label = mode === 'rewind' ? 'Rewound' : 'Repeated';
+        return {
+          summary: `Death - ${label} section ${text(stateFrom(afterSnapshot).CurrentSection, '?')}`,
+          title: 'Death Recovery',
+          details: [
+            receiptDetail('Choice', label),
+            receiptDetail('Restored', locationLabel(afterSnapshot)),
+            ...changes.details,
+            receiptDetail('Why', mode === 'rewind' ? 'Rewind restores the previous section checkpoint so you can choose another route.' : 'Repeat restores the current section entry state so you can try the same fight or roll again.'),
+            receiptDetail('How', 'The assistant restored the saved checkpoint, kept achievement history, and saved the game.'),
+            output,
+            ...achievements
+          ].filter(Boolean)
+        };
+      }
+
+      if (['complete_book', 'continue_book', 'repeat_book'].includes(actionName)) {
+        const completion = afterSnapshot?.bookComplete || {};
+        const summary = completion.Summary || {};
+        const bookTitle = text(summary.BookTitle || bookByNumber(characterFrom(beforeSnapshot).BookNumber)?.title || bookByNumber(characterFrom(afterSnapshot).BookNumber)?.title, 'Book');
+        const verb = actionName === 'complete_book' ? 'Completed' : (actionName === 'repeat_book' ? 'Repeated' : 'Continued');
+        return {
+          summary: `Book - ${verb} ${bookTitle}`,
+          title: 'Book Receipt',
+          details: [
+            receiptDetail('Book', bookTitle),
+            receiptDetail('Where', locationLabel(afterSnapshot)),
+            ...changes.details,
+            receiptDetail('Why', actionName === 'complete_book' ? 'The current section is marked as a successful book ending.' : 'You selected a book handoff or replay option from the completion screen.'),
+            receiptDetail('How', 'The assistant updated campaign progress, book state, and saves.'),
+            output,
+            ...achievements
+          ].filter(Boolean)
+        };
+      }
+
+      if (achievements.length) {
+        const unlocks = arr(afterSnapshot?.achievementUnlocks);
+        const progress = achievements.filter((item) => item?.label === 'Progress');
+        return {
+          summary: unlocks.length === 1 ? `Achievement - ${text(unlocks[0].Name, 'Achievement')} unlocked` : `Achievement - ${unlocks.length} unlocked`,
+          title: 'Achievement Receipt',
+          details: [
+            receiptDetail('Unlocked', unlocks.map((entry) => text(entry.Name, 'Achievement')).join(', ')),
+            receiptDetail('Why', 'The assistant matched an achievement rule after the last action.'),
+            ...progress
+          ].filter(Boolean)
+        };
+      }
+
+      if (actionName === 'roll') {
+        return {
+          summary: `Roll - ${text(afterSnapshot?.message, 'Rolled 0-9')}`,
+          title: 'Roll Receipt',
+          details: [
+            receiptDetail('Where', locationLabel(afterSnapshot)),
+            receiptDetail('Result', text(afterSnapshot?.message)),
+            receiptDetail('Why', 'Grey Star random checks use digits from 0 to 9. Section-aware roll rules are applied when the audit has one.')
+          ].filter(Boolean)
+        };
+      }
+
+      if (actionName === 'shutdown') {
+        return {
+          summary: 'System - Server shutting down',
+          title: 'System Notice',
+          details: [receiptDetail('Status', text(afterSnapshot?.message, 'Grey Star assistant server is shutting down.'))].filter(Boolean)
+        };
+      }
+
+      return {
+        summary: text(afterSnapshot?.message, 'Updated.'),
+        title: 'Assistant Notice',
+        details: base
+      };
     }
 
     function bookUrl(bookNumber, section) {
@@ -1123,6 +1621,7 @@
     }
 
     async function action(payload) {
+      const beforeAction = cloneAppSnapshot(app);
       const response = await fetch('/api/action', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1131,7 +1630,7 @@
       app = await response.json();
       if (!response.ok) throw new Error(app.error || 'Action failed');
       syncUiPreferences(app.uiPreferences);
-      message.textContent = app.message || 'Updated.';
+      setReceipt(buildActionReceipt(payload, beforeAction, app));
       showAchievementUnlocks(app.achievementUnlocks);
       syncBookToState();
       render();
@@ -1152,9 +1651,6 @@
           toast.remove();
         }, 6500);
       });
-      message.textContent = entries.length === 1
-        ? `Achievement unlocked: ${text(entries[0].Name, 'Achievement')}`
-        : `${entries.length} achievements unlocked.`;
     }
 
     function syncBookToState() {
@@ -3074,6 +3570,13 @@
       }).join('')}</div>`;
     }
 
+    message.addEventListener('click', toggleReceipt);
+    message.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      toggleReceipt();
+    });
+
     document.addEventListener('pointerdown', (event) => {
       if (event.target.closest?.('.menu-popover, .app-menu-button, .card-menu-button')) return;
       closeMenus();
@@ -3162,7 +3665,14 @@
       if (button.dataset.importSave !== undefined) {
         const file = document.getElementById('importSaveInput')?.files?.[0];
         if (!file) {
-          message.textContent = 'Choose a save JSON file first.';
+          setReceipt({
+            summary: 'Save - Choose a save JSON file first',
+            title: 'Save Import',
+            details: [
+              receiptDetail('Why', 'Import needs a selected Grey Star save JSON file.'),
+              receiptDetail('How', 'Choose a file in the import control, then press Import Selected Save again.')
+            ]
+          });
           return;
         }
         const raw = await file.text();
@@ -3413,7 +3923,14 @@
 
     fetchState().catch((error) => {
       serverStatus.textContent = 'Disconnected';
-      message.textContent = error.message;
+      setReceipt({
+        summary: `Connection - ${error.message}`,
+        title: 'Connection Error',
+        details: [
+          receiptDetail('Status', error.message),
+          receiptDetail('Try', 'Start the local server and open the assistant from localhost.')
+        ]
+      });
       loadBook(1, null);
     });
   </script>
