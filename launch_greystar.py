@@ -36,12 +36,12 @@ def start_process(args: list[str], env: dict[str, str] | None = None) -> subproc
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Launch the Grey Star web assistant.")
-    parser.add_argument("--http-port", type=int, default=8797)
-    parser.add_argument("--ws-port", type=int, default=8798, help="Port for the embedded CLI terminal bridge.")
+    parser.add_argument("--http-port", type=int, default=8897)
+    parser.add_argument("--ws-port", type=int, default=8898, help="Port for the embedded CLI terminal bridge.")
     parser.add_argument("--no-browser", action="store_true")
     args = parser.parse_args()
 
-    url = f"http://localhost:{args.http_port}"
+    url = f"http://127.0.0.1:{args.http_port}"
     env = os.environ.copy()
     env["GREYSTAR_HTTP_PORT"] = str(args.http_port)
     env["GRAYSTAR_HTTP_PORT"] = str(args.http_port)
@@ -81,7 +81,7 @@ def main() -> int:
 
     print(f"  Library:   {url}")
     print(f"  Web App:   {url}/assistant.html")
-    print(f"  CLI WS:    ws://localhost:{args.ws_port}")
+    print(f"  CLI WS:    ws://127.0.0.1:{args.ws_port}")
     print("")
     if not args.no_browser:
         webbrowser.open(url)

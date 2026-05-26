@@ -18,7 +18,7 @@ Use this before tagging or uploading a public build.
    ```
 
 4. Install the Project Aon book files by following `docs/INSTALL_PROJECT_AON_BOOKS.md`.
-5. Open `http://localhost:8797/assistant.html`.
+5. Open `http://127.0.0.1:8897/assistant.html`.
 
 ## Smoke Test
 

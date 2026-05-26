@@ -5,8 +5,8 @@
 #>
 
 param(
-    [int]$HttpPort = 8797,
-    [int]$WsPort = 8798,
+    [int]$HttpPort = 8897,
+    [int]$WsPort = 8898,
     [switch]$NoBrowser
 )
 

@@ -13,7 +13,7 @@ From the project folder:
 Then open:
 
 ```text
-http://localhost:8797/assistant.html
+http://127.0.0.1:8897/assistant.html
 ```
 
 ## Install The Books
@@ -25,7 +25,7 @@ Download the standard Grey Star HTML ZIPs from Project Aon for personal use, the
 Use the local guide page:
 
 ```text
-http://localhost:8797/install-books.html
+http://127.0.0.1:8897/install-books.html
 ```
 
 Or read:

@@ -35,7 +35,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 ASSISTANT_SCRIPT = SCRIPT_DIR / "greystar.py"
 POWERSHELL_SCRIPT = SCRIPT_DIR / "greystar.ps1"
 WS_HOST = "localhost"
-WS_PORT = int(os.environ.get("GREYSTAR_WS_PORT", os.environ.get("GRAYSTAR_WS_PORT", "8798")))
+WS_PORT = int(os.environ.get("GREYSTAR_WS_PORT", os.environ.get("GRAYSTAR_WS_PORT", "8898")))
 INIT_COLS = 120
 INIT_ROWS = 30
 

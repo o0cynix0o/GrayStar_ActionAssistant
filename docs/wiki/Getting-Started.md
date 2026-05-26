@@ -29,7 +29,7 @@ python .\launch_greystar.py
 Then open:
 
 ```text
-http://localhost:8797/assistant.html
+http://127.0.0.1:8897/assistant.html
 ```
 
 ## Install The Books
@@ -41,7 +41,7 @@ Download the standard Grey Star HTML ZIPs from Project Aon for personal use and 
 The local guide page has links and PowerShell examples:
 
 ```text
-http://localhost:8797/install-books.html
+http://127.0.0.1:8897/install-books.html
 ```
 
 The repo guide is:
@@ -53,7 +53,7 @@ docs\INSTALL_PROJECT_AON_BOOKS.md
 ## Basic Play Flow
 
 1. Start the local server.
-2. Open the assistant page from `localhost`.
+2. Open the assistant page from the local server address.
 3. Create or load your Grey Star character.
 4. Read the book in the left pane.
 5. Use the assistant on the right for inventory, stats, combat, rolls, notes, saves, and achievements.
@@ -78,7 +78,7 @@ The assistant now blocks direct `file:///` loading and tells you to start the lo
 Correct:
 
 ```text
-http://localhost:8797/assistant.html
+http://127.0.0.1:8897/assistant.html
 ```
 
 Risky:

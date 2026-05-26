@@ -4,7 +4,7 @@ Grey Star Action Assistant is a local browser-based play aid for the four *Grey 
 
 The app is built to run locally from your machine. It does not require a hosted account or cloud save service.
 
-Current public release: **v1.1.5**
+Current public release: **v1.1.6**
 
 ## Book Files Are Not Included
 
@@ -15,7 +15,7 @@ After downloading the app, download the standard Grey Star HTML ZIPs directly fr
 Full walkthrough:
 
 - `docs/INSTALL_PROJECT_AON_BOOKS.md`
-- local app page: `http://localhost:8797/install-books.html`
+- local app page: `http://127.0.0.1:8897/install-books.html`
 
 Project Aon links:
 
@@ -100,15 +100,15 @@ python .\launch_greystar.py
 Then open:
 
 ```text
-http://localhost:8797/assistant.html
+http://127.0.0.1:8897/assistant.html
 ```
 
-Use the `localhost` page. Opening `assistant.html` directly from the file system is blocked because file-mode links can resolve against your drive root instead of the app.
+Use the local server address. Opening `assistant.html` directly from the file system is blocked because file-mode links can resolve against your drive root instead of the app.
 
 If this is a fresh release install, open the book install guide first:
 
 ```text
-http://localhost:8797/install-books.html
+http://127.0.0.1:8897/install-books.html
 ```
 
 ## Play Modes
@@ -121,13 +121,13 @@ Use the small white dot in the upper-right of the assistant panel to switch mode
 
 Default ports:
 
-- Library and web app: `http://localhost:8797`
-- Embedded CLI bridge: `ws://localhost:8798`
+- Library and web app: `http://127.0.0.1:8897`
+- Embedded CLI bridge: `ws://127.0.0.1:8898`
 
 ## Basic Play Flow
 
 1. Start the app from PowerShell.
-2. Open the assistant page from `localhost`.
+2. Open the assistant page from the local server address.
 3. Create or load a Grey Star character.
 4. Read the book in the left pane.
 5. Click book section links normally; the assistant follows your current section.

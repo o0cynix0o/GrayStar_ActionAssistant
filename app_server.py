@@ -581,11 +581,11 @@ class GreyStarHandler(BaseHTTPRequestHandler):
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Grey Star web app server")
-    parser.add_argument("--host", default="localhost")
+    parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument(
         "--port",
         type=int,
-        default=int(os.environ.get("GREYSTAR_HTTP_PORT", os.environ.get("GRAYSTAR_HTTP_PORT", "8797"))),
+        default=int(os.environ.get("GREYSTAR_HTTP_PORT", os.environ.get("GRAYSTAR_HTTP_PORT", "8897"))),
     )
     args = parser.parse_args()
 

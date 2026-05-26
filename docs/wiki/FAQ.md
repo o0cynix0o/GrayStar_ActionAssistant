@@ -44,14 +44,14 @@ The longer walkthrough is here:
 
 - [Installing Project Aon Books](Installing-Project-Aon-Books)
 
-## Why Do I Need `localhost`?
+## Why Do I Need The Local Server Address?
 
 The assistant talks to a local Python server. If you open `assistant.html` directly as a file, the book pane may open but the assistant can be disconnected.
 
 Use:
 
 ```text
-http://localhost:8797/assistant.html
+http://127.0.0.1:8897/assistant.html
 ```
 
 If the assistant says disconnected, or only the book side loads, this is the first thing to check.
@@ -73,7 +73,7 @@ python .\launch_greystar.py
 Then open:
 
 ```text
-http://localhost:8797/assistant.html
+http://127.0.0.1:8897/assistant.html
 ```
 
 ## When Does The App Save?
@@ -379,7 +379,7 @@ First, trust the book text.
 
 Then check:
 
-- Are you on `localhost`, not a direct file path?
+- Are you on the local server address, not a direct file path?
 - Are you in Auto Mode or Manual Mode?
 - Is the current section correct?
 - Did you press Apply Effects for the section effect you chose?

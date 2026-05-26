@@ -112,7 +112,7 @@ Start the assistant:
 Then open:
 
 ```text
-http://localhost:8797/assistant.html
+http://127.0.0.1:8897/assistant.html
 ```
 
 The book pane should load the Project Aon HTML files from your local `books\gs` folder.

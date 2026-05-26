@@ -1063,7 +1063,7 @@
           <p>Start the server first:</p>
           <code>powershell -ExecutionPolicy Bypass -File "C:\\Scripts\\Grey Star\\Launch-GreyStar.ps1"</code>
           <p>Then open:</p>
-          <code>http://localhost:8797/assistant.html</code>
+          <code>http://127.0.0.1:8897/assistant.html</code>
         </main>
       `;
       throw new Error('Grey Star assistant must be opened from localhost.');
@@ -2125,7 +2125,8 @@
     function cliWsUrl() {
       const params = new URLSearchParams(window.location.search);
       const savedPort = localStorage.getItem('greystar.wsPort') || localStorage.getItem('graystar.wsPort') || '';
-      const port = params.get('wsPort') || savedPort || '8798';
+      const migratedPort = savedPort === '8798' ? '' : savedPort;
+      const port = params.get('wsPort') || migratedPort || '8898';
       const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
       const host = window.location.hostname || 'localhost';
       return `${protocol}//${host}:${port}`;
