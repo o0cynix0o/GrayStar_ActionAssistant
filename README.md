@@ -4,7 +4,7 @@ Grey Star Action Assistant is a local browser-based play aid for the four *Grey 
 
 The app is built to run locally from your machine. It does not require a hosted account or cloud save service.
 
-Current public release: **v1.1.3**
+Current public release: **v1.1.4**
 
 ## Book Files Are Not Included
 
@@ -66,8 +66,10 @@ Expand-Archive "$env:USERPROFILE\Downloads\04wotw.zip" -DestinationPath .\books\
 - Split view with the book reader on the left and the assistant on the right, once the Project Aon book files are installed locally.
 - Character sheet with Endurance, Willpower, Combat Skill, Nobles, Magicks, and completed books.
 - Inventory tracking for Weapons, Backpack Items, Special Items, Herb Pouch items, and stored/confiscated gear.
-- Audited section helpers for book effects, rolls, loot, Willpower costs, gear loss/return, and book completion.
+- Audited section helpers for book effects, rolls, route checks, loot, Willpower costs, gear loss/return, and book completion.
 - Expandable notification receipts that explain what the last automation, item use, combat round, death recovery, achievement, loot choice, or book completion changed.
+- Choices-card route checks for book math such as `CS + WP`, `END + WP`, current-stat thresholds, and section-specific branch totals.
+- Map card support for the local Project Aon map asset when the Book 1 files are installed.
 - Grey Star combat tracking with Staff use, modifiers, evasion, death handling, repeat/rewind recovery, and combat history.
 - Achievements with unlock notifications and replay support.
 - Save export, save import, and full save backup.
@@ -101,7 +103,7 @@ Then open:
 http://localhost:8797/assistant.html
 ```
 
-Use the `localhost` page. Opening `assistant.html` directly from the file system can make the book pane load while leaving the assistant disconnected.
+Use the `localhost` page. Opening `assistant.html` directly from the file system is blocked because file-mode links can resolve against your drive root instead of the app.
 
 If this is a fresh release install, open the book install guide first:
 

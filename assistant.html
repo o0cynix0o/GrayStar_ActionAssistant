@@ -555,6 +555,46 @@
     .sheet-choices {
       min-height: 128px;
     }
+    .sheet-map {
+      min-height: 260px;
+    }
+    .map-card-frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid #4e4528;
+      border-radius: 5px;
+      background: #080b06;
+    }
+    .map-card-frame img {
+      display: block;
+      width: 100%;
+      max-height: min(62vh, 680px);
+      height: auto;
+      object-fit: contain;
+    }
+    .map-card-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0.55rem;
+    }
+    .map-card-actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 0.25rem 0.6rem;
+      border: 1px solid #6e5c2d;
+      border-radius: 4px;
+      background: #202618;
+      color: #f2d27a;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .map-card-actions a:hover {
+      background: #2a321f;
+    }
     .choice-group {
       margin-top: 0.55rem;
     }
@@ -933,6 +973,32 @@
     #cliTerminalContainer .xterm {
       height: 100%;
     }
+    .file-mode-lock {
+      width: min(820px, calc(100% - 32px));
+      margin: 12vh auto;
+      padding: 1.2rem;
+      border: 1px solid #6d5f35;
+      border-radius: 6px;
+      background: #171b12;
+      color: #efe8d0;
+      line-height: 1.5;
+    }
+    .file-mode-lock h1 {
+      margin-bottom: 0.8rem;
+      text-transform: none;
+      font-size: 1.35rem;
+    }
+    .file-mode-lock code {
+      display: block;
+      margin: 0.8rem 0;
+      padding: 0.75rem;
+      border: 1px solid #4e4528;
+      border-radius: 5px;
+      background: #10130e;
+      color: #f2d27a;
+      font-family: Consolas, "Courier New", monospace;
+      overflow-wrap: anywhere;
+    }
     @media (max-width: 980px) {
       body { height: auto; overflow: auto; }
       .workspace { height: auto; min-height: calc(100vh - 50px); display: flex; flex-direction: column; }
@@ -954,7 +1020,7 @@
 </head>
 <body>
   <header>
-    <a href="/" target="_top">Home</a>
+    <a href="index.html" target="_top">Home</a>
     <h1>Grey Star</h1>
     <div class="spacer"></div>
     <div class="mode-indicator" id="modeIndicator">Auto Mode</div>
@@ -987,9 +1053,29 @@
     </section>
   </main>
 
+  <script>
+    if (window.location.protocol === 'file:') {
+      window.GREYSTAR_FILE_MODE_BLOCKED = true;
+      document.body.innerHTML = `
+        <main class="file-mode-lock">
+          <h1>Start Grey Star From Localhost</h1>
+          <p>This assistant is a local web app, not a standalone file page. Opening <code>assistant.html</code> directly can make browser links resolve against your drive root.</p>
+          <p>Start the server first:</p>
+          <code>powershell -ExecutionPolicy Bypass -File "C:\\Scripts\\Grey Star\\Launch-GreyStar.ps1"</code>
+          <p>Then open:</p>
+          <code>http://localhost:8797/assistant.html</code>
+        </main>
+      `;
+      throw new Error('Grey Star assistant must be opened from localhost.');
+    }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
   <script>
+    if (window.GREYSTAR_FILE_MODE_BLOCKED) {
+      throw new Error('Grey Star assistant must be opened from localhost.');
+    }
+
     const books = [
       { number: 1, title: 'Grey Star the Wizard', folder: '01gstw', sections: 350 },
       { number: 2, title: 'The Forbidden City', folder: '02tfc', sections: 310 },
@@ -1101,27 +1187,336 @@
       if (modeIndicator) modeIndicator.textContent = playModeLabel();
     }
 
-    function manualAutomationMessage(kind = 'automation') {
-      setReceipt({
-        summary: `Manual Mode - ${kind} disabled`,
-        title: 'Manual Mode',
-        details: [
-          receiptDetail('Mode', 'Manual Mode'),
-          receiptDetail('Why', `${kind} are disabled so you can handle the book math yourself.`),
-          receiptDetail('How', 'Use the sheet, inventory, and stat controls to update Grey Star manually.')
-        ]
-      });
+    function statControlName(stat) {
+      const key = text(stat).toLowerCase();
+      if (['end', 'endurance'].includes(key)) return 'END';
+      if (['wp', 'willpower'].includes(key)) return 'WP';
+      if (['cs', 'combat_skill', 'combat skill'].includes(key)) return 'CS';
+      if (key === 'nobles') return 'Nobles';
+      return text(stat, 'Stat');
+    }
+
+    function statControlLocation(stat) {
+      const key = text(stat).toLowerCase();
+      if (key === 'nobles') return 'Inventory tab > Nobles controls';
+      return `Vitals card > ${statControlName(stat)}`;
+    }
+
+    function itemContainerLabel(container) {
+      const key = text(container, 'backpack').toLowerCase();
+      if (key === 'weapon') return 'Weapon';
+      if (key === 'special') return 'Special';
+      if (key === 'herb') return 'Herb';
+      if (key === 'herb_or_backpack') return 'Herb if the Herb Pouch exists, otherwise Backpack';
+      return 'Backpack';
+    }
+
+    function conditionAdvice(condition) {
+      if (!condition || typeof condition !== 'object') return '';
+      const kind = text(condition.type).toLowerCase();
+      if (kind === 'flag') return `if ${friendlyFlagName(condition.key)} is ${condition.value === false ? 'off' : 'on'}`;
+      if (kind === 'item') return `if you have ${text(condition.name, 'the required item')}`;
+      if (kind === 'power') return `if you have ${text(condition.name, 'the required Power')}`;
+      if (kind === 'no_power') return `if you do not have ${text(condition.name, 'the required Power')}`;
+      if (kind === 'wp_gt') return `if WP is greater than ${text(condition.value, 'the listed value')}`;
+      if (kind === 'wp_gte') return `if WP is at least ${text(condition.value, 'the listed value')}`;
+      if (kind === 'end_lt') return `if END is less than ${text(condition.value, 'the listed value')}`;
+      if (kind === 'end_gte') return `if END is at least ${text(condition.value, 'the listed value')}`;
+      if (kind === 'staff_available') return 'if the Wizard\'s Staff is available';
+      return '';
+    }
+
+    function manualStatAdvice(action) {
+      const stat = statControlName(action.stat);
+      const location = statControlLocation(action.stat);
+      const mode = text(action.mode, 'delta').toLowerCase();
+      const condition = conditionAdvice(action.condition);
+      if (mode === 'set') {
+        const value = text(action.value, '0');
+        return {
+          summary: `Set ${stat} to ${value}`,
+          how: `${location}: type ${value} in Set, then click Set.${condition ? ` Only do this ${condition}.` : ''}`
+        };
+      }
+      if (mode === 'half_recover_floor') {
+        return {
+          summary: `Restore half current ${stat}, rounded down`,
+          how: `${location}: calculate half of the current ${stat}, rounded down, then add that amount with Set or the +1 button.${condition ? ` Only do this ${condition}.` : ''}`
+        };
+      }
+      if (mode === 'half_loss_floor') {
+        return {
+          summary: `Lose half current ${stat}, rounded down`,
+          how: `${location}: calculate half of the current ${stat}, rounded down, then subtract that amount with Set or the -1 button.${condition ? ` Only do this ${condition}.` : ''}`
+        };
+      }
+      const delta = Number(action.delta || 0);
+      const verb = delta < 0 ? 'Reduce' : 'Increase';
+      const amount = Math.abs(delta);
+      const button = delta < 0 ? '-1' : '+1';
+      const countText = amount === 1 ? 'once' : `${amount} times`;
+      return {
+        summary: `${verb} ${stat} by ${amount}`,
+        how: `${location}: click ${button} ${countText}, or type the new value in Set and click Set.${condition ? ` Only do this ${condition}.` : ''}`
+      };
+    }
+
+    function manualMealAdvice(action) {
+      const count = Math.max(0, Number(action.count || 1));
+      const mode = text(action.mode, 'per_missing').toLowerCase();
+      const loss = Number(action.enduranceLossPerMissing || action.enduranceLoss || 0);
+      if (mode === 'all_or_loss') {
+        const countText = count === 1 ? 'once' : `${count} times`;
+        return {
+          summary: `Eat ${count} Meal${count === 1 ? '' : 's'} or lose ${loss} END`,
+          how: `Inventory tab or Add Item card: click Eat Meal ${countText} if you have enough Meals. If you cannot pay all ${count}, use Vitals card > END to subtract ${loss}.`
+        };
+      }
+      return {
+        summary: `Eat up to ${count} Meal${count === 1 ? '' : 's'}; lose ${loss} END per missing Meal`,
+        how: `Inventory tab or Add Item card: click Eat Meal once for each Meal you spend. For each missing Meal, use Vitals card > END to subtract ${loss}.`
+      };
+    }
+
+    function manualActionAdvice(action) {
+      if (!action || typeof action !== 'object') return null;
+      const kind = text(action.type).toLowerCase();
+      if (kind === 'stat') return manualStatAdvice(action);
+      if (kind === 'meal') return manualMealAdvice(action);
+      if (kind === 'remove_item') {
+        const count = Math.max(1, Number(action.count || 1));
+        const name = text(action.name, 'item');
+        const condition = conditionAdvice(action.condition);
+        const countText = count === 1 ? 'once' : `${count} times`;
+        return {
+          summary: `Remove ${name}${count > 1 ? ` x${count}` : ''}`,
+          how: `Drop Item card or Inventory tab: find ${name}, then click Drop ${countText}.${condition ? ` Only do this ${condition}.` : ''}`
+        };
+      }
+      if (kind === 'add_item') {
+        const name = text(action.name, 'item');
+        const container = itemContainerLabel(action.container);
+        const condition = conditionAdvice(action.condition);
+        return {
+          summary: `Add ${name}`,
+          how: `Add Item card: choose ${container}, type ${name}, then click Add.${condition ? ` Only do this ${condition}.` : ''}`
+        };
+      }
+      if (kind === 'flag') {
+        const label = friendlyFlagName(action.key);
+        const value = action.value === false ? 'off' : 'on';
+        return {
+          summary: `Turn ${label} ${value}`,
+          how: `Choices card > Status Flags: click Set to turn ${label} on, or Clear to turn it off. If the flag is not listed, use Notes to record: ${label} ${value}.`
+        };
+      }
+      if (kind === 'restore_stored_nobles') {
+        const extra = Number(action.extra || 0);
+        return {
+          summary: `Restore stored Nobles${extra ? ` and add ${extra}` : ''}`,
+          how: 'Inventory tab > Nobles controls: add the stored Nobles total, plus any listed extra, then update the value with Set.'
+        };
+      }
+      if (kind === 'gear') {
+        const available = action.available !== false;
+        return {
+          summary: available ? 'Restore stored gear' : 'Store all carried gear',
+          how: available
+            ? 'Inventory tab > Stored Gear: move stored Weapons and Backpack Items back into inventory.'
+            : 'Inventory tab: note current Weapons and Backpack Items, then remove them from active inventory.'
+        };
+      }
+      if (kind === 'weapons') {
+        const available = action.available !== false;
+        return {
+          summary: available ? 'Restore stored Weapons' : 'Store carried Weapons',
+          how: available
+            ? 'Inventory tab > Stored Gear: move stored Weapons back into active Weapons.'
+            : 'Inventory tab > Weapons: note each Weapon, then click Drop for each active Weapon.'
+        };
+      }
+      if (kind === 'backpack_stash' || kind === 'backpack') {
+        const available = action.available !== false;
+        return {
+          summary: available ? 'Restore Backpack access' : 'Remove Backpack access',
+          how: available
+            ? 'Inventory tab > Stored Gear: move stored Backpack Items back into Backpack.'
+            : 'Inventory tab > Backpack: note the Backpack Items, then remove or mark them unavailable.'
+        };
+      }
+      if (kind === 'ending') {
+        const ending = text(action.ending, 'ending');
+        return {
+          summary: ending === 'success' ? 'Complete the book' : `Mark ${ending}`,
+          how: ending === 'success'
+            ? 'Completion screen: click Complete Book when it appears.'
+            : 'Death screen: use Repeat to retry this section, or Rewind to return to the previous checkpoint.'
+        };
+      }
+      return {
+        summary: `Handle ${text(action.type, 'section action')}`,
+        how: 'Use the matching sheet, inventory, combat, or notes controls to record this section action.'
+      };
+    }
+
+    function compactAdviceSummary(items, fallback) {
+      const summaries = arr(items).map((item) => text(item?.summary).trim()).filter(Boolean);
+      if (!summaries.length) return fallback;
+      if (summaries.length === 1) return summaries[0];
+      return `${summaries.length} manual steps`;
+    }
+
+    function manualModeControlsRow() {
+      return receiptDetail('Mode controls', 'Assistant menu > Mode: click Auto to turn automation on, Manual for advice-only play, or CLI for the terminal view.');
+    }
+
+    function manualGuideWhy(kind, label) {
+      if (kind === 'section effects') {
+        return label
+          ? `We flagged this because it is one of those easy-to-miss bookkeeping beats between paragraphs: ${label}. Manual Mode leaves the pencil in your hand, but the guide still points at the math.`
+          : 'No hidden bookkeeping on this stop. The audit does not have a simple section effect here, so you can read on and use the book links normally.';
+      }
+      if (kind === 'roll helpers') {
+        return label
+          ? `This is a random-number moment. The guide calls it out so you can see the modifiers and the possible routes before you commit to the result.`
+          : 'This section only needs a plain 0-9 random digit. Nothing special is being added by the audit.';
+      }
+      if (kind === 'combat presets') {
+        return `This fight has a prepared setup in the guide data. The preset is there so the enemy stats, special limits, and follow-up routes do not get lost once the fight starts.`;
+      }
+      if (kind === 'section loot') {
+        return `This is a pick-up or section choice the guide team pulled forward because inventory decisions are easy to skip while following the story.`;
+      }
+      if (kind === 'section costs') {
+        return `The text is asking Grey Star to spend Willpower here. Manual Mode keeps the choice with you, while the guide keeps the cost visible.`;
+      }
+      if (kind === 'combat auto-resolve') {
+        return 'Auto-resolve would play the fight forward for you. Manual Mode keeps the duel in your hands, one combat round at a time.';
+      }
+      return 'Manual Mode keeps the assistant from changing your sheet automatically, but it can still tell you what the audit would have done.';
+    }
+
+    function rollOutcomeText(outcome) {
+      const route = outcome.route !== undefined ? ` -> section ${outcome.route}` : '';
+      const label = text(outcome.label || outcome.outcome, 'outcome');
+      const test = text(outcome.test).toLowerCase();
+      if (test === 'range') return `${text(outcome.min, '?')}-${text(outcome.max, '?')}: ${label}${route}`;
+      if (test === 'values') return `${arr(outcome.values).join(', ')}: ${label}${route}`;
+      if (test === 'even' || test === 'odd') return `${test}: ${label}${route}`;
+      return `${label}${route}`;
+    }
+
+    function combatPresetAdvice(preset) {
+      if (!preset) return null;
+      const enemy = preset.enemy || arr(preset.enemies)[0] || {};
+      const label = text(preset.label || enemy.name, 'Section combat');
+      const parts = [
+        `Enemy=${text(enemy.name || label, 'Enemy')}`,
+        `CS=${text(enemy.cs, '?')}`,
+        `END=${text(enemy.endurance, '?')}`
+      ];
+      if (preset.modifier !== undefined) parts.push(`CS Modifier=${formatSigned(preset.modifier)}`);
+      if (preset.victoryRoute !== undefined) parts.push(`Victory Section=${preset.victoryRoute}`);
+      if (preset.evadeRoute !== undefined) parts.push(`Evade Section=${preset.evadeRoute}`);
+      return {
+        summary: `Start ${label}`,
+        how: `Combat tab > Start Tracked Combat: set ${parts.join(', ')}, then click Start Combat.`
+      };
+    }
+
+    function manualSectionAdvice(kind = 'automation', options = {}) {
+      const flow = currentFlow();
+      const entry = flow.Entry || {};
+      const automation = flow.Automation || {};
+      const details = [
+        receiptDetail('Mode', 'Manual Mode'),
+        receiptDetail('Where', locationLabel({ state: app.state }))
+      ];
+      let summary = `Manual Advice - ${kind}`;
+      let title = 'Manual Advice';
+
+      if (kind === 'section effects') {
+        const actions = arr(automation.Actions).map(manualActionAdvice).filter(Boolean);
+        const actionSummary = compactAdviceSummary(actions, 'No section automation');
+        summary = `Manual Advice - ${actionSummary}`;
+        title = 'Manual Section Effects';
+        details.push(receiptDetail('Why', manualGuideWhy(kind, text(automation.Summary || actionSummary))));
+        if (actions.length) {
+          details.push(receiptDetail('What I would do', actions.map((item) => item.summary).join('; ')));
+          actions.forEach((item) => details.push(receiptDetail('How to do it', item.how)));
+        } else {
+          details.push(receiptDetail('How to do it', 'No control change is needed for this section effect.'));
+        }
+      } else if (kind === 'roll helpers') {
+        const roll = entry.roll || {};
+        const rollLabel = text(roll.summary, 'Roll 0-9');
+        summary = `Manual Advice - ${rollLabel}`;
+        title = 'Manual Section Roll';
+        details.push(receiptDetail('Why', manualGuideWhy(kind, rollLabel)));
+        if (arr(roll.modifiers).length) {
+          details.push(receiptDetail('Modifiers', arr(roll.modifiers).map((item) => `${text(item.label, 'Modifier')} ${formatSigned(item.value || 0)}`).join('; ')));
+        }
+        if (arr(roll.outcomes).length) {
+          details.push(receiptDetail('Outcomes', arr(roll.outcomes).map(rollOutcomeText).join('; ')));
+        }
+        details.push(receiptDetail('How to do it', 'Use a 0-9 random digit. Add listed modifiers. Follow the matching book link or enter the resulting section in the Section card.'));
+      } else if (kind === 'combat presets') {
+        const preset = arr(entry.combat).find((item) => text(item.id) === text(options.id)) || arr(entry.combat)[0];
+        const advice = combatPresetAdvice(preset);
+        summary = `Manual Advice - ${advice?.summary || 'Section combat'}`;
+        title = 'Manual Combat Setup';
+        details.push(receiptDetail('Why', manualGuideWhy(kind)));
+        if (advice) details.push(receiptDetail('How to do it', advice.how));
+        const perRound = arr(preset?.perRoundActions).map(manualActionAdvice).filter(Boolean);
+        if (perRound.length) {
+          details.push(receiptDetail('Round upkeep', perRound.map((item) => item.summary).join('; ')));
+          perRound.forEach((item) => details.push(receiptDetail('How to do it', item.how)));
+        }
+      } else if (kind === 'section loot') {
+        const option = arr(entry.loot).find((item) => text(item.id) === text(options.id)) || arr(entry.loot)[0];
+        const actions = arr(option?.actions).map(manualActionAdvice).filter(Boolean);
+        summary = `Manual Advice - ${text(option?.label, 'Section loot')}`;
+        title = 'Manual Loot Choice';
+        details.push(receiptDetail('Why', manualGuideWhy(kind)));
+        details.push(receiptDetail('What I would do', compactAdviceSummary(actions, text(option?.label, 'Record the loot choice'))));
+        actions.forEach((item) => details.push(receiptDetail('How to do it', item.how)));
+      } else if (kind === 'section costs') {
+        const cost = Number(options.cost || 0);
+        const mode = text(options.mode, 'negative');
+        const costs = arr(entry.wpCosts);
+        if (entry.wpCost) costs.unshift(entry.wpCost);
+        const costEntry = costs.find((item) => Number(item.cost || 0) === cost) || {};
+        summary = `Manual Advice - Spend ${cost} WP`;
+        title = 'Manual Willpower Cost';
+        details.push(receiptDetail('Why', manualGuideWhy(kind)));
+        details.push(receiptDetail('Cost', text(costEntry.label, `${cost} Willpower`)));
+        const costClicks = cost === 1 ? 'once' : `${cost} times`;
+        details.push(receiptDetail('How to do it', mode === 'endurance_for_missing'
+          ? `Vitals card > WP: subtract up to ${cost}. If WP is short, Vitals card > END: subtract 2 END for each missing WP.`
+          : `Vitals card > WP: click -1 ${costClicks}, or type the new WP in Set and click Set.`));
+      } else if (kind === 'combat auto-resolve') {
+        summary = 'Manual Advice - Resolve combat by hand';
+        title = 'Manual Combat Rounds';
+        details.push(receiptDetail('Why', manualGuideWhy(kind)));
+        details.push(receiptDetail('How to do it', 'Combat tab: choose Active combat weapon, Staff magic on/off, WP spend, and Roll. Click Resolve Round once per combat round.'));
+      } else {
+        details.push(receiptDetail('Why', manualGuideWhy(kind)));
+        details.push(receiptDetail('How to do it', 'Use the matching card controls to update the sheet manually.'));
+      }
+
+      details.push(manualModeControlsRow());
+      setReceipt({ summary, title, details: details.filter(Boolean) });
     }
 
     function manualDisabledAttributes(kind = 'automation') {
       return isManualMode()
-        ? 'disabled aria-disabled="true"'
+        ? 'aria-disabled="true"'
         : '';
     }
 
     function modeActionButton(attrs, label, kind = 'automation') {
       const title = isManualMode()
-        ? `title="Manual mode: ${escapeHtml(kind)} is disabled. Use the sheet controls to update state yourself."`
+        ? `title="Manual mode: click for ${escapeHtml(kind)} advice. No sheet changes will be applied."`
         : '';
       return `<button type="button" ${attrs} ${manualDisabledAttributes(kind)} ${title}>${label}</button>`;
     }
@@ -1867,13 +2262,13 @@
       quickPanel.innerHTML = `
         <div class="quick-column quick-card">
           <div class="quick-title">Section</div>
-          <button type="button" data-automation-apply ${manualDisabledAttributes('section effects')} title="${isManualMode() ? 'Manual mode: section effects are disabled.' : 'Apply the audited effect for the current section, such as stat changes, gear loss, meals, or book-completion flags.'}">Apply Effects</button>
-          <button type="button" data-roll ${manualDisabledAttributes('roll helper')} title="${isManualMode() ? 'Manual mode: roll helpers are disabled.' : 'Roll a random number from 0 to 9. If this section has a special roll rule, the assistant applies it.'}">${rollLabel}</button>
+          <button type="button" data-automation-apply ${manualDisabledAttributes('section effects')} title="${isManualMode() ? 'Manual mode: click for section effect advice. No sheet changes will be applied.' : 'Apply the audited effect for the current section, such as stat changes, gear loss, meals, or book-completion flags.'}">Apply Effects</button>
+          <button type="button" data-roll ${manualDisabledAttributes('roll helper')} title="${isManualMode() ? 'Manual mode: click for roll advice. No roll will be recorded.' : 'Roll a random number from 0 to 9. If this section has a special roll rule, the assistant applies it.'}">${rollLabel}</button>
           ${successEnding ? '<button type="button" data-complete-book>Finalize Book</button>' : ''}
           ${karmoControls(flags)}
           <div class="quick-note">${ending ? `Ending marked: ${ending.Type}` : `Book ${currentCharacter().BookNumber}, section ${app.state.CurrentSection}`}</div>
           ${missingBookFiles ? '<div class="mode-note">Book HTML files are not installed. Open the Install Project Aon Books page from Home.</div>' : ''}
-          ${isManualMode() ? '<div class="mode-note">Manual mode is tracking your sheet only. Apply section math, loot, and combat setup by hand.</div>' : ''}
+          ${isManualMode() ? '<div class="mode-note">Manual mode is tracking your sheet only. Click section helpers for advice, then apply the math by hand.</div>' : ''}
           ${staffUnavailable || backpackUnavailable ? `<div class="quick-note">Stored gear is being held until the book returns it.</div>` : ''}
         </div>
         <div class="quick-column quick-card">
@@ -2210,7 +2605,8 @@
     function cardHelp(title, scope) {
       const key = slugCardTitle(title, '');
       const help = {
-        choices: 'This card shows assistant actions found in the current book section: loot, costs, status flags, combat, and section-aware rolls.',
+        choices: 'This card shows assistant actions found in the current book section: loot, costs, status flags, combat, route checks, and section-aware rolls.',
+        map: 'Shows the local Project Aon map image for Grey Star the Wizard. Open it full-size when you want to inspect the route detail.',
         'section-assistant': 'Use this when a section has rolls, loot, special costs, or combat presets that are not handled by the book link itself.',
         'stored-gear': 'This keeps the inventory record for gear the book has taken away and may return later.',
         'start-tracked-combat': 'Use this for fights that are not started by a section preset. Staff WP controls how much Willpower you spend with the Wizard’s Staff each round.',
@@ -2611,12 +3007,12 @@
       const missingBookFiles = !currentBookFilesInstalled();
       return `
         <div class="controls">
-          <button type="button" data-automation-apply ${manualDisabledAttributes('section effects')} title="${isManualMode() ? 'Manual mode: section effects are disabled.' : 'Apply audited section effects.'}">Apply Effects</button>
-          <button type="button" data-roll ${manualDisabledAttributes('roll helper')} title="${isManualMode() ? 'Manual mode: roll helpers are disabled.' : 'Roll a random number from 0 to 9.'}">${rollLabel}</button>
+          <button type="button" data-automation-apply ${manualDisabledAttributes('section effects')} title="${isManualMode() ? 'Manual mode: click for section effect advice. No sheet changes will be applied.' : 'Apply audited section effects.'}">Apply Effects</button>
+          <button type="button" data-roll ${manualDisabledAttributes('roll helper')} title="${isManualMode() ? 'Manual mode: click for roll advice. No roll will be recorded.' : 'Roll a random number from 0 to 9.'}">${rollLabel}</button>
         </div>
         <div class="quick-note">${ending ? `Ending marked: ${escapeHtml(ending.Type)}` : `Book ${escapeHtml(currentCharacter().BookNumber)}, section ${escapeHtml(app.state.CurrentSection)}`}</div>
         ${missingBookFiles ? '<div class="mode-note">Book HTML files are not installed. Open the Install Project Aon Books page from Home.</div>' : ''}
-        ${isManualMode() ? '<div class="mode-note">Manual mode is tracking your sheet only. Apply section math, loot, and combat setup by hand.</div>' : ''}
+        ${isManualMode() ? '<div class="mode-note">Manual mode is tracking your sheet only. Click section helpers for advice, then apply the math by hand.</div>' : ''}
         ${staffUnavailable || backpackUnavailable ? `<div class="quick-note">Stored gear is being held until the book returns it.</div>` : ''}
       `;
     }
@@ -2878,6 +3274,47 @@
       `;
     }
 
+    function routeCheckOutcomeText(outcome) {
+      const label = text(outcome.Label, 'Result');
+      const test = text(outcome.Test);
+      const route = outcome.Route ? ` -> section ${outcome.Route}` : '';
+      return `${test ? `${test}: ` : ''}${label}${route}`;
+    }
+
+    function sectionRouteCheckRows() {
+      return arr(currentFlow().RouteChecks).map((check) => {
+        if (!check.Ready) {
+          return `
+            <div class="item-row">
+              <small>Wait</small>
+              <span class="wrap">${escapeHtml(text(check.Label, 'Route check'))}: ${escapeHtml(text(check.BlockedReason, 'Apply the entry effect first, then recheck the route.'))}</span>
+            </div>
+          `;
+        }
+        const matched = check.MatchedOutcome || {};
+        const formula = text(check.Formula || check.Summary, 'Current sheet check');
+        const value = check.Value ?? '';
+        const currentRoute = matched.Route ? Number(matched.Route) : null;
+        const currentRow = `
+          <div class="item-row">
+            <small>${value !== '' ? `Total ${escapeHtml(value)}` : 'Check'}</small>
+            <span class="wrap">${escapeHtml(text(check.Label, 'Route check'))}: ${escapeHtml(formula)}${matched.Label ? ` | ${escapeHtml(routeCheckOutcomeText(matched))}` : ''}</span>
+            ${currentRoute ? `<button type="button" data-route="${escapeHtml(currentRoute)}">Go ${escapeHtml(currentRoute)}</button>` : ''}
+          </div>
+        `;
+        const otherRows = arr(check.Outcomes)
+          .filter((outcome) => !outcome.Matched)
+          .map((outcome) => `
+            <div class="item-row">
+              <small>Other</small>
+              <span class="wrap">${escapeHtml(routeCheckOutcomeText(outcome))}</span>
+            </div>
+          `)
+          .join('');
+        return currentRow + otherRows;
+      }).join('');
+    }
+
     function sectionRouteRows() {
       return arr(currentFlow().SourceRoutes).map((route) => (
         `<div class="item-row">
@@ -2896,6 +3333,7 @@
         choiceGroup('Willpower Cost', sectionWillpowerRows(entry)),
         choiceGroup('Section Combat', sectionCombatRows(entry)),
         choiceGroup('Status Flags', sectionStatusRows(entry)),
+        choiceGroup('Route Check', sectionRouteCheckRows()),
         choiceGroup('Section Roll', sectionRollRows(entry))
       ].filter(Boolean);
       return groups.join('') || '<p class="muted">No section choices recorded for this section.</p>';
@@ -2906,6 +3344,29 @@
         <div class="panel sheet-choices">
           <h2>Choices</h2>
           ${choicesPanelBody()}
+        </div>
+      `;
+    }
+
+    function renderMapPanel() {
+      const mapUrl = 'books/gs/01gstw/map.png';
+      if (!hasInstalledBookFiles(1)) {
+        return `
+          <div class="panel sheet-map">
+            <h2>Map</h2>
+            <p class="muted">The Book 1 map is shown from the local Project Aon book files. Install Book 1 files to use this card.</p>
+          </div>
+        `;
+      }
+      return `
+        <div class="panel sheet-map">
+          <h2>Map</h2>
+          <div class="map-card-frame">
+            <img src="${mapUrl}" alt="Grey Star the Wizard game map" loading="eager" decoding="async">
+          </div>
+          <div class="map-card-actions">
+            <a href="${mapUrl}" target="_blank" rel="noopener">Open Full Map</a>
+          </div>
         </div>
       `;
     }
@@ -2990,6 +3451,7 @@
           </div>
         </div>
         ${renderChoicesPanel()}
+        ${renderMapPanel()}
         ${hasSavedCharacter() ? '' : `<div class="panel">
           <h2>New Character</h2>
           ${newCharacterBody()}
@@ -3010,6 +3472,10 @@
             ${field('Herb Pouch', inv.HasHerbPouch ? `${arr(inv.HerbPouchItems).length}/8` : 'None')}
             ${field('Special Items', arr(inv.SpecialItems).length)}
           </div>
+        </div>
+        <div class="panel">
+          <h2>Nobles</h2>
+          ${statButtons('nobles', 'Nobles')}
         </div>
         ${storedGearPanel()}
         ${itemList('Weapons', 'weapon', inv.Weapons)}
@@ -3178,7 +3644,7 @@
               <input name="wp" type="number" min="1" placeholder="WP spend">
               <input name="roll" type="number" min="0" max="9" placeholder="Roll">
               <button type="submit">Resolve Round</button>
-              <button type="button" data-combat-auto ${manualDisabledAttributes('combat auto-resolve')} title="${isManualMode() ? 'Manual mode: auto-resolve is disabled.' : 'Resolve the fight automatically using the current combat setup.'}">Auto Resolve</button>
+              <button type="button" data-combat-auto ${manualDisabledAttributes('combat auto-resolve')} title="${isManualMode() ? 'Manual mode: click for combat round advice. No combat rounds will be resolved.' : 'Resolve the fight automatically using the current combat setup.'}">Auto Resolve</button>
               <button type="button" data-combat-evade ${combat.CanEvade ? '' : 'disabled'}>Evade</button>
               <button type="button" class="danger" data-combat-stop>Stop</button>
             </form>
@@ -3722,27 +4188,28 @@
         return;
       }
       if (isManualMode() && button.dataset.automationApply !== undefined) {
-        manualAutomationMessage('section effects');
+        manualSectionAdvice('section effects');
         return;
       }
       if (isManualMode() && button.dataset.roll !== undefined) {
-        manualAutomationMessage('roll helpers');
+        manualSectionAdvice('roll helpers');
         return;
       }
       if (isManualMode() && button.dataset.sectionCombatStart !== undefined) {
-        manualAutomationMessage('combat presets');
+        manualSectionAdvice('combat presets', { id: button.dataset.sectionCombatStart });
         return;
       }
       if (isManualMode() && button.dataset.flowLoot) {
-        manualAutomationMessage('section loot');
+        manualSectionAdvice('section loot', { id: button.dataset.flowLoot });
         return;
       }
       if (isManualMode() && button.dataset.wpCost) {
-        manualAutomationMessage('section costs');
+        const [cost, mode] = button.dataset.wpCost.split(':');
+        manualSectionAdvice('section costs', { cost: Number(cost), mode });
         return;
       }
       if (isManualMode() && button.dataset.combatAuto !== undefined) {
-        manualAutomationMessage('combat auto-resolve');
+        manualSectionAdvice('combat auto-resolve');
         return;
       }
       if (button.dataset.deathRecovery) await action({ action: 'death_recovery', mode: button.dataset.deathRecovery });

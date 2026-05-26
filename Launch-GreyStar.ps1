@@ -25,14 +25,14 @@ if (-not (Test-Path -LiteralPath $Launcher)) {
     exit 1
 }
 
-$args = @(
+$launcherArgs = @(
     $Launcher,
     "--http-port", [string]$HttpPort,
     "--ws-port", [string]$WsPort
 )
 
 if ($NoBrowser) {
-    $args += "--no-browser"
+    $launcherArgs += "--no-browser"
 }
 
-& python @args
+& python @launcherArgs

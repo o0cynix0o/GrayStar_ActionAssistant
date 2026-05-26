@@ -60,19 +60,20 @@ docs\INSTALL_PROJECT_AON_BOOKS.md
 6. Click book section links normally. The assistant follows your current section.
 7. Use the assistant panels when the book calls for inventory changes, stat changes, rolls, combat, notes, or saves.
 
-The bottom notification bar shows the latest assistant receipt. Click it when you want the longer explanation of what changed, why it changed, and which button or rule caused it.
+The bottom notification bar shows the latest assistant receipt. Click it when you want the longer explanation of what changed, why it changed, and which button or rule caused it. In Manual Mode, the same bar gives advice instead: the **Why** line explains the section in guide language, and **How to do it** names the exact card controls to use.
 
 ## Choose A Play Mode
 
 Use the small white dot in the upper-right of the assistant panel to switch modes.
 
 - **Auto** is the normal helper mode with section effects, roll helpers, loot helpers, combat presets, and achievements.
-- **Manual** keeps the sheet and saves, but turns off the audited section helpers so you can handle the book math yourself.
+- **Manual** keeps the sheet and saves, but turns audited section helpers into advice-only buttons so you can handle the book math yourself.
 - **CLI** opens the terminal assistant inside the web page and uses the same save data.
 
 ## Important Browser Note
 
 Use the local server URL. Opening `assistant.html` directly as a file can make the book open but leave the assistant disconnected.
+The assistant now blocks direct `file:///` loading and tells you to start the local server instead.
 
 Correct:
 

@@ -30,6 +30,7 @@ ERROR_LOG_FILE = ROOT / "greystar-error.log"
 SCREEN_WIDTH = 74
 SECTION_AUTOMATION_GLOB = "book*-simple-automations.json"
 SECTION_FLOW_GLOB = "book*-section-flows.json"
+ROUTE_CHECK_GLOB = "book*-route-checks.json"
 ACHIEVEMENT_SCHEMA_VERSION = 1
 
 ANSI_COLORS = {
@@ -1430,8 +1431,30 @@ class GreyStarAssistant:
             SECTION_AUTOMATION_GLOB, "Section automation"
         )
 
+    def merge_section_flow_data(self, base: dict[str, Any], extra: dict[str, Any]) -> dict[str, Any]:
+        merged = json.loads(json.dumps(base))
+        for book_number, entries in extra.items():
+            if not isinstance(entries, dict):
+                continue
+            book_entries = merged.setdefault(str(book_number), {})
+            for section, value in entries.items():
+                if not isinstance(value, dict):
+                    continue
+                current = book_entries.setdefault(str(section), {})
+                if not isinstance(current, dict):
+                    current = {}
+                    book_entries[str(section)] = current
+                for key, extra_value in value.items():
+                    if key == "routeChecks" and isinstance(extra_value, list):
+                        current[key] = as_list(current.get(key)) + extra_value
+                    else:
+                        current[key] = extra_value
+        return merged
+
     def load_section_flows(self) -> None:
-        self.section_flows = self.load_book_data_collection(SECTION_FLOW_GLOB, "Section flow")
+        section_flows = self.load_book_data_collection(SECTION_FLOW_GLOB, "Section flow")
+        route_checks = self.load_book_data_collection(ROUTE_CHECK_GLOB, "Route check")
+        self.section_flows = self.merge_section_flow_data(section_flows, route_checks)
 
     def write_current_position(self) -> None:
         try:
@@ -2398,6 +2421,136 @@ class GreyStarAssistant:
             return self.has_available_staff()
         return False
 
+    def route_check_stat_value(self, stat: str) -> int:
+        key = str(stat or "").replace("_", "").replace(" ", "").lower()
+        if key in {"wp", "willpower"}:
+            return int(self.character["WillpowerCurrent"])
+        if key in {"end", "endurance"}:
+            return int(self.character["EnduranceCurrent"])
+        if key in {"cs", "combatskill"}:
+            return int(self.character["CombatSkillCurrent"])
+        if key == "nobles":
+            return int(self.inventory.get("Nobles") or 0)
+        return 0
+
+    def evaluate_route_check_formula(self, formula: dict[str, Any] | None) -> int | None:
+        if not isinstance(formula, dict):
+            return None
+        total = int(formula.get("base") or 0)
+        for term in as_list(formula.get("terms")):
+            if not isinstance(term, dict):
+                continue
+            if not self.evaluate_flow_condition(term.get("condition")):
+                continue
+            multiplier = int(term.get("multiplier", 1) or 1)
+            if term.get("stat"):
+                value = self.route_check_stat_value(str(term.get("stat") or ""))
+            else:
+                value = int(term.get("value") or 0)
+            total += value * multiplier
+        return total
+
+    def route_check_test_label(self, outcome: dict[str, Any]) -> str:
+        if outcome.get("testLabel"):
+            return str(outcome.get("testLabel") or "")
+        if outcome.get("default"):
+            return "otherwise"
+        if outcome.get("conditions"):
+            return "conditions met"
+        test = str(outcome.get("test") or "range").lower()
+        if test == "range":
+            minimum = outcome.get("min", -999)
+            maximum = outcome.get("max", 999)
+            if int(minimum) <= -999:
+                return f"<= {maximum}"
+            if int(maximum) >= 999:
+                return f">= {minimum}"
+            return f"{minimum}-{maximum}"
+        if test == "gt":
+            return f"> {outcome.get('value')}"
+        if test == "gte":
+            return f">= {outcome.get('value')}"
+        if test == "lt":
+            return f"< {outcome.get('value')}"
+        if test == "lte":
+            return f"<= {outcome.get('value')}"
+        if test == "eq":
+            return f"= {outcome.get('value')}"
+        return str(outcome.get("label") or "result")
+
+    def route_check_outcome_matches(self, outcome: dict[str, Any], value: int | None) -> bool:
+        conditions = [condition for condition in as_list(outcome.get("conditions")) if isinstance(condition, dict)]
+        if conditions and not all(self.evaluate_flow_condition(condition) for condition in conditions):
+            return False
+        if outcome.get("default"):
+            return True
+        if value is None:
+            return bool(conditions)
+        test = str(outcome.get("test") or "range").lower()
+        if test == "range":
+            return int(outcome.get("min", -999)) <= value <= int(outcome.get("max", 999))
+        if test == "gt":
+            return value > int(outcome.get("value") or 0)
+        if test == "gte":
+            return value >= int(outcome.get("value") or 0)
+        if test == "lt":
+            return value < int(outcome.get("value") or 0)
+        if test == "lte":
+            return value <= int(outcome.get("value") or 0)
+        if test == "eq":
+            return value == int(outcome.get("value") or 0)
+        return False
+
+    def evaluate_route_checks(
+        self,
+        flow: dict[str, Any],
+        automation_payload: dict[str, Any] | None = None,
+    ) -> list[dict[str, Any]]:
+        checks: list[dict[str, Any]] = []
+        automation_payload = automation_payload or self.current_section_automation_payload()
+        automation_ready = not bool(automation_payload.get("Summary")) or bool(automation_payload.get("Applied"))
+
+        for check in as_list(flow.get("routeChecks")):
+            if not isinstance(check, dict):
+                continue
+            requires_automation = bool(check.get("requiresAutomationApplied"))
+            ready = not requires_automation or automation_ready
+            value = self.evaluate_route_check_formula(check.get("formula")) if ready else None
+            outcomes: list[dict[str, Any]] = []
+            matched_outcome: dict[str, Any] | None = None
+            for outcome in as_list(check.get("outcomes")):
+                if not isinstance(outcome, dict):
+                    continue
+                matched = ready and matched_outcome is None and self.route_check_outcome_matches(outcome, value)
+                payload = {
+                    "Label": str(outcome.get("label") or ""),
+                    "Route": int(outcome.get("route")) if outcome.get("route") is not None else None,
+                    "Matched": matched,
+                    "Test": self.route_check_test_label(outcome),
+                }
+                outcomes.append(payload)
+                if matched:
+                    matched_outcome = payload
+
+            checks.append(
+                {
+                    "Id": str(check.get("id") or ""),
+                    "Label": str(check.get("label") or "Route check"),
+                    "Summary": str(check.get("summary") or ""),
+                    "Formula": str((check.get("formula") or {}).get("label") or ""),
+                    "Value": value,
+                    "Ready": ready,
+                    "BlockedReason": (
+                        str(check.get("blockedReason") or "Apply the entry effect first, then recheck the route.")
+                        if not ready
+                        else ""
+                    ),
+                    "Outcomes": outcomes,
+                    "MatchedOutcome": matched_outcome,
+                }
+            )
+        return checks
+
     def evaluate_roll_flow(self, flow: dict[str, Any], raw_roll: int | None = None) -> dict[str, Any]:
         roll = flow.get("roll") if isinstance(flow.get("roll"), dict) else {}
         if not roll:
@@ -2515,6 +2668,7 @@ class GreyStarAssistant:
             and int(last_roll.get("Section", 0)) == section
         ):
             last_roll = None
+        automation = self.current_section_automation_payload()
         return {
             "BookNumber": book_number,
             "Section": section,
@@ -2522,7 +2676,8 @@ class GreyStarAssistant:
             "SourceRoutes": self.section_source_route_payload(book_number, section)
             or self.route_button_payload(source_routes),
             "LastRoll": last_roll,
-            "Automation": self.current_section_automation_payload(),
+            "RouteChecks": self.evaluate_route_checks(entry, automation),
+            "Automation": automation,
         }
 
     def store_unavailable_gear(self) -> str:
@@ -3039,6 +3194,24 @@ class GreyStarAssistant:
                 label = str(route.get("Label") or f"Go to {target}")
                 panel_row(f"{index}. {target}", label, label_width=10, value_color="White")
         panel_footer()
+
+        route_checks = [check for check in as_list(flow.get("RouteChecks")) if isinstance(check, dict)]
+        if route_checks:
+            panel_header("Route Checks", accent="Cyan")
+            for check in route_checks:
+                label = str(check.get("Label") or "Route check")
+                if not bool(check.get("Ready", True)):
+                    panel_row("Wait", f"{label}: {check.get('BlockedReason')}", label_width=12, value_color="Yellow")
+                    continue
+                value = check.get("Value")
+                formula = str(check.get("Formula") or check.get("Summary") or "")
+                panel_row("Check", f"{label}: {formula} = {value}", label_width=12, value_color="White")
+                matched = check.get("MatchedOutcome") if isinstance(check.get("MatchedOutcome"), dict) else {}
+                if matched:
+                    route = matched.get("Route")
+                    route_text = f" -> section {route}" if route else ""
+                    panel_row("Result", f"{matched.get('Test')}: {matched.get('Label')}{route_text}", label_width=12, value_color="White")
+            panel_footer()
 
         if isinstance(entry.get("roll"), dict):
             roll = entry.get("roll") or {}

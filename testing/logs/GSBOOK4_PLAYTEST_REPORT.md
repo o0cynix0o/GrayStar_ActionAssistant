@@ -1,6 +1,6 @@
 # GS Book 4 Playtest Report
 
-Generated: 2026-05-22T08:01:13
+Generated: 2026-05-26T11:03:34
 
 ## Summary
 

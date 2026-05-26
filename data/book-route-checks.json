@@ -1,0 +1,524 @@
+{
+  "1": {
+    "226": {
+      "routeChecks": [
+        {
+          "id": "b1s226-kazim-will-duel",
+          "label": "Kazim Stone will duel",
+          "summary": "Calculate 50 - (current WP + current CS)",
+          "formula": {
+            "label": "50 - (WP + CS)",
+            "base": 50,
+            "terms": [
+              {"stat": "wp", "multiplier": -1},
+              {"stat": "cs", "multiplier": -1}
+            ]
+          },
+          "outcomes": [
+            {"test": "range", "min": 15, "max": 999, "route": 295, "label": "Final score is 15 or more"},
+            {"test": "range", "min": -999, "max": 14, "route": 320, "label": "Final score is 14 or less"}
+          ]
+        }
+      ]
+    },
+    "242": {
+      "routeChecks": [
+        {
+          "id": "b1s242-end-wp",
+          "label": "END + WP check",
+          "summary": "Add current END and current WP",
+          "formula": {
+            "label": "END + WP",
+            "terms": [
+              {"stat": "end"},
+              {"stat": "wp"}
+            ]
+          },
+          "outcomes": [
+            {"test": "range", "min": 20, "max": 999, "route": 341, "label": "Total is 20 or more"},
+            {"test": "range", "min": -999, "max": 19, "route": 316, "label": "Total is 19 or less"}
+          ]
+        }
+      ]
+    },
+    "289": {
+      "routeChecks": [
+        {
+          "id": "b1s289-wp-threshold",
+          "label": "Willpower threshold",
+          "summary": "Check current WP",
+          "formula": {
+            "label": "WP",
+            "terms": [{"stat": "wp"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": -999, "max": 14, "route": 150, "label": "WP is less than 15"},
+            {"test": "range", "min": 15, "max": 999, "route": 175, "label": "WP is 15 or more"}
+          ]
+        }
+      ]
+    },
+    "294": {
+      "routeChecks": [
+        {
+          "id": "b1s294-end-threshold",
+          "label": "Endurance threshold",
+          "summary": "Check current END after marking Shan lost",
+          "formula": {
+            "label": "END",
+            "terms": [{"stat": "end"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": -999, "max": 9, "route": 319, "label": "END is less than 10"},
+            {"test": "range", "min": 10, "max": 999, "route": 344, "label": "END is 10 or more"}
+          ]
+        }
+      ]
+    },
+    "332": {
+      "routeChecks": [
+        {
+          "id": "b1s332-staff-wp",
+          "label": "Staff and Willpower gate",
+          "summary": "Check that the Staff is available and WP is at least 2",
+          "outcomes": [
+            {
+              "conditions": [
+                {"type": "staff_available"},
+                {"type": "wp_gte", "value": 2}
+              ],
+              "route": 96,
+              "label": "Staff magic can be used"
+            },
+            {"default": true, "route": 9, "label": "Staff magic is not available"}
+          ]
+        }
+      ]
+    }
+  },
+  "2": {
+    "18": {
+      "routeChecks": [
+        {
+          "id": "b2s18-end-threshold",
+          "label": "River Endurance check",
+          "summary": "Check current END",
+          "formula": {
+            "label": "END",
+            "terms": [{"stat": "end"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": 15, "max": 999, "route": 62, "label": "END is 15 or higher"},
+            {"test": "range", "min": -999, "max": 14, "route": 70, "label": "END is 14 or lower"}
+          ]
+        }
+      ]
+    },
+    "49": {
+      "routeChecks": [
+        {
+          "id": "b2s49-wytch-duel",
+          "label": "Wytch and Stone duel",
+          "summary": "Calculate 40 - (current END + current WP)",
+          "formula": {
+            "label": "40 - (END + WP)",
+            "base": 40,
+            "terms": [
+              {"stat": "end", "multiplier": -1},
+              {"stat": "wp", "multiplier": -1}
+            ]
+          },
+          "outcomes": [
+            {"test": "range", "min": 15, "max": 999, "route": 280, "label": "Final score is 15 or higher"},
+            {"test": "range", "min": -999, "max": 14, "route": 205, "label": "Final score is 14 or lower"}
+          ]
+        }
+      ]
+    },
+    "141": {
+      "routeChecks": [
+        {
+          "id": "b2s141-wytch-duel",
+          "label": "Wytch and Stone duel",
+          "summary": "Calculate 40 - (current END + current WP)",
+          "formula": {
+            "label": "40 - (END + WP)",
+            "base": 40,
+            "terms": [
+              {"stat": "end", "multiplier": -1},
+              {"stat": "wp", "multiplier": -1}
+            ]
+          },
+          "outcomes": [
+            {"test": "range", "min": 15, "max": 999, "route": 280, "label": "Final score is 15 or higher"},
+            {"test": "range", "min": -999, "max": 14, "route": 205, "label": "Final score is 14 or lower"}
+          ]
+        }
+      ]
+    },
+    "153": {
+      "routeChecks": [
+        {
+          "id": "b2s153-end-or-roll",
+          "label": "Escape Endurance check",
+          "summary": "Check current END before rolling",
+          "formula": {
+            "label": "END",
+            "terms": [{"stat": "end"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": 10, "max": 999, "route": 19, "label": "END is 10 or more"},
+            {"test": "range", "min": -999, "max": 9, "route": null, "label": "END is 9 or less; use the Section Roll"}
+          ]
+        }
+      ]
+    },
+    "164": {
+      "routeChecks": [
+        {
+          "id": "b2s164-end-threshold",
+          "label": "Endurance threshold",
+          "summary": "Check current END",
+          "formula": {
+            "label": "END",
+            "terms": [{"stat": "end"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": 12, "max": 999, "route": 191, "label": "END is 12 or higher"},
+            {"test": "range", "min": -999, "max": 11, "route": 277, "label": "END is 11 or lower"}
+          ]
+        }
+      ]
+    },
+    "169": {
+      "routeChecks": [
+        {
+          "id": "b2s169-end-after-drain",
+          "label": "Deathgaunt Endurance check",
+          "summary": "Check current END after the 8 END drain",
+          "requiresAutomationApplied": true,
+          "blockedReason": "Apply or record the 8 END loss first, then recheck the route.",
+          "formula": {
+            "label": "END",
+            "terms": [{"stat": "end"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": 10, "max": 999, "route": 232, "label": "END is 10 or higher"},
+            {"test": "range", "min": -999, "max": 9, "route": 202, "label": "END is 9 or lower"}
+          ]
+        }
+      ]
+    },
+    "171": {
+      "routeChecks": [
+        {
+          "id": "b2s171-end-after-drain",
+          "label": "Deathgaunt Endurance check",
+          "summary": "Check current END after the 4 END drain",
+          "requiresAutomationApplied": true,
+          "blockedReason": "Apply or record the 4 END loss first, then recheck the route.",
+          "formula": {
+            "label": "END",
+            "terms": [{"stat": "end"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": 10, "max": 999, "route": 66, "label": "END is 10 or higher"},
+            {"test": "range", "min": -999, "max": 9, "route": 202, "label": "END is 9 or lower"}
+          ]
+        }
+      ]
+    },
+    "219": {
+      "routeChecks": [
+        {
+          "id": "b2s219-wp-band",
+          "label": "Willpower band",
+          "summary": "Check current WP",
+          "formula": {
+            "label": "WP",
+            "terms": [{"stat": "wp"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": 15, "max": 999, "route": 48, "label": "WP is 15 or higher"},
+            {"test": "range", "min": 12, "max": 14, "route": 189, "label": "WP is 12-14"},
+            {"test": "range", "min": -999, "max": 11, "route": 114, "label": "WP is 11 or lower"}
+          ]
+        }
+      ]
+    },
+    "286": {
+      "routeChecks": [
+        {
+          "id": "b2s286-wp-threshold",
+          "label": "Willpower threshold",
+          "summary": "Check current WP",
+          "formula": {
+            "label": "WP",
+            "terms": [{"stat": "wp"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": 12, "max": 999, "route": 48, "label": "WP is 12 or higher"},
+            {"test": "range", "min": -999, "max": 11, "route": 189, "label": "WP is 11 or lower"}
+          ]
+        }
+      ]
+    }
+  },
+  "3": {
+    "21": {
+      "routeChecks": [
+        {
+          "id": "b3s21-pipe-check",
+          "label": "Elessi pipe check",
+          "summary": "Add current WP and END after the 3 WP attack cost",
+          "requiresAutomationApplied": true,
+          "blockedReason": "Apply or record the 3 WP attack cost first, then recheck the route.",
+          "formula": {
+            "label": "WP + END",
+            "terms": [
+              {"stat": "wp"},
+              {"stat": "end"}
+            ]
+          },
+          "outcomes": [
+            {"test": "range", "min": -999, "max": 20, "route": 271, "label": "Total is 20 or less"},
+            {"test": "range", "min": 21, "max": 999, "route": 284, "label": "Total is more than 20"}
+          ]
+        }
+      ]
+    },
+    "92": {
+      "routeChecks": [
+        {
+          "id": "b3s92-end-threshold",
+          "label": "Endurance threshold",
+          "summary": "Check current END",
+          "formula": {
+            "label": "END",
+            "terms": [{"stat": "end"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": -999, "max": 16, "route": 283, "label": "END is 16 or less"},
+            {"test": "range", "min": 17, "max": 999, "route": 44, "label": "END is more than 16"}
+          ]
+        }
+      ]
+    },
+    "171": {
+      "routeChecks": [
+        {
+          "id": "b3s171-cs-wp",
+          "label": "Ethetron control check",
+          "summary": "Add CS and WP",
+          "formula": {
+            "label": "CS + WP",
+            "terms": [
+              {"stat": "cs"},
+              {"stat": "wp"}
+            ]
+          },
+          "outcomes": [
+            {"test": "range", "min": 16, "max": 999, "route": 84, "label": "Total is 16 or more"},
+            {"test": "range", "min": -999, "max": 15, "route": 129, "label": "Total is less than 16"}
+          ]
+        }
+      ]
+    },
+    "202": {
+      "routeChecks": [
+        {
+          "id": "b3s202-wp-threshold",
+          "label": "Willpower threshold",
+          "summary": "Check current WP",
+          "formula": {
+            "label": "WP",
+            "terms": [{"stat": "wp"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": 12, "max": 999, "route": 16, "label": "WP is 12 or more"},
+            {"test": "range", "min": -999, "max": 11, "route": 28, "label": "WP is less than 12"}
+          ]
+        }
+      ]
+    },
+    "209": {
+      "routeChecks": [
+        {
+          "id": "b3s209-end-threshold",
+          "label": "Endurance threshold",
+          "summary": "Check current END",
+          "formula": {
+            "label": "END",
+            "terms": [{"stat": "end"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": -999, "max": 16, "route": 283, "label": "END is 16 or less"},
+            {"test": "range", "min": 17, "max": 999, "route": 297, "label": "END is more than 16"}
+          ]
+        }
+      ]
+    },
+    "219": {
+      "routeChecks": [
+        {
+          "id": "b3s219-wp-after-mind-gem",
+          "label": "Mind Gem Willpower check",
+          "summary": "Check current WP after the 1 WP Mind Gem cost",
+          "requiresAutomationApplied": true,
+          "blockedReason": "Apply or record the 1 WP Mind Gem cost first, then recheck the route.",
+          "formula": {
+            "label": "WP",
+            "terms": [{"stat": "wp"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": 11, "max": 999, "route": 163, "label": "WP is greater than 10"},
+            {"test": "range", "min": -999, "max": 10, "route": 179, "label": "WP is 10 or less"}
+          ]
+        }
+      ]
+    },
+    "220": {
+      "routeChecks": [
+        {
+          "id": "b3s220-pipe-check",
+          "label": "Elessi pipe check",
+          "summary": "Add current WP and END after the 3 WP combat cost",
+          "requiresAutomationApplied": true,
+          "blockedReason": "Apply or record the 3 WP combat cost first, then recheck the route.",
+          "formula": {
+            "label": "WP + END",
+            "terms": [
+              {"stat": "wp"},
+              {"stat": "end"}
+            ]
+          },
+          "outcomes": [
+            {"test": "range", "min": -999, "max": 20, "route": 271, "label": "Total is 20 or less"},
+            {"test": "range", "min": 21, "max": 999, "route": 284, "label": "Total is more than 20"}
+          ]
+        }
+      ]
+    },
+    "225": {
+      "routeChecks": [
+        {
+          "id": "b3s225-end-threshold",
+          "label": "Endurance threshold",
+          "summary": "Check current END",
+          "formula": {
+            "label": "END",
+            "terms": [{"stat": "end"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": 21, "max": 999, "route": 195, "label": "END is greater than 20"},
+            {"test": "range", "min": -999, "max": 20, "route": 180, "label": "END is 20 or less"}
+          ]
+        }
+      ]
+    },
+    "247": {
+      "routeChecks": [
+        {
+          "id": "b3s247-cs-wp",
+          "label": "Creature claw check",
+          "summary": "Add CS and current WP",
+          "formula": {
+            "label": "CS + WP",
+            "terms": [
+              {"stat": "cs"},
+              {"stat": "wp"}
+            ]
+          },
+          "outcomes": [
+            {"test": "range", "min": 15, "max": 999, "route": 215, "label": "Total is 15 or more"},
+            {"test": "range", "min": -999, "max": 14, "route": 233, "label": "Total is less than 15"}
+          ]
+        }
+      ]
+    },
+    "248": {
+      "routeChecks": [
+        {
+          "id": "b3s248-pipe-check",
+          "label": "Elessi pipe check",
+          "summary": "Add current WP and END after the 3 WP attack cost",
+          "requiresAutomationApplied": true,
+          "blockedReason": "Apply or record the 3 WP attack cost first, then recheck the route.",
+          "formula": {
+            "label": "WP + END",
+            "terms": [
+              {"stat": "wp"},
+              {"stat": "end"}
+            ]
+          },
+          "outcomes": [
+            {"test": "range", "min": -999, "max": 20, "route": 271, "label": "Total is 20 or less"},
+            {"test": "range", "min": 21, "max": 999, "route": 284, "label": "Total is more than 20"}
+          ]
+        }
+      ]
+    },
+    "326": {
+      "routeChecks": [
+        {
+          "id": "b3s326-pipe-check",
+          "label": "Elessi pipe check",
+          "summary": "Add current WP and END after the 3 WP attack cost",
+          "requiresAutomationApplied": true,
+          "blockedReason": "Apply or record the 3 WP attack cost first, then recheck the route.",
+          "formula": {
+            "label": "WP + END",
+            "terms": [
+              {"stat": "wp"},
+              {"stat": "end"}
+            ]
+          },
+          "outcomes": [
+            {"test": "range", "min": -999, "max": 20, "route": 271, "label": "Total is 20 or less"},
+            {"test": "range", "min": 21, "max": 999, "route": 284, "label": "Total is more than 20"}
+          ]
+        }
+      ]
+    }
+  },
+  "4": {
+    "271": {
+      "routeChecks": [
+        {
+          "id": "b4s271-wp-threshold",
+          "label": "Willpower threshold",
+          "summary": "Check current WP",
+          "formula": {
+            "label": "WP",
+            "terms": [{"stat": "wp"}]
+          },
+          "outcomes": [
+            {"test": "range", "min": 20, "max": 999, "route": 284, "label": "WP is 20 or more"},
+            {"test": "range", "min": -999, "max": 19, "route": 44, "label": "WP is less than 20"}
+          ]
+        }
+      ]
+    },
+    "310": {
+      "routeChecks": [
+        {
+          "id": "b4s310-shasarak-score",
+          "label": "Shasarak duel score",
+          "summary": "Add current WP and END, then subtract Shasarak's score of 10",
+          "formula": {
+            "label": "WP + END - 10",
+            "base": -10,
+            "terms": [
+              {"stat": "wp"},
+              {"stat": "end"}
+            ]
+          },
+          "outcomes": [
+            {"test": "range", "min": 1, "max": 999, "route": 5, "label": "Score is more than 0"},
+            {"test": "range", "min": -999, "max": 0, "route": 2, "label": "Score is 0 or less"}
+          ]
+        }
+      ]
+    }
+  }
+}

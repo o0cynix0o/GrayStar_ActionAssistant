@@ -17,9 +17,10 @@ It helps with:
 - inventory, Backpack Items, Special Items, Weapons, and Herb Pouch Items
 - Magick powers and Willpower costs
 - random number rolls from 0 to 9
+- Choices-card route checks for book math such as `CS + WP`, `END + WP`, and current-stat thresholds
 - combat setup and combat round handling
 - section effects and guided section support
-- expandable receipts for automation, item use, combat, death recovery, achievements, loot, and book completion
+- expandable receipts for automation, Manual Mode advice, item use, combat, death recovery, achievements, loot, and book completion
 - death, rewind, book completion, repeat-book flow, and saves
 - achievements and achievement notifications
 

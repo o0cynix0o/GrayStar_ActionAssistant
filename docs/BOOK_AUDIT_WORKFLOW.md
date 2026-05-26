@@ -109,6 +109,7 @@ Review the book with an eye toward:
 - random-number rolls
 - permanent penalties or bonuses
 - unique endings
+- route-check math that decides a legal destination, such as `END + WP`, `CS + WP`, a current-stat threshold, or a random roll plus current stats
 
 ### 2. Map Endings And Route Families
 
@@ -169,6 +170,14 @@ Useful Grey Star search terms include:
 
 Treat the sweep as a candidate generator, not as truth. The human audit must confirm context, timing, and whether the text describes an actual state change.
 
+Before leaving each section, run the route-check pass:
+
+- Does the section ask the player to calculate a total, final score, or current-stat threshold before choosing a route?
+- Does the section ask for a random number and then add current END, WP, CS, item bonuses, or Magick bonuses?
+- Does a same-section entry effect happen before the route check? If so, mark the route check as needing the entry effect applied first.
+- Can the result be represented in `data/book-route-checks.json` as a Choices-card route check, or is it already covered as a Section Roll helper?
+- Record the route-check formula, thresholds, legal destinations, timing, and app support status in the section audit or automation ledger.
+
 ### 5. Build The Section Automation Ledger
 
 Create one row per candidate automation section.
@@ -193,6 +202,7 @@ Use consistent trigger timing labels:
 - on entry after text
 - after combat
 - after random roll
+- after route-check calculation
 - after prompt choice
 - after inventory choice
 - after book transition
@@ -207,6 +217,7 @@ Scan for high-value automation candidates:
 - item bonuses or special item behavior
 - section entry damage or healing
 - forced gains and losses
+- route-check calculations and current-stat thresholds
 - combat exceptions
 - permanent stat changes
 - book-specific restrictions

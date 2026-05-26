@@ -115,7 +115,7 @@ Endurance: 25/28 -> 22/28
 How: You pressed Apply Effects. The assistant used the section audit, updated the sheet, and saved the game.
 ```
 
-The receipt drawer is used for section automation, item use, Karmo controls, loot choices, combat rounds, death recovery, book completion, achievements, rolls, and normal assistant notices.
+The receipt drawer is used for section automation, Manual Mode advice, item use, Karmo controls, loot choices, combat rounds, death recovery, book completion, achievements, rolls, and normal assistant notices.
 
 It is there so the app does not feel like a mystery box. You can see what changed, why the assistant changed it, and how it was applied.
 
@@ -127,11 +127,23 @@ The roll button gives you that number. If the current section audit has a specia
 
 If the section has no special roll rule, it is just a clean 0-9 roll.
 
+## What Is A Route Check?
+
+Some sections ask you to do quick book math before choosing where to turn. For example:
+
+```text
+Add together your COMBAT SKILL and current WILLPOWER points.
+```
+
+When the audit knows that rule, the **Choices** card shows the calculation, the current result, and the route that matches your sheet.
+
+If the section has a stat loss first, the route check may wait until you press **Apply Effects** or record that cost by hand. That way the route is based on the same numbers the book expects you to use.
+
 ## Why Did The Choices Card Not Show My Book Choices?
 
 Most normal route choices already appear as links in the book pane. Use those links normally.
 
-The **Choices** card is mainly for assistant-side choices: loot, audited section options, special rolls, costs, combat starts, and effects that need a structured button.
+The **Choices** card is mainly for assistant-side choices: loot, audited section options, route checks, special rolls, costs, combat starts, and effects that need a structured button.
 
 If the book page already says where to turn and the link works, the assistant does not need to duplicate it.
 
@@ -162,9 +174,19 @@ You can still start over from the app controls or by loading/importing a differe
 
 ## What Is Manual Mode For?
 
-Manual Mode keeps the sheet, inventory, notes, saves, and achievements, but turns off audited section automation.
+Manual Mode keeps the sheet, inventory, notes, saves, and achievements, but changes audited helpers into advice-only buttons.
 
 Use it when you want to do the book math yourself, or when you are testing something and do not want the assistant to apply section helpers.
+
+In Manual Mode, buttons like **Apply Effects**, **Section Roll**, section loot **Apply**, section combat **Start**, and combat **Auto Resolve** do not change your sheet. Click them to open the bottom receipt drawer instead.
+
+The **Why** line reads like guide advice. The **How to do it** lines are direct control instructions, such as:
+
+```text
+Vitals card > END: click -1 once, or type the new value in Set and click Set.
+Choices card > Status Flags: click Set to turn the flag on, or Clear to turn it off.
+Assistant menu > Mode: click Auto to turn automation on, Manual for advice-only play, or CLI for the terminal view.
+```
 
 Auto Mode is the normal way to play with the assistant.
 
