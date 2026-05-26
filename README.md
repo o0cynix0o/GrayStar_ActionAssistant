@@ -4,7 +4,7 @@ Grey Star Action Assistant is a local browser-based play aid for the four *Grey 
 
 The app is built to run locally from your machine. It does not require a hosted account or cloud save service.
 
-Current public release: **v1.1.4**
+Current public release: **v1.1.5**
 
 ## Book Files Are Not Included
 

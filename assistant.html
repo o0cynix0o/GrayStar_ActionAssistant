@@ -2301,6 +2301,13 @@
       const nextBook = Number(completion.NextBookNumber || 0);
       const nextTitle = text(completion.NextBookTitle, '');
       const lesserChoices = arr(completion.LesserMagickChoices);
+      const higherChoices = arr(completion.HigherMagickChoices).length ? arr(completion.HigherMagickChoices) : higherMagicks;
+      const higherChoiceControls = higherChoices.map((name) => `
+        <label class="check-option">
+          <input type="checkbox" name="higherMagicks" value="${escapeHtml(name)}">
+          <span>${escapeHtml(name)}</span>
+        </label>
+      `).join('');
       const continueControls = completion.CanContinue ? `
         <form id="continueBookForm" class="grid">
           ${nextBook === 2 ? `
@@ -2311,6 +2318,12 @@
             </label>
           ` : ''}
           ${nextBook === 3 ? '<label class="field">Willpower Roll<input name="willpowerRoll" type="number" min="0" max="9" placeholder="Blank = random"></label>' : ''}
+          ${nextBook === 4 ? `
+            <div class="check-field">
+              <span>Higher Magicks - choose exactly 5</span>
+              <div class="check-grid">${higherChoiceControls}</div>
+            </div>
+          ` : ''}
           <button type="submit">Continue to Book ${escapeHtml(nextBook)}</button>
         </form>
       ` : '<p class="muted">The supported Grey Star campaign is complete.</p>';
@@ -4327,11 +4340,26 @@
       if (form.id === 'itemForm' || form.id === 'quickItemForm') await action({ action: 'add_item', type: data.type, item: data.item });
       if (form.id === 'noteForm') await action({ action: 'note', text: data.text });
       if (form.id === 'saveForm') await action({ action: 'save', path: data.path });
-      if (form.id === 'continueBookForm') await action({
-        action: 'continue_book',
-        lesserMagick: data.lesserMagick || '',
-        willpowerRoll: data.willpowerRoll || ''
-      });
+      if (form.id === 'continueBookForm') {
+        const higherMagickSelections = formData.getAll('higherMagicks');
+        if (form.querySelectorAll('input[name="higherMagicks"]').length && higherMagickSelections.length !== 5) {
+          setReceipt({
+            summary: 'Book - Choose exactly 5 Higher Magicks.',
+            details: [
+              receiptDetail('Selected', `${higherMagickSelections.length}/5`),
+              receiptDetail('Why', 'Book 4 begins after you choose five Higher Magicks. The assistant needs your picks before it can advance the campaign.'),
+              receiptDetail('How', 'Check exactly five Higher Magick boxes, then press Continue to Book 4.')
+            ]
+          });
+          return;
+        }
+        await action({
+          action: 'continue_book',
+          lesserMagick: data.lesserMagick || '',
+          willpowerRoll: data.willpowerRoll || '',
+          higherMagicks: higherMagickSelections
+        });
+      }
       if (form.id === 'combatForm') await action({
         action: 'combat_start',
         name: data.name,

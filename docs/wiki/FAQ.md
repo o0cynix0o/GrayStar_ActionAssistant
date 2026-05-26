@@ -351,6 +351,14 @@ Yes. The book-completion screen can repeat the current book with the same charac
 
 That is useful for achievement hunting. The assistant resets Endurance and Willpower back to base for the replay while keeping the character identity and campaign record.
 
+## How Do I Choose Higher Magicks For Book 4?
+
+Finish Book 3 normally. On the completion screen, the assistant shows the Book 4 handoff and asks you to choose exactly five Higher Magicks.
+
+Those five choices are yours. The assistant will not advance into Book 4 until five valid Higher Magicks are selected.
+
+If you choose too few or too many, the bottom receipt drawer tells you what to fix.
+
 ## Are Saves Pushed To GitHub?
 
 No. Saves stay local.

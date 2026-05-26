@@ -5226,6 +5226,25 @@ class GreyStarAssistant:
         self.ensure_book_completed(current)
         next_book = current + 1
         messages: list[str] = []
+        selected_higher_for_book4: list[str] = []
+
+        if next_book == 4:
+            seen_higher: set[str] = set()
+            invalid_higher: list[str] = []
+            for item in as_list(higher_magicks):
+                name = str(item or "").strip()
+                if not name:
+                    continue
+                if name not in HIGHER_MAGICKS:
+                    invalid_higher.append(name)
+                    continue
+                if name not in seen_higher:
+                    seen_higher.add(name)
+                    selected_higher_for_book4.append(name)
+            if invalid_higher:
+                raise ValueError(f"Unknown Higher Magick: {', '.join(invalid_higher)}")
+            if len(selected_higher_for_book4) != 5:
+                raise ValueError("Continuing to Book 4 requires exactly five Higher Magicks.")
 
         self.character["BookNumber"] = next_book
         self.state["CurrentSection"] = 1
@@ -5273,17 +5292,11 @@ class GreyStarAssistant:
             self.character["EnduranceCurrent"] = before_end + 30
             self.character["WillpowerBase"] = int(self.character["WillpowerCurrent"])
             self.add_special_item("Moonstone")
-            selected_higher = [item for item in as_list(higher_magicks) if item in HIGHER_MAGICKS]
-            if not selected_higher:
-                selected_higher = [item for item in HIGHER_MAGICKS if item not in as_list(self.character.get("HigherMagicks"))][:5]
-            combined = as_list(self.character.get("HigherMagicks"))
-            for item in selected_higher:
-                if item not in combined:
-                    combined.append(item)
-            self.character["HigherMagicks"] = combined[:5]
+            self.character["HigherMagicks"] = selected_higher_for_book4
             messages.append(f"Willpower {before_wp}->{self.character['WillpowerCurrent']}")
             messages.append(f"Endurance {before_end}/{before_max}->{self.character['EnduranceCurrent']}/{self.character['EnduranceMax']}")
             messages.append("Moonstone added.")
+            messages.append(f"Higher Magicks: {', '.join(selected_higher_for_book4)}")
 
         self.state["CurrentBookStats"]["StartingEnduranceMax"] = int(self.character["EnduranceMax"])
         self.state["CurrentBookStats"]["StartingWillpower"] = int(self.character.get("WillpowerBase") or self.character["WillpowerCurrent"])
